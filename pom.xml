@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.msh</groupId>
-    <artifactId>shop</artifactId>
+    <artifactId>mshShop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>shop</name>
-    <description>shop</description>
+    <name>mshShop</name>
+    <description>mshShop</description>
     <url/>
     <licenses>
         <license/>
