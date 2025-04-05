@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.msh.dto.file.FileDto;
 import org.msh.dto.product.ColorDto;
+import org.msh.dto.product.SizeDto;
 import org.msh.dto.product.ProductDto;
 import org.msh.dto.product.SizeDto;
 import org.msh.entity.file.FileEnt;
@@ -36,8 +37,8 @@ public class ProductMapper {
                 //
                 //if (source != null) {
                 //    List<CustomProductColor> lst = source.getPcs();
-                //    List<Color> colors = lst.stream().map(cpc -> cpc.getColor()).toList();
-                //    List<ColorDto> colorDtos = colors.stream().map(c ->
+                //    List<Color> sizes = lst.stream().map(cpc -> cpc.getColor()).toList();
+                //    List<ColorDto> sizeDtos = sizes.stream().map(c ->
                 //            {
                 //                c.setHex("manipulated");
                 //                return modelMapper.map(c, ColorDto.class);
@@ -46,7 +47,7 @@ public class ProductMapper {
                 //    //
                 //    source.setPcs(null);
                 //    ProductDto res = modelMapper.map(source, ProductDto.class);
-                //    res.setColorDtos(colorDtos);
+                //    res.setColorDtos(sizeDtos);
                 //}
             }
         });

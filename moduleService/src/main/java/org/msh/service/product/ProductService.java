@@ -4,7 +4,10 @@ import lombok.SneakyThrows;
 import org.msh.config.mapper.product.ProductMapper;
 import org.msh.dto.product.ProductDto;
 import org.msh.entity.product.ProductEnt;
+import org.msh.repositoryJpa.product.ColorRepositoryJpa;
+import org.msh.repositoryJpa.product.ProductCategoryRepositoryJpa;
 import org.msh.repositoryJpa.product.ProductRepositoryJpa;
+import org.msh.repositoryJpa.product.SizeRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +17,26 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepositoryJpa productRepository;
+    private final ProductCategoryRepositoryJpa productCategoryRepositoryJpa ;
+    private final ColorRepositoryJpa colorRepositoryJpa;
+    private final SizeRepositoryJpa sizeRepositoryJpa;
     private final ProductMapper mapper;
 
     @Autowired
-    public ProductService(ProductRepositoryJpa productRepository, ProductMapper productMapper)
+    public ProductService(ProductRepositoryJpa productRepository
+            , ProductCategoryRepositoryJpa productCategoryRepositoryJpa
+            , ColorRepositoryJpa colorRepositoryJpa
+            , SizeRepositoryJpa sizeRepositoryJpa
+            , ProductMapper productMapper)
     {
         this.productRepository = productRepository;
+        this.productCategoryRepositoryJpa = productCategoryRepositoryJpa;
+        this.colorRepositoryJpa = colorRepositoryJpa;
+        this.sizeRepositoryJpa = sizeRepositoryJpa;
         this.mapper = productMapper;
     }
+
+
 
     public List<ProductDto> findAllSrv()
     {

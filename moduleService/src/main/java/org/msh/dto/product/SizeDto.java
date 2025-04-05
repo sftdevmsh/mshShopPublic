@@ -10,6 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 public class SizeDto {
     private Long id;
-    private String title;
+    private String sizeName;
     private String description;
 }

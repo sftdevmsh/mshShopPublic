@@ -18,7 +18,7 @@ public class SizeEnt {
     private Long id;
 
     @Column(length = 1000)
-    private String title;
+    private String sizeName;
 
     @Column(length = 1000)
     private String description;

@@ -4,7 +4,7 @@
 //import lombok.*;
 //
 //@Entity
-//@Table(name = "tbl_rel_product_color")
+//@Table(name = "tbl_rel_product_size")
 //@Getter
 //@Setter
 //@Builder
@@ -14,7 +14,7 @@
 //
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id_product_color")
+//    @Column(name = "id_product_size")
 //    private Long id;
 //
 //
@@ -31,7 +31,7 @@
 //    private ProductEnt productEnt;
 //
 //    @ManyToOne
-//    @JoinColumn(name = "id_color")
-//    private ColorEnt colorEnt;
+//    @JoinColumn(name = "id_size")
+//    private ColorEnt sizeEnt;
 //
 //}
