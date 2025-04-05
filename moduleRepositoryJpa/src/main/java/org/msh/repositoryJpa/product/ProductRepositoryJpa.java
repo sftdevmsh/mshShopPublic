@@ -18,9 +18,35 @@ public interface ProductRepositoryJpa extends JpaRepository<ProductEnt, Long> {
     @Query("""
         from product p where p.exist = true
         and p.enabled = true
-        order by p.visitCount
+        order by p.addDate desc
         limit 6
     """)
-    public Optional<List<ProductEnt>> findTop6();
+    public List<ProductEnt> findTopLatest();
+
+    @Query("""
+        from product p where p.exist = true
+        and p.enabled = true
+        order by p.visitCount desc
+        limit 6
+    """)
+    public List<ProductEnt> findTopPopular();
+
+
+    @Query("""
+        from product p where p.exist = true
+        and p.enabled = true
+        order by p.price desc
+        limit 6
+    """)
+    public List<ProductEnt> findTopExpensive();
+
+
+    @Query("""
+        from product p where p.exist = true
+        and p.enabled = true
+        order by p.price asc
+        limit 6
+    """)
+    public List<ProductEnt> findTopCheap();
 
 }

@@ -1,9 +1,7 @@
 package org.msh.dto.site;
 
-import jakarta.persistence.*;
 import lombok.*;
 import org.msh.entity.file.FileEnt;
-import org.msh.enums.BlogStatus;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogDto {
+public class SingleBlogDto {
 
     private Long id;
 
@@ -20,9 +18,7 @@ public class BlogDto {
 
     private String subTitle;
 
-    //private String description;
-
-    //private BlogStatus blogStatus;
+    private String description;
 
     private LocalDateTime publishDate;
 

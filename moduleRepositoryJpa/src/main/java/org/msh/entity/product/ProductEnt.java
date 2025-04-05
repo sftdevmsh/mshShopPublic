@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.msh.entity.file.FileEnt;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -37,10 +38,17 @@ public class ProductEnt {
 
     private Boolean exist = true;
 
+    @Column(name = "add_date")
+    private LocalDateTime addDate;
 
     @ManyToOne
     @JoinColumn(name="img_id_file", nullable = false)
     private FileEnt img;
+
+    @ManyToOne
+    @JoinColumn(name="id_product_category", nullable = false)
+    private ProductCategoryEnt productCategoryEnt;
+
 
 
     @ManyToMany

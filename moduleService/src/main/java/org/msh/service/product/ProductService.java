@@ -7,6 +7,7 @@ import org.msh.dto.product.ProductCategoryDto;
 import org.msh.dto.product.ProductDto;
 import org.msh.entity.product.ProductCategoryEnt;
 import org.msh.entity.product.ProductEnt;
+import org.msh.enums.ProductQueryType;
 import org.msh.repositoryJpa.product.ColorRepositoryJpa;
 import org.msh.repositoryJpa.product.ProductCategoryRepositoryJpa;
 import org.msh.repositoryJpa.product.ProductRepositoryJpa;
@@ -14,6 +15,7 @@ import org.msh.repositoryJpa.product.SizeRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +27,7 @@ public class ProductService {
     private final SizeRepositoryJpa sizeRepositoryJpa;
     private final ProductMapper mapper;
     private final ModelMapper modelMapper;
+    private final ProductMapper productMapper;
 
 
     @Autowired
@@ -32,7 +35,8 @@ public class ProductService {
             , ProductCategoryRepositoryJpa productCategoryRepositoryJpa
             , ColorRepositoryJpa colorRepositoryJpa
             , SizeRepositoryJpa sizeRepositoryJpa
-            , ProductMapper productMapper, ModelMapper modelMapper)
+            , ProductMapper productMapper
+            , ModelMapper modelMapper)
     {
         this.productRepository = productRepository;
         this.productCategoryRepositoryJpa = productCategoryRepositoryJpa;
@@ -40,6 +44,7 @@ public class ProductService {
         this.sizeRepositoryJpa = sizeRepositoryJpa;
         this.mapper = productMapper;
         this.modelMapper = modelMapper;
+        this.productMapper = productMapper;
     }
 
 
@@ -95,7 +100,7 @@ public class ProductService {
         ProductDto dtoDb = findByIdSrv(dto.getId());
         dtoDb.setImg(dto.getImg());
         dtoDb.setPrice(dto.getPrice());
-        dtoDb.setExist(dto.getExist());
+        //dtoDb.setExist(dto.getExist());
         //dtoDb.setEnabled(dto.getEnabled());
         dtoDb.setColorDtos(dto.getColorDtos());
         dtoDb.setSizeDtos(dto.getSizeDtos());
@@ -104,8 +109,33 @@ public class ProductService {
         return mapper.map(product); //return dtoDb;
     }
 
+    public List<ProductDto> findTop(ProductQueryType queryType)
+    {
+        List<ProductEnt> res = new ArrayList<>();
+        //
+        switch (queryType) {
+            case ProductQueryType.latest -> {
+                res = productRepository.findTopLatest();
+            }
+            case ProductQueryType.popular -> {
+                res = productRepository.findTopPopular();
+            }
+            case ProductQueryType.expensive -> {
+                res = productRepository.findTopExpensive();
+            }
+            case ProductQueryType.cheap -> {
+                res = productRepository.findTopCheap();
+            }
+        }
+        //
+        return res.stream().map(productMapper::map).toList();
+    }
 
 
+
+
+
+    //region category of product
     public List<ProductCategoryDto> findAllCategoriesSrv()
     {
         return productCategoryRepositoryJpa.findAllByEnabledIsTrueOrderByTitleAsc()
@@ -114,7 +144,7 @@ public class ProductService {
                 .map(x->modelMapper.map(x,ProductCategoryDto.class))
                 .toList();
     }
-
+    //endregion
 
 
 

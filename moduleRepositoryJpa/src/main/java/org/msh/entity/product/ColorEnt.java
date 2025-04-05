@@ -21,8 +21,8 @@ public class ColorEnt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="color_name", length = 1000)
-    private String colorName;
+    @Column(name="name", length = 1000)
+    private String name;
 
     @Column(length = 8)
     private String hex;
