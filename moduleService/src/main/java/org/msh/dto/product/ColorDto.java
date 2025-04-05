@@ -10,6 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 public class ColorDto {
     private Long id;
-    private String colorName;
+    private String name;
     private String hex;
 }

@@ -4,6 +4,7 @@ import org.msh.api.model.ApiResponse;
 import org.msh.api.enums.MyHttpStatus;
 import org.msh.dto.product.ProductCategoryDto;
 import org.msh.dto.product.ProductDto;
+import org.msh.enums.ProductQueryType;
 import org.msh.repositoryJpa.product.ProductCategoryRepositoryJpa;
 import org.msh.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,20 @@ public class ProductController {
                 .msg("")
                 .build();
     }
+
+    @GetMapping("/top/{type}")
+    public ApiResponse<List<ProductDto>> getAllCtrl(@PathVariable("type") ProductQueryType type)
+    {
+        List<ProductDto> lst = productService.findTop(type);
+        return ApiResponse
+                .<List<ProductDto>>builder()
+                .tdata(lst)
+                .status(MyHttpStatus.Success)
+                .msg("")
+                .build();
+    }
+
+
 
     //region 2 ways to code get
 //    //http://localhost:8080/api/product/1
@@ -114,7 +129,7 @@ public class ProductController {
     }
 
 
-
+    //region category of product
     @GetMapping("/category")
     public ApiResponse<List<ProductCategoryDto>> getAllCategoriesCtrl()
     {
@@ -126,6 +141,6 @@ public class ProductController {
                 .msg("")
                 .build();
     }
-
+    //endregion
 
 }

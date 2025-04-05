@@ -31,7 +31,6 @@ public class ProductMapper {
             protected void configure() {
                 using(converterToColorDtos()).map(source.getColorEnts()).setColorDtos(null);
                 using(converterToSizeDtos()).map(source.getSizeEnts()).setSizeDtos(null);
-                using(converterToFileDto()).map(source.getImg()).setImg(null);
                 //
                 //
                 //if (source != null) {
@@ -66,11 +65,7 @@ public class ProductMapper {
                 ).collect(Collectors.toSet());
     }
 
-    private Converter<FileEnt, FileDto> converterToFileDto() {
-        return c ->  c.getSource() == null ? null :
-                        modelMapper.map(c.getSource(), FileDto.class)
-                ;
-    }
+
 
 
     public ProductDto map(ProductEnt product)
