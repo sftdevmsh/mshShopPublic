@@ -1,4 +1,4 @@
-package org.msh.controller;
+package org.msh.controller.open;
 
 import jakarta.servlet.http.*;
 import org.springframework.web.bind.annotation.CookieValue;

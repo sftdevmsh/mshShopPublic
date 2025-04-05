@@ -1,8 +1,11 @@
 package org.msh.service.product;
 
 import lombok.SneakyThrows;
+import org.modelmapper.ModelMapper;
 import org.msh.config.mapper.product.ProductMapper;
+import org.msh.dto.product.ProductCategoryDto;
 import org.msh.dto.product.ProductDto;
+import org.msh.entity.product.ProductCategoryEnt;
 import org.msh.entity.product.ProductEnt;
 import org.msh.repositoryJpa.product.ColorRepositoryJpa;
 import org.msh.repositoryJpa.product.ProductCategoryRepositoryJpa;
@@ -21,19 +24,22 @@ public class ProductService {
     private final ColorRepositoryJpa colorRepositoryJpa;
     private final SizeRepositoryJpa sizeRepositoryJpa;
     private final ProductMapper mapper;
+    private final ModelMapper modelMapper;
+
 
     @Autowired
     public ProductService(ProductRepositoryJpa productRepository
             , ProductCategoryRepositoryJpa productCategoryRepositoryJpa
             , ColorRepositoryJpa colorRepositoryJpa
             , SizeRepositoryJpa sizeRepositoryJpa
-            , ProductMapper productMapper)
+            , ProductMapper productMapper, ModelMapper modelMapper)
     {
         this.productRepository = productRepository;
         this.productCategoryRepositoryJpa = productCategoryRepositoryJpa;
         this.colorRepositoryJpa = colorRepositoryJpa;
         this.sizeRepositoryJpa = sizeRepositoryJpa;
         this.mapper = productMapper;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -90,7 +96,7 @@ public class ProductService {
         dtoDb.setImg(dto.getImg());
         dtoDb.setPrice(dto.getPrice());
         dtoDb.setExist(dto.getExist());
-        dtoDb.setEnabled(dto.getEnabled());
+        //dtoDb.setEnabled(dto.getEnabled());
         dtoDb.setColorDtos(dto.getColorDtos());
         dtoDb.setSizeDtos(dto.getSizeDtos());
 
@@ -98,6 +104,16 @@ public class ProductService {
         return mapper.map(product); //return dtoDb;
     }
 
+
+
+    public List<ProductCategoryDto> findAllCategoriesSrv()
+    {
+        return productCategoryRepositoryJpa.findAllByEnabledIsTrueOrderByTitleAsc()
+                .stream()
+                //.map(mapper::map)
+                .map(x->modelMapper.map(x,ProductCategoryDto.class))
+                .toList();
+    }
 
 
 
@@ -121,8 +137,5 @@ public class ProductService {
             //throw new Exception("Error! validationModelProduct _ wrong product Brand");
     }
    //endregion
-
-
-
 
 }

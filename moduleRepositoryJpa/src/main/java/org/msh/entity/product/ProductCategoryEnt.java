@@ -25,4 +25,8 @@ public class ProductCategoryEnt {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
+    private Boolean enabled = true;
+
+    @ManyToOne
+    private FileEnt img;
 }

@@ -1,9 +1,8 @@
-package org.msh.controller;
+package org.msh.controller.open;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.msh.api.enums.MyHttpStatus;
 import org.msh.api.model.ApiResponse;
-import org.msh.config.annotation.MyAutenticationAnnotation;
 import org.msh.dto.user.LimitedUserDto;
 import org.msh.dto.user.LoginDto;
 import org.msh.dto.user.UserDto;

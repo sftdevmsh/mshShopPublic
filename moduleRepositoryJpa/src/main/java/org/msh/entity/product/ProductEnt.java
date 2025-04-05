@@ -29,7 +29,12 @@ public class ProductEnt {
     private String description;
 
     private Long price;
+
+    @Column(name = "visit_count")
+    private Integer visitCount;
+
     private Boolean enabled = true;
+
     private Boolean exist = true;
 
 

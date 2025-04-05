@@ -1,8 +1,10 @@
-package org.msh.controller;
+package org.msh.controller.open;
 
 import org.msh.api.model.ApiResponse;
 import org.msh.api.enums.MyHttpStatus;
+import org.msh.dto.product.ProductCategoryDto;
 import org.msh.dto.product.ProductDto;
+import org.msh.repositoryJpa.product.ProductCategoryRepositoryJpa;
 import org.msh.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +15,12 @@ import java.util.List;
 @RequestMapping("/api/product")
 public class ProductController {
     private final ProductService productService;
+    //private final ProductCategoryRepositoryJpa productCategoryRepositoryJpa;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductCategoryRepositoryJpa productCategoryRepositoryJpa) {
         this.productService = productService;
+        //this.productCategoryRepositoryJpa = productCategoryRepositoryJpa;
     }
 
     //public ResponseEntity<ApiResponse<List<Product>>> getAllCtrl() to ge deeper to set HttpStatus ...
@@ -108,5 +112,20 @@ public class ProductController {
         }
         return apiRes;
     }
+
+
+
+    @GetMapping("/category")
+    public ApiResponse<List<ProductCategoryDto>> getAllCategoriesCtrl()
+    {
+        List<ProductCategoryDto> lst = productService.findAllCategoriesSrv();
+        return ApiResponse
+                .<List<ProductCategoryDto>>builder()
+                .tdata(lst)
+                .status(MyHttpStatus.Success)
+                .msg("")
+                .build();
+    }
+
 
 }

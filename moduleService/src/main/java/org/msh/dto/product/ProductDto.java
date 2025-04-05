@@ -14,7 +14,7 @@ import java.util.Set;
 public class ProductDto {
     private Long id;
     private Long price;
-    private Boolean enabled;
+    //private Boolean enabled;
     private Boolean exist;
     //@JsonIgnore : use it in dto, preferably
     private FileDto img;

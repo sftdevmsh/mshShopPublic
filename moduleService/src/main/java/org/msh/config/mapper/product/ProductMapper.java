@@ -4,12 +4,11 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.msh.dto.file.FileDto;
-import org.msh.dto.product.ColorDto;
-import org.msh.dto.product.SizeDto;
-import org.msh.dto.product.ProductDto;
+import org.msh.dto.product.*;
 import org.msh.dto.product.SizeDto;
 import org.msh.entity.file.FileEnt;
 import org.msh.entity.product.ColorEnt;
+import org.msh.entity.product.ProductCategoryEnt;
 import org.msh.entity.product.ProductEnt;
 import org.msh.entity.product.SizeEnt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,4 +82,8 @@ public class ProductMapper {
     {
         return this.modelMapper.map(productDto, ProductEnt.class);
     }
+
+//    public ProductCategoryDto map(ProductCategoryEnt ent) {
+//        return  this.modelMapper.map(ent,ProductCategoryDto.class);
+//    }
 }
