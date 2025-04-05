@@ -1,16 +1,21 @@
-package org.msh.config.mapper;
+package org.msh.config.mapper.product;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.msh.dto.file.FileDto;
 import org.msh.dto.product.ColorDto;
 import org.msh.dto.product.ProductDto;
-import org.msh.entity.product.RelProductColor;
+import org.msh.dto.product.SizeDto;
+import org.msh.entity.file.FileEnt;
+import org.msh.entity.product.ColorEnt;
 import org.msh.entity.product.ProductEnt;
+import org.msh.entity.product.SizeEnt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductMapper {
@@ -24,7 +29,9 @@ public class ProductMapper {
             //
             @Override
             protected void configure() {
-                using(converterToColors()).map(source.getLstRelProductColor()).setLstColorDto(null);
+                using(converterToColorDtos()).map(source.getColorEnts()).setColorDtos(null);
+                using(converterToSizeDtos()).map(source.getSizeEnts()).setSizeDtos(null);
+                using(converterToFileDto()).map(source.getImg()).setImg(null);
                 //
                 //
                 //if (source != null) {
@@ -45,13 +52,24 @@ public class ProductMapper {
         });
     }
 
-    private Converter<List<RelProductColor>,List<ColorDto>> converterToColors() {
-
+    private Converter<Set<ColorEnt>, Set<ColorDto>> converterToColorDtos() {
         return c ->  c.getSource() == null ? null :
-                            c.getSource().stream().map(x->
-                                modelMapper.map(x.getColorEnt(), ColorDto.class)
-                                ).toList()
-                            ;
+                c.getSource().stream().map(x->
+                        modelMapper.map(x, ColorDto.class)
+                ).collect(Collectors.toSet());
+    }
+
+    private Converter<Set<SizeEnt>, Set<SizeDto>> converterToSizeDtos() {
+        return c ->  c.getSource() == null ? null :
+                c.getSource().stream().map(x->
+                        modelMapper.map(x, SizeDto.class)
+                ).collect(Collectors.toSet());
+    }
+
+    private Converter<FileEnt, FileDto> converterToFileDto() {
+        return c ->  c.getSource() == null ? null :
+                        modelMapper.map(c.getSource(), FileDto.class)
+                ;
     }
 
 

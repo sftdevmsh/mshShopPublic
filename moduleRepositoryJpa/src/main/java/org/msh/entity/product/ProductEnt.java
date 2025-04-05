@@ -2,8 +2,10 @@ package org.msh.entity.product;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.msh.entity.file.FileEnt;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Entity(name = "product")
@@ -19,14 +21,34 @@ public class ProductEnt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "sku", nullable = false)
-    private String SKU;
 
-    private String brand;
-    private String model;
+    @Column(length = 1000, nullable = false)
+    private String title;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String description;
+
     private Long price;
+    private Boolean enabled = true;
+    private Boolean exist = true;
 
-    @OneToMany(mappedBy = "productEnt")
-    private List<RelProductColor> lstRelProductColor;
+
+    @ManyToOne
+    @JoinColumn(name="img_id_file", nullable = false)
+    private FileEnt img;
+
+
+    @ManyToMany
+    @JoinTable(name = "rel_product_color"
+                , joinColumns = @JoinColumn(name = "id_product")
+                , inverseJoinColumns = @JoinColumn(name= "id_color"))
+    private Set<ColorEnt> colorEnts;
+
+
+    @ManyToMany
+    @JoinTable(name = "rel_product_size"
+            , joinColumns = @JoinColumn(name = "id_product")
+            , inverseJoinColumns = @JoinColumn(name= "id_size"))
+    private Set<SizeEnt> sizeEnts;
 
 }

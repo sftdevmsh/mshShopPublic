@@ -1,0 +1,28 @@
+package org.msh.entity.product;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.msh.entity.file.FileEnt;
+
+
+@Entity(name = "product_category")
+@Table(name = "tbl_product_category")
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductCategoryEnt {
+    @Id
+    @Column(name="id_product_category")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
+    @Column(length = 1000, nullable = false)
+    private String title;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String description;
+
+}

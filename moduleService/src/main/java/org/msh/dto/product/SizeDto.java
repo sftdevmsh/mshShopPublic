@@ -8,8 +8,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ColorDto {
+public class SizeDto {
     private Long id;
-    private String colorName;
-    private String hex;
+    private String title;
+    private String description;
 }

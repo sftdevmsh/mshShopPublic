@@ -1,8 +1,10 @@
 package org.msh.dto.product;
 
 import lombok.*;
+import org.msh.dto.file.FileDto;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -11,10 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductDto {
     private Long id;
-    private String SKU;
-    private String brand;
-    private String model;
     private Long price;
+    private Boolean enabled;
+    private Boolean exist;
     //@JsonIgnore : use it in dto, preferably
-    private List<ColorDto> lstColorDto;
+    private FileDto img;
+    private Set<ColorDto> colorDtos;
+    private Set<SizeDto> sizeDtos;
 }

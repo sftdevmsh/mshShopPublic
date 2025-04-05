@@ -2,7 +2,7 @@ package org.msh.service.user;
 
 import lombok.SneakyThrows;
 import org.msh.exceptions.NotFoundExc;
-import org.msh.config.mapper.UserMapper;
+import org.msh.config.mapper.user.UserMapper;
 import org.msh.dto.user.LimitedUserDto;
 import org.msh.dto.user.LoginDto;
 import org.msh.dto.user.UserDto;

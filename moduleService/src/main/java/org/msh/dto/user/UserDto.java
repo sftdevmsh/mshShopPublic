@@ -26,7 +26,7 @@ public class UserDto {
     private LocalDateTime registerTime;
     private Boolean enabled;
 
-    private Set<RoleDto> settRoleDto;
+    private Set<RoleDto> roleDtos;
 
     private String jwtToken;
 }

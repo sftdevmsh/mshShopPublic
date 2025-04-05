@@ -3,6 +3,7 @@ package org.msh.entity.user;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,8 +25,8 @@ public class RoleEnt {
     private String description;
 
     @ManyToMany
-    @JoinTable(name = "tbl_rel_role_permission"
+    @JoinTable(name = "rel_role_permission"
                     ,joinColumns = @JoinColumn(name = "id_role")
                     ,inverseJoinColumns = @JoinColumn(name = "id_permission"))
-    private Set<PermissionEnt> setPermissionEnt;
+    private Set<PermissionEnt> permissionEnts;
 }

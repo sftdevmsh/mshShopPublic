@@ -1,7 +1,7 @@
 package org.msh.service.product;
 
 import lombok.SneakyThrows;
-import org.msh.config.mapper.ProductMapper;
+import org.msh.config.mapper.product.ProductMapper;
 import org.msh.dto.product.ProductDto;
 import org.msh.entity.product.ProductEnt;
 import org.msh.repositoryJpa.product.ProductRepositoryJpa;
@@ -41,11 +41,6 @@ public class ProductService {
         return pd;
     }
 
-    public ProductDto findBySkuSrv(String sku)
-    {
-        return mapper
-                .map(productRepository.findBySKUEqualsIgnoreCase(sku).orElseThrow());
-    }
 
 
     public List<ProductDto> findByBrandLikeSrv(String brand)
@@ -77,10 +72,12 @@ public class ProductService {
         validationModelDto(dto);
 
         ProductDto dtoDb = findByIdSrv(dto.getId());
-        dtoDb.setSKU(dto.getSKU());
-        dtoDb.setModel(dto.getModel());
-        dtoDb.setBrand(dto.getBrand());
+        dtoDb.setImg(dto.getImg());
         dtoDb.setPrice(dto.getPrice());
+        dtoDb.setExist(dto.getExist());
+        dtoDb.setEnabled(dto.getEnabled());
+        dtoDb.setColorDtos(dto.getColorDtos());
+        dtoDb.setSizeDtos(dto.getSizeDtos());
 
         ProductEnt product = productRepository.save(mapper.map(dtoDb));
         return mapper.map(product); //return dtoDb;
@@ -105,8 +102,8 @@ public class ProductService {
     {
         if(dto == null)
             throw new Exception("Error! validationModelProduct _ null product");
-        if(dto.getBrand() == null || dto.getBrand().isEmpty())
-            throw new Exception("Error! validationModelProduct _ wrong product Brand");
+        //if(dto.getBrand() == null || dto.getImg().isEmpty())
+            //throw new Exception("Error! validationModelProduct _ wrong product Brand");
     }
    //endregion
 

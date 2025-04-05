@@ -13,6 +13,6 @@ public interface UserRepositoryJpa extends JpaRepository<UserEnt,Long> {
     Optional<UserEnt> findByUsernameIgnoreCaseAndPassword(String username, String password);
     Optional<UserEnt> findByUsernameIgnoreCase(String username);
 
-    @Query("from UserEnt u left join fetch u.setRoleEnt r left join fetch r.setPermissionEnt p where u.username = :username")
+    @Query("from UserEnt u left join fetch u.roleEnts r left join fetch r.permissionEnts p where u.username = :username")
     Optional<UserEnt> findByUsernameIgnoreCaseQry(@Param("username") String username);
 }

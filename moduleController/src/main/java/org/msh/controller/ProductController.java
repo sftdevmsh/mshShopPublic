@@ -69,22 +69,6 @@ public class ProductController {
 
     //http://localhost:8080/api/product/sku/1?page=1
     //Note: to use the same path "" we use @PathVariable
-    @GetMapping("sku/{sku}")
-    public ApiResponse<ProductDto> findByIdCtrl(@PathVariable(value = "sku") String sku
-            ,@RequestParam(value = "page", required = false) Integer pageNum)
-    {
-        System.out.println("pageNum : "+pageNum);
-
-        return ApiResponse
-                .<ProductDto>builder()
-                .tdata(productService.findBySkuSrv(sku))
-                .status(MyHttpStatus.Success)
-                .msg("")
-                .build();
-    }
-
-    //http://localhost:8080/api/product/sku/1?page=1
-    //Note: to use the same path "" we use @PathVariable
     @GetMapping("brand/{brand}")
     public ApiResponse<List<ProductDto>> findByBrandLikeCtrl(@PathVariable(value = "brand") String brand
             ,@RequestParam(value = "page", required = false) Integer pageNum)

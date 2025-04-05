@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 
@@ -39,9 +40,9 @@ public class UserEnt {
     private Boolean enabled;
 
     @ManyToMany
-    @JoinTable(name = "tbl_rel_user_role"
+    @JoinTable(name = "rel_user_role"
             , joinColumns = @JoinColumn(name = "id_user")
             , inverseJoinColumns = @JoinColumn(name = "id_role")
             )
-    private Set<RoleEnt> setRoleEnt;
+    private Set<RoleEnt> roleEnts;
 }

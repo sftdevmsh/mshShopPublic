@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_permission")
@@ -30,5 +31,5 @@ public class PermissionEnt {
     private PermissionEnt parent;
 
     @OneToMany(mappedBy = "parent")
-    private List<PermissionEnt> children = new ArrayList<>();
+    private List<PermissionEnt> children = new ArrayList<PermissionEnt>();
 }

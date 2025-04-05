@@ -54,7 +54,7 @@ public class ColorService {
         validationModelId(dto.getId());
         validationModelDto(dto);
         ColorEnt dtoDb = getByIdSrv(dto.getId());
-        dtoDb.setColor(dto.getColor());
+        dtoDb.setColorName(dto.getColorName());
         dtoDb.setHex(dto.getHex());
         ColorEnt color = colorRepository.save(modelMapper.map(dtoDb, ColorEnt.class));
         return modelMapper.map(color, ColorDto.class); //return dtoDb;
@@ -74,7 +74,7 @@ public class ColorService {
     {
         if(dto == null)
             throw new Exception("Error! validationModelColor _ null color");
-        if(dto.getColor() == null || dto.getColor().isEmpty())
+        if(dto.getColorName() == null || dto.getColorName().isEmpty())
             throw new Exception("Error! validationModelColor _ wrong color color");
         if(dto.getHex() == null || dto.getHex().isEmpty())
             throw new Exception("Error! validationModelColor _ wrong color hex");

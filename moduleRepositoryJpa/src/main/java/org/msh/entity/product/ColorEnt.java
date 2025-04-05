@@ -4,7 +4,9 @@ package org.msh.entity.product;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "color")
 @Table(name = "tbl_color")
@@ -19,12 +21,10 @@ public class ColorEnt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "color")
-    private String color;
+    @Column(name="color_name", length = 1000)
+    private String colorName;
 
-    @Column(name = "hex")
+    @Column(length = 8)
     private String hex;
 
-    @OneToMany(mappedBy = "colorEnt")
-    private List<RelProductColor> lstRelProductColor;
 }

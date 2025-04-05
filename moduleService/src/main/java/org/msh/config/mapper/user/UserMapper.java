@@ -1,4 +1,4 @@
-package org.msh.config.mapper;
+package org.msh.config.mapper.user;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -30,7 +30,7 @@ public class UserMapper {
             //
             @Override
             protected void configure() {
-                using(converterToRoleDto()).map(source.getSetRoleEnt()).setSettRoleDto(null);
+                using(converterToRoleDto()).map(source.getRoleEnts()).setRoleDtos(null);
             }
         });
     }

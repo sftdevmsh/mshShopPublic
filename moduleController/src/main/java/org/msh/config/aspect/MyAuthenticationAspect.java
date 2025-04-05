@@ -42,9 +42,9 @@ public class MyAuthenticationAspect {
                     .build();
         }
 
-        List<String> lstPermissions = dto.getSettRoleDto().stream()
+        List<String> lstPermissions = dto.getRoleDtos().stream()
                 .flatMap(r ->
-                        r.getSettPermissionDto()
+                        r.getPermissionDtos()
                                 .stream()
                                 .map(PermissionDto::getName))
                 .toList();

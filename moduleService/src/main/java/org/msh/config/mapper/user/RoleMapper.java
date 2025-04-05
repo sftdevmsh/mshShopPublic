@@ -1,4 +1,4 @@
-package org.msh.config.mapper;
+package org.msh.config.mapper.user;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -25,7 +25,7 @@ public class RoleMapper {
             //
             @Override
             protected void configure() {
-                using(converterToPermissionDto()).map(source.getSetPermissionEnt()).setSettPermissionDto(null);
+                using(converterToPermissionDto()).map(source.getPermissionEnts()).setPermissionDtos(null);
             }
         });
     }
