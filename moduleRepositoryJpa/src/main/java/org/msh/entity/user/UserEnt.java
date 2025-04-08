@@ -26,10 +26,10 @@ public class UserEnt {
     @Column(length = 100)
     private String password;
 
-    @Column(length = 100)
-    private String firstName;
-    @Column(length = 100)
-    private String lastName;
+//    @Column(length = 100)
+//    private String firstName;
+//    @Column(length = 100)
+//    private String lastName;
 
     @Column(length = 11, nullable = false)
     private String mobile;
@@ -38,6 +38,12 @@ public class UserEnt {
 
     private LocalDateTime registerTime;
     private Boolean enabled;
+
+
+//    @OneToOne
+//    private UserEnt userEnt;//customer
+    @OneToOne
+    private CustomerEnt customerEnt;//customer
 
     @ManyToMany
     @JoinTable(name = "rel_user_role"

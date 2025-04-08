@@ -1,8 +1,8 @@
 package org.msh.controller.open;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.msh.api.enums.MyHttpStatus;
-import org.msh.api.model.ApiResponse;
+import org.msh.enums.MyHttpStatus;
+import org.msh.wrapper.ApiResponseWrapper;
 import org.msh.dto.user.LimitedUserDto;
 import org.msh.dto.user.LoginDto;
 import org.msh.dto.user.UserDto;
@@ -24,9 +24,9 @@ public class UserController {
 
 
     @PostMapping("login")
-    public ApiResponse<LimitedUserDto> login(@RequestBody LoginDto dto)  {
+    public ApiResponseWrapper<LimitedUserDto> login(@RequestBody LoginDto dto)  {
         try {
-            return ApiResponse
+            return ApiResponseWrapper
                     .<LimitedUserDto>builder()
                     .tdata(userService.login(dto))
                     .status(MyHttpStatus.Success)
@@ -35,7 +35,7 @@ public class UserController {
         }
         catch (Exception e)
         {
-            return ApiResponse
+            return ApiResponseWrapper
                     .<LimitedUserDto>builder()
                     .tdata(null)
                     .status(MyHttpStatus.Failed)
@@ -44,9 +44,9 @@ public class UserController {
         }
     }
     @PostMapping("login2")
-    public ApiResponse<UserDto> loginGetAllInfo(@RequestBody LoginDto dto)  {
+    public ApiResponseWrapper<UserDto> loginGetAllInfo(@RequestBody LoginDto dto)  {
         try {
-            return ApiResponse
+            return ApiResponseWrapper
                     .<UserDto>builder()
                     .tdata(userService.loginGetAllInfo(dto))
                     .status(MyHttpStatus.Success)
@@ -55,7 +55,7 @@ public class UserController {
         }
         catch (Exception e)
         {
-            return ApiResponse
+            return ApiResponseWrapper
                     .<UserDto>builder()
                     .tdata(null)
                     .status(MyHttpStatus.Failed)
@@ -67,9 +67,9 @@ public class UserController {
 
     @GetMapping("test/{id}")
 //    @MyAutenticationAnnotation("user_info") //authentication
-    public ApiResponse<UserDto> testing(@PathVariable("id") Long id, HttpServletRequest httpServletRequest)
+    public ApiResponseWrapper<UserDto> testing(@PathVariable("id") Long id, HttpServletRequest httpServletRequest)
     {
-        return  ApiResponse
+        return  ApiResponseWrapper
                 .<UserDto>builder()
                 .status(MyHttpStatus.Success)
                 .msg("")

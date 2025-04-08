@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -166,6 +168,11 @@ public class ProductService {
         //if(dto.getBrand() == null || dto.getImg().isEmpty())
             //throw new Exception("Error! validationModelProduct _ wrong product Brand");
     }
-   //endregion
+    //endregion
+
+    public Optional<HashMap<Long,Long>> getProductPrices(List<Long> productIds)
+    {
+        return productRepository.getProductPrices(productIds);
+    }
 
 }

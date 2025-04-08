@@ -1,16 +1,14 @@
-package org.msh.api.model;
+package org.msh.wrapper;
 
 import lombok.*;
-import org.msh.api.enums.MyHttpStatus;
-
-import java.util.List;
+import org.msh.enums.MyHttpStatus;
 
 @Setter
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApiResponse<T> {
+public class ApiResponseWrapper<T> {
     private String msg;
     private MyHttpStatus status;
     private T tdata;

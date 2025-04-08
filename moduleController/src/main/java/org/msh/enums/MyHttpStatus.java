@@ -1,4 +1,4 @@
-package org.msh.api.enums;
+package org.msh.enums;
 
 public enum MyHttpStatus {
     Success,

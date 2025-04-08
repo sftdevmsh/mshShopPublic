@@ -1,7 +1,7 @@
 package org.msh.controller.open.site;
 
-import org.msh.api.enums.MyHttpStatus;
-import org.msh.api.model.ApiResponse;
+import org.msh.enums.MyHttpStatus;
+import org.msh.wrapper.ApiResponseWrapper;
 import org.msh.dto.site.NavDto;
 import org.msh.service.site.NavService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,11 @@ public class NavController {
 
 
     @GetMapping("")
-    public ApiResponse<List<NavDto>> getAll()
+    public ApiResponseWrapper<List<NavDto>> getAll()
     {
-        ApiResponse<List<NavDto>> res;
+        ApiResponseWrapper<List<NavDto>> res;
         try {
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<List<NavDto>>builder()
                     .tdata(navService.findAllSrv())
                     .msg("")
@@ -35,7 +35,7 @@ public class NavController {
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<List<NavDto>>builder()
                     .tdata(null)
                     .msg(e.getMessage())

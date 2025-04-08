@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,5 +49,13 @@ public interface ProductRepositoryJpa extends JpaRepository<ProductEnt, Long> {
         limit 6
     """)
     public List<ProductEnt> findTopCheap();
+
+
+    @Query(value = "select p.id_product, p.price " +
+            " from tbl_product p " +
+            " where p.id_product in ( :ids )  " +
+            " order by p.id_product asc"
+            , nativeQuery = true)
+    public Optional<HashMap<Long,Long>> getProductPrices(@Param("ids") List<Long> productIds);
 
 }

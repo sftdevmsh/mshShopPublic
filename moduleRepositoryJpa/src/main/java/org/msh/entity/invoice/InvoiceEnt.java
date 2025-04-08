@@ -1,11 +1,10 @@
-package org.msh.entity.order;
+package org.msh.entity.invoice;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.msh.enums.OrderStatus;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Entity(name = "invoice")
@@ -31,7 +30,9 @@ public class InvoiceEnt {
     @Column(name = "paid_date")
     private LocalDateTime paidDate;
 
-    private Integer no;
+//    private Integer no;
+
+    private Long totalAmount;//totalAmount
 
     @OneToMany(mappedBy = "invoiceEnt")
     private Set<InvoiceItemEnt> invoiceItemEnts;

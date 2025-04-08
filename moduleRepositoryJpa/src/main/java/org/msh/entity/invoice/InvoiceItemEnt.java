@@ -1,4 +1,4 @@
-package org.msh.entity.order;
+package org.msh.entity.invoice;
 
 import jakarta.persistence.*;
 import lombok.*;

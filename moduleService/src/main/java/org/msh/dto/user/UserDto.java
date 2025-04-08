@@ -17,9 +17,6 @@ public class UserDto {
     private String username;
     private String password;
 
-    private String firstName;
-    private String lastName;
-
     private String mobile;
     private String email;
 
@@ -28,5 +25,10 @@ public class UserDto {
 
     private Set<RoleDto> roleDtos;
 
-    private String jwtToken;
+    //private String jwtToken;
+
+    //private String firstName;
+    //private String lastName;
+    private CustomerDto customerDto;
+
 }

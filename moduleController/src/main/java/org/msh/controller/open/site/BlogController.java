@@ -1,12 +1,10 @@
 package org.msh.controller.open.site;
 
-import org.msh.api.enums.MyHttpStatus;
-import org.msh.api.model.ApiResponse;
+import org.msh.enums.MyHttpStatus;
+import org.msh.wrapper.ApiResponseWrapper;
 import org.msh.dto.site.BlogDto;
-import org.msh.dto.site.NavDto;
 import org.msh.dto.site.SingleBlogDto;
 import org.msh.service.site.BlogService;
-import org.msh.service.site.NavService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +22,13 @@ public class BlogController {
 
 
     @GetMapping("")
-    public ApiResponse<List<BlogDto>> getAll(
+    public ApiResponseWrapper<List<BlogDto>> getAll(
             @RequestParam(value = "page", required = false) Integer page
             , @RequestParam(value = "size", required = false) Integer size)
     {
-        ApiResponse<List<BlogDto>> res;
+        ApiResponseWrapper<List<BlogDto>> res;
         try {
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<List<BlogDto>>builder()
                     .tdata(blogService.findAllSrv(page,size))
                     .msg("")
@@ -40,7 +38,7 @@ public class BlogController {
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<List<BlogDto>>builder()
                     .tdata(null)
                     .msg(e.getMessage())
@@ -52,11 +50,11 @@ public class BlogController {
 
 
     @GetMapping("/{id}")
-    public ApiResponse<SingleBlogDto> getById(@PathVariable("id") Long id)
+    public ApiResponseWrapper<SingleBlogDto> getById(@PathVariable("id") Long id)
     {
-        ApiResponse<SingleBlogDto> res;
+        ApiResponseWrapper<SingleBlogDto> res;
         try {
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<SingleBlogDto>builder()
                     .tdata(blogService.findById(id))
                     .msg("")
@@ -66,7 +64,7 @@ public class BlogController {
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<SingleBlogDto>builder()
                     .tdata(null)
                     .msg(e.getMessage())
@@ -77,11 +75,11 @@ public class BlogController {
     }
 
     @GetMapping("/title/{title}")
-    public ApiResponse<SingleBlogDto> getByTitle(@PathVariable("title") String title)
+    public ApiResponseWrapper<SingleBlogDto> getByTitle(@PathVariable("title") String title)
     {
-        ApiResponse<SingleBlogDto> res;
+        ApiResponseWrapper<SingleBlogDto> res;
         try {
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<SingleBlogDto>builder()
                     .tdata(blogService.findByTitle(title))
                     .msg("")
@@ -91,7 +89,7 @@ public class BlogController {
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<SingleBlogDto>builder()
                     .tdata(null)
                     .msg(e.getMessage())

@@ -1,4 +1,4 @@
-insert into tbl_rel_role_permission (id_role, id_permission)
+insert into rel_role_permission (id_role, id_permission)
 values
     #admin
     (1,1)

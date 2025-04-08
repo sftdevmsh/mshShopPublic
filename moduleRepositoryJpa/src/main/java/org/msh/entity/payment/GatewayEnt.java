@@ -2,28 +2,25 @@ package org.msh.entity.payment;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.msh.entity.order.InvoiceItemEnt;
-import org.msh.enums.OrderStatus;
+import org.msh.enums.PaymentGateway;
 
-import java.time.LocalDateTime;
-import java.util.Set;
-
-@Entity(name = "payment")
-@Table(name = "tbl_payment")
+@Entity(name = "gateway")
+@Table(name = "tbl_gateway")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentEnt {
+public class GatewayEnt {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id_payment")
+    @Column(name = "id_gateway")
     private Long id;
 
-    @Column(length = 1000, nullable = false)
-    private String name;
+    @Column(name= "payment_gateway" , length = 1000, nullable = false)
+//    private String name;//payment gateway
+    private PaymentGateway paymentGateway;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;

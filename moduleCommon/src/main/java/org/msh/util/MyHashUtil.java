@@ -1,21 +1,15 @@
 package org.msh.util;
 
 
-import org.msh.exceptions.MyExc;
-
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 /**
  * @author Thiago Neves
  */
-public class HashUtil {
+public class MyHashUtil {
 
     public static String encrypt(String str){
         String res="";

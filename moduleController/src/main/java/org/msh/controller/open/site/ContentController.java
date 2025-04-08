@@ -1,11 +1,9 @@
 package org.msh.controller.open.site;
 
-import org.msh.api.enums.MyHttpStatus;
-import org.msh.api.model.ApiResponse;
+import org.msh.enums.MyHttpStatus;
+import org.msh.wrapper.ApiResponseWrapper;
 import org.msh.dto.site.ContentDto;
-import org.msh.dto.site.NavDto;
 import org.msh.service.site.ContentService;
-import org.msh.service.site.NavService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,13 +21,13 @@ public class ContentController {
 
 
     @GetMapping("")
-    public ApiResponse<List<ContentDto>> getAll(
+    public ApiResponseWrapper<List<ContentDto>> getAll(
             @RequestParam(value = "page", required = false) Integer page
             , @RequestParam(value = "size", required = false) Integer size)
     {
-        ApiResponse<List<ContentDto>> res;
+        ApiResponseWrapper<List<ContentDto>> res;
         try {
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<List<ContentDto>>builder()
                     .tdata(contentService.findAllSrv())
                     .msg("")
@@ -39,7 +37,7 @@ public class ContentController {
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<List<ContentDto>>builder()
                     .tdata(null)
                     .msg(e.getMessage())
@@ -51,11 +49,11 @@ public class ContentController {
 
 
     @GetMapping("/title/{title}")
-    public ApiResponse<ContentDto> getByKey(@PathVariable("title") String title)
+    public ApiResponseWrapper<ContentDto> getByKey(@PathVariable("title") String title)
     {
-        ApiResponse<ContentDto> res;
+        ApiResponseWrapper<ContentDto> res;
         try {
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<ContentDto>builder()
                     .tdata(contentService.findByTitleSrv(title))
                     .msg("")
@@ -65,7 +63,7 @@ public class ContentController {
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<ContentDto>builder()
                     .tdata(null)
                     .msg(e.getMessage())
