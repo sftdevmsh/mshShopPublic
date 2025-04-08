@@ -1,7 +1,7 @@
 package org.msh.controller.open;
 
-import org.msh.api.model.ApiResponse;
-import org.msh.api.enums.MyHttpStatus;
+import org.msh.wrapper.ApiResponseWrapper;
+import org.msh.enums.MyHttpStatus;
 import org.msh.dto.product.ProductCategoryDto;
 import org.msh.dto.product.ProductDto;
 import org.msh.enums.ProductQueryType;
@@ -28,10 +28,10 @@ public class ProductController {
     //http://localhost:8080/api/product/
     //@RequestMapping(value = "all",method = RequestMethod.GET)
     @GetMapping("")
-    public ApiResponse<List<ProductDto>> getAllCtrl()
+    public ApiResponseWrapper<List<ProductDto>> getAllCtrl()
     {
         List<ProductDto> lst = productService.findAllSrv();
-        return ApiResponse
+        return ApiResponseWrapper
                 .<List<ProductDto>>builder()
                 .tdata(lst)
                 .status(MyHttpStatus.Success)
@@ -40,10 +40,10 @@ public class ProductController {
     }
 
     @GetMapping("/top/{type}")
-    public ApiResponse<List<ProductDto>> getAllCtrl(@PathVariable("type") ProductQueryType type)
+    public ApiResponseWrapper<List<ProductDto>> getAllCtrl(@PathVariable("type") ProductQueryType type)
     {
         List<ProductDto> lst = productService.findTop(type);
-        return ApiResponse
+        return ApiResponseWrapper
                 .<List<ProductDto>>builder()
                 .tdata(lst)
                 .status(MyHttpStatus.Success)
@@ -73,12 +73,12 @@ public class ProductController {
     //http://localhost:8080/api/product/1?page=1
     //Note: to use the same path "" we use @PathVariable
     @GetMapping("{id}")
-    public ApiResponse<ProductDto> getByIdCtrl(@PathVariable(value = "id") Long id
-                                ,@RequestParam(value = "page", required = false) Integer pageNum)
+    public ApiResponseWrapper<ProductDto> getByIdCtrl(@PathVariable(value = "id") Long id
+                                , @RequestParam(value = "page", required = false) Integer pageNum)
     {
         System.out.println("pageNum : "+pageNum);
 
-        return ApiResponse
+        return ApiResponseWrapper
                 .<ProductDto>builder()
                 .tdata(productService.findByIdSrv(id))
                 .status(MyHttpStatus.Success)
@@ -89,12 +89,12 @@ public class ProductController {
     //http://localhost:8080/api/product/sku/1?page=1
     //Note: to use the same path "" we use @PathVariable
     @GetMapping("brand/{brand}")
-    public ApiResponse<List<ProductDto>> findByBrandLikeCtrl(@PathVariable(value = "brand") String brand
-            ,@RequestParam(value = "page", required = false) Integer pageNum)
+    public ApiResponseWrapper<List<ProductDto>> findByBrandLikeCtrl(@PathVariable(value = "brand") String brand
+            , @RequestParam(value = "page", required = false) Integer pageNum)
     {
         System.out.println("pageNum : "+pageNum);
 
-        return ApiResponse
+        return ApiResponseWrapper
                 .<List<ProductDto>>builder()
                 .tdata(productService.findByBrandLikeSrv(brand))
                 .status(MyHttpStatus.Success)
@@ -104,12 +104,12 @@ public class ProductController {
 
 
     @PostMapping("")
-    public ApiResponse<ProductDto> addCtrl(@RequestBody ProductDto dto)
+    public ApiResponseWrapper<ProductDto> addCtrl(@RequestBody ProductDto dto)
     {
-        ApiResponse<ProductDto> apiRes;
+        ApiResponseWrapper<ProductDto> apiRes;
         try {
             productService.addSrv(dto);
-            apiRes = ApiResponse
+            apiRes = ApiResponseWrapper
                     .<ProductDto>builder()
                     .tdata(null)
                     .status(MyHttpStatus.Success)
@@ -118,7 +118,7 @@ public class ProductController {
         }
         catch (Exception e)
         {
-            apiRes = ApiResponse
+            apiRes = ApiResponseWrapper
                     .<ProductDto>builder()
                     .tdata(null)
                     .status(MyHttpStatus.Failed)
@@ -131,10 +131,10 @@ public class ProductController {
 
     //region category of product
     @GetMapping("/category")
-    public ApiResponse<List<ProductCategoryDto>> getAllCategoriesCtrl()
+    public ApiResponseWrapper<List<ProductCategoryDto>> getAllCategoriesCtrl()
     {
         List<ProductCategoryDto> lst = productService.findAllCategoriesSrv();
-        return ApiResponse
+        return ApiResponseWrapper
                 .<List<ProductCategoryDto>>builder()
                 .tdata(lst)
                 .status(MyHttpStatus.Success)

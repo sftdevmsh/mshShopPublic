@@ -1,10 +1,8 @@
 package org.msh.controller.open.site;
 
-import org.msh.api.enums.MyHttpStatus;
-import org.msh.api.model.ApiResponse;
-import org.msh.dto.site.NavDto;
+import org.msh.enums.MyHttpStatus;
+import org.msh.wrapper.ApiResponseWrapper;
 import org.msh.dto.site.SliderDto;
-import org.msh.service.site.NavService;
 import org.msh.service.site.SliderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +23,11 @@ public class SliderController {
 
 
     @GetMapping("")
-    public ApiResponse<List<SliderDto>> getAll()
+    public ApiResponseWrapper<List<SliderDto>> getAll()
     {
-        ApiResponse<List<SliderDto>> res;
+        ApiResponseWrapper<List<SliderDto>> res;
         try {
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<List<SliderDto>>builder()
                     .tdata(sliderService.findAllSrv())
                     .msg("")
@@ -39,7 +37,7 @@ public class SliderController {
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            res = ApiResponse
+            res = ApiResponseWrapper
                     .<List<SliderDto>>builder()
                     .tdata(null)
                     .msg(e.getMessage())

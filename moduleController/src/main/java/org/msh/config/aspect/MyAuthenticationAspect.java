@@ -6,8 +6,8 @@ import lombok.SneakyThrows;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.msh.api.enums.MyHttpStatus;
-import org.msh.api.model.ApiResponse;
+import org.msh.enums.MyHttpStatus;
+import org.msh.wrapper.ApiResponseWrapper;
 import org.msh.config.annotation.MyAutenticationAnnotation;
 import org.msh.config.filter.MyJwtFilter;
 import org.msh.dto.user.PermissionDto;
@@ -34,7 +34,7 @@ public class MyAuthenticationAspect {
         UserDto dto = (UserDto) httpServletRequest.getAttribute(MyJwtFilter.Attr_CURRENT_USER);
         if(dto == null)
         {
-            return ApiResponse
+            return ApiResponseWrapper
                     .<UserDto>builder()
                     .status(MyHttpStatus.AccessDenied)
                     .msg("Access Denied !!! Please Login.")
@@ -55,7 +55,7 @@ public class MyAuthenticationAspect {
         //
         String strPermission = myAutenticationAnnotation.value();
         if(!lstPermissions.contains(strPermission)) {
-            return ApiResponse
+            return ApiResponseWrapper
                     .<UserDto>builder()
                     .status(MyHttpStatus.AccessDenied)
                     .msg("Access Denied !!! No Permission.")
