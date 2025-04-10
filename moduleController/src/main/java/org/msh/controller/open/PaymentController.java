@@ -1,12 +1,12 @@
 package org.msh.controller.open;
 
-import jakarta.transaction.Transactional;
 import org.msh.dto.payment.GotoPaymentDto;
 import org.msh.enums.MyHttpStatus;
 import org.msh.exceptions.MyExc;
 import org.msh.service.payment.PaymentService;
 import org.msh.wrapper.ApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,10 +20,9 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-
     @Transactional
     @PostMapping("/gotoPayment")
-    private ApiResponseWrapper<String> gotoPayment(@RequestBody GotoPaymentDto gotoPaymentDto)
+    protected ApiResponseWrapper<String> gotoPayment(@RequestBody GotoPaymentDto gotoPaymentDto)
     {
         try {
             return ApiResponseWrapper

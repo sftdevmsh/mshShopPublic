@@ -119,6 +119,15 @@ public class UserService {
 
     //Note: @Transactional in paymentController
     public UserEnt saveAndCreate(GotoPaymentDto gotoPaymentDto) throws MyExc {
+        //todo: complete validation
+        //
+        Optional<UserEnt> oue = userRepositoryJpa
+                .findByUsernameIgnoreCaseQry(gotoPaymentDto.getUsername());
+        if(oue.isPresent())
+        {
+            throw new MyExc("user already exists");
+        }
+
         UserDto userDto = UserDto
                 .builder()
                 .username(gotoPaymentDto.getUsername())

@@ -5,6 +5,7 @@ import org.msh.dto.payment.GotoPaymentDto;
 import org.msh.entity.invoice.InvoiceEnt;
 import org.msh.entity.payment.GatewayEnt;
 import org.msh.entity.payment.TransactionEnt;
+import org.msh.entity.user.CustomerEnt;
 import org.msh.entity.user.UserEnt;
 import org.msh.exceptions.MyExc;
 import org.msh.repositoryJpa.payment.PaymentRepositoryJpa;
@@ -14,6 +15,7 @@ import org.msh.service.payment.zarinpalThirdParty.ZarinPalProvider;
 import org.msh.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PaymentService {
@@ -41,17 +43,19 @@ public class PaymentService {
 
 
     //Note: @Transactional in paymentController
+    @Transactional
     public String gotoPayment(GotoPaymentDto gotoPaymentDto) throws MyExc {
         //todo: complete validate
         validate(gotoPaymentDto);
         //
+        //CustomerEnt customerEnt = customerService.saveAndCreate(gotoPaymentDto); //done in UserService
         UserEnt userEnt = userService.saveAndCreate(gotoPaymentDto);
         InvoiceEnt invoiceEnt = invoiceService.saveAndCreate(gotoPaymentDto);
         //
         TransactionEnt transactionEnt = TransactionEnt.builder().build();
-        transactionEnt.setUserEnt(userEnt);//customer
+        transactionEnt.setUserEnt(userEnt);//with customer inside user
         transactionEnt.setInvoiceEnt(invoiceEnt);
-        transactionEnt.setAmount(invoiceEnt.getTotalAmount());
+        transactionEnt.setAmount(invoiceEnt.getTotalAmount());//totalPrice extracted from basketItems/invoiceItems
         //
         GatewayEnt paymentGatewayEnt = paymentRepositoryJpa
                 .myFindByPaymentGateway(gotoPaymentDto.getPaymentGateway()).orElseThrow();
