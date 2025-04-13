@@ -3,7 +3,7 @@ package org.msh.controller.open;
 import org.msh.dto.payment.GotoPaymentDto;
 import org.msh.enums.MyHttpStatus;
 import org.msh.exceptions.MyExc;
-import org.msh.service.payment.PaymentService;
+import org.msh.service.payment.ServicePayment;
 import org.msh.wrapper.ApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/payment")
 public class PaymentController {
 
-    private final PaymentService paymentService;
+    private final ServicePayment servicePayment;
 
     @Autowired
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
+    public PaymentController(ServicePayment servicePayment) {
+        this.servicePayment = servicePayment;
     }
 
     @Transactional
@@ -27,7 +27,7 @@ public class PaymentController {
         try {
             return ApiResponseWrapper
                     .<String>builder()
-                    .tdata(paymentService.gotoPayment(gotoPaymentDto))
+                    .tdata(servicePayment.gotoPayment(gotoPaymentDto))
                     .status(MyHttpStatus.Success)
                     .msg("")
                     .build();
@@ -40,5 +40,30 @@ public class PaymentController {
                     .build();
         }
     }
+    /*
+    {
+    "username": "u11",
+    "password": "p11",
+    "mobile": "m11",
+    "email": "e11",
+    "firstname": "fn11",
+    "lastname": "ln11",
+    "tel": "t11",
+    "address": "a11",
+    "postalCode": "p11",
+    "paymentGateway": "ZarinPal",
+    "basketItems": [
+            {
+                "productId": 1,
+                "colorId": 1,
+                "sizeId": 1,
+                "quantity": 1
+            }
+        ]
+    }
+    */
+
+
+
 
 }
