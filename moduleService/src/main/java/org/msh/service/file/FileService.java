@@ -2,7 +2,6 @@ package org.msh.service.file;
 
 import org.modelmapper.ModelMapper;
 import org.msh.repositoryJpa.file.FileRepositoryJpa;
-import org.msh.repositoryJpa.payment.PaymentRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

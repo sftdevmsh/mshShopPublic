@@ -3,15 +3,13 @@ package org.msh.service.payment.zarinpalThirdParty.http;
 
 import lombok.*;
 
-import java.util.ArrayList;
-
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ZarinPalRequest {
+public class RequestZarinPalToken {
     String merchant_id;
     String callback_url;
     String authority;

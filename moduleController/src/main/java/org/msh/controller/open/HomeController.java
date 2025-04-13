@@ -1,28 +1,49 @@
 package org.msh.controller.open;
 
 import org.msh.enums.MyHttpStatus;
+//import org.msh.service.payment.zarinpalThirdParty.StaticVars;
+import org.msh.service.payment.ServicePayment;
 import org.msh.wrapper.ApiResponseWrapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("")
 public class HomeController {
 
+    @Value("${payment.callBackUrl}")
+    private String callBackUrl;
 
-    public HomeController() {
+    private final ServicePayment servicePayment;
+
+    public HomeController(ServicePayment servicePayment) {
+        this.servicePayment = servicePayment;
     }
 
+    //our callbackUrl used for ZarinPal gateway:
     @GetMapping("/verify")
-    public ApiResponseWrapper<String> verify(@RequestParam String authority, @RequestParam String status)
+    public ApiResponseWrapper<String> verify(@RequestParam String Authority, @RequestParam String Status)
     {
         return ApiResponseWrapper
                 .<String>builder()
                 .status(MyHttpStatus.Success)
-                .tdata(authority)
-                .msg(status)
+                .tdata(servicePayment.verify(Authority,Status))
+                .msg(Status)
                 .build();
     }
+
+
+    //our Mock ipgUrlMock instead of ZarinPal payment page
+    @GetMapping("/pg/StartPay/{Authority}")
+    public ApiResponseWrapper<String> StartPay(@PathVariable String Authority)
+    {
+        return ApiResponseWrapper
+                .<String>builder()
+                .status(MyHttpStatus.Success)
+                .tdata(callBackUrl + "?Authority=" + Authority + "&Status=OK")
+                .msg("going from payment page to callbackUrl")
+                .build();
+    }
+
+
 }
