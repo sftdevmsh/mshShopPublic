@@ -59,7 +59,7 @@ public class ServicePayment {
         transactionEnt.setUserEnt(userEnt);//with customer inside user
         transactionEnt.setInvoiceEnt(invoiceEnt);
         transactionEnt.setAmount(invoiceEnt.getTotalAmount());//totalPrice extracted from basketItems/invoiceItems
-        transactionEnt.setDescription(userEnt.getId()+" - "+invoiceEnt.getId()); // not null
+        transactionEnt.setDescription("my custom info : " + userEnt.getId()+" - "+invoiceEnt.getId()); // not null
         //
         //todo: gateway db not needed =>done
         //GatewayEnt paymentGatewayEnt = paymentRepositoryJpa.myFindByPaymentGateway(gotoPaymentDto.getPaymentGateway()).orElseThrow();

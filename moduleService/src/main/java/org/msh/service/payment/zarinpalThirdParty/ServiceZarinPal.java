@@ -17,13 +17,13 @@ public class ServiceZarinPal {
     private final ClientZarinPalToken clientZarinPalToken;
     private final ClientZarinPalVerify clientZarinPalVerify;
 
-    @Value("${payment.merchantId}")
+    @Value("${payment.zarinpal.merchantId}")
     private String merchantId;
-    @Value("${payment.callBackUrl}")
+    @Value("${payment.zarinpal.callBackUrl}")
     private String callBackUrl;
-    @Value("${payment.toPayUrl}")
+    @Value("${payment.zarinpal.toPayUrl}")
     private String toPayUrl;
-    @Value("${payment.toPayUrlMock}")
+    @Value("${payment.zarinpal.toPayUrlMock}")
     private String toPayUrlMock;
 
 

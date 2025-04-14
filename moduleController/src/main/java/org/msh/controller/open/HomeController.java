@@ -4,6 +4,7 @@ import org.msh.enums.MyHttpStatus;
 //import org.msh.service.payment.zarinpalThirdParty.StaticVars;
 import org.msh.service.payment.ServicePayment;
 import org.msh.wrapper.ApiResponseWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("")
 public class HomeController {
 
-    @Value("${payment.callBackUrl}")
+    @Value("${payment.zarinpal.callBackUrl}")
     private String callBackUrl;
 
     private final ServicePayment servicePayment;
 
+    @Autowired
     public HomeController(ServicePayment servicePayment) {
         this.servicePayment = servicePayment;
     }
