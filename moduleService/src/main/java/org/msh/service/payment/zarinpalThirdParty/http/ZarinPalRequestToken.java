@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestZarinPalToken {
+public class ZarinPalRequestToken {
     String merchant_id;
     String callback_url;
     String authority;

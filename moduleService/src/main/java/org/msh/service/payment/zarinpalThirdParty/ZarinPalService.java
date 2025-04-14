@@ -2,20 +2,21 @@ package org.msh.service.payment.zarinpalThirdParty;
 
 import org.msh.entity.payment.TransactionEnt;
 import org.msh.exceptions.MyExc;
-import org.msh.service.payment.zarinpalThirdParty.http.RequestZarinPalToken;
-import org.msh.service.payment.zarinpalThirdParty.http.RequestZarinPalVerify;
-import org.msh.service.payment.zarinpalThirdParty.http.ResponseZarinPalToken;
-import org.msh.service.payment.zarinpalThirdParty.http.ResponseZarinPalVerify;
+import org.msh.repositoryJpa.payment.TransactionRepositoryJpa;
+import org.msh.service.payment.zarinpalThirdParty.http.ZarinPalRequestToken;
+import org.msh.service.payment.zarinpalThirdParty.http.ZarinPalRequestVerify;
+import org.msh.service.payment.zarinpalThirdParty.http.ZarinPalResponseToken;
+import org.msh.service.payment.zarinpalThirdParty.http.ZarinPalResponseVerify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class ServiceZarinPal {
+public class ZarinPalService {
 
-    private final ClientZarinPalToken clientZarinPalToken;
-    private final ClientZarinPalVerify clientZarinPalVerify;
+    private final ZarinPalClientAuthority zarinPalClientAuthority;
+    private final ZarinPalClientVerify zarinPalClientVerify;
 
     @Value("${payment.zarinpal.merchantId}")
     private String merchantId;
@@ -23,20 +24,19 @@ public class ServiceZarinPal {
     private String callBackUrl;
     @Value("${payment.zarinpal.toPayUrl}")
     private String toPayUrl;
-    @Value("${payment.zarinpal.toPayUrlMock}")
-    private String toPayUrlMock;
-
 
 
     @Autowired
-    public ServiceZarinPal(ClientZarinPalToken clientZarinPalToken, ClientZarinPalVerify clientZarinPalVerify) {
-        this.clientZarinPalToken = clientZarinPalToken;
-        this.clientZarinPalVerify = clientZarinPalVerify;
+    public ZarinPalService(ZarinPalClientAuthority zarinPalClientAuthority
+            , ZarinPalClientVerify zarinPalClientVerify
+    ) {
+        this.zarinPalClientAuthority = zarinPalClientAuthority;
+        this.zarinPalClientVerify = zarinPalClientVerify;
     }
 
 
-    public String gotoPay(TransactionEnt trx) throws MyExc {
-        RequestZarinPalToken requestZarinPalToken = RequestZarinPalToken
+    public TransactionEnt gotoPay(TransactionEnt trx) throws MyExc {
+        ZarinPalRequestToken zarinPalRequestToken = ZarinPalRequestToken
                 .builder()
                 .merchant_id(merchantId)
                 .callback_url(callBackUrl)
@@ -44,7 +44,7 @@ public class ServiceZarinPal {
                 .amount(trx.getAmount().intValue())
                 .currency("IRT")
                 .description(trx.getDescription())
-                .metadata(RequestZarinPalToken.Metadata
+                .metadata(ZarinPalRequestToken.Metadata
                         .builder()
                         .email(trx.getUserEnt()==null ? "" : trx.getUserEnt().getEmail())
                         .mobile(trx.getUserEnt()==null ? "" : trx.getUserEnt().getMobile())
@@ -52,43 +52,35 @@ public class ServiceZarinPal {
                         .build())
                 .build();
         //
-        //todo: undo_Mocking
-        //ZarinPalResponse zarinPalResponse = zarinPalClient.gotoPay(zarinPalRequest);
-        ResponseZarinPalToken responseZarinPalToken = ClientZarinPalTokenMock.gotoPay(requestZarinPalToken);
+        ZarinPalResponseToken zarinPalResponseToken = zarinPalClientAuthority.gotoPay(zarinPalRequestToken);
         //
         //if (zarinPalResponse == null) {
         //    //todo: handle the error, redirecting user to some error page
         //    throw new MyExc("Must Not be Null : zarinPalResponse.getAuthority()");
         //}
         //
-        if (responseZarinPalToken != null) {
-            trx.setAuthority(requestZarinPalToken.getAuthority());
-            trx.setCode(responseZarinPalToken.getCode());
-            trx.setResultMessage(responseZarinPalToken.getMessage());
-        }
 
-        assert responseZarinPalToken != null;
-
-        //todo: undo_Mocking
-        return toPayUrlMock+ responseZarinPalToken.getAuthority();
-        //return toPayUrl+zarinPalResponse.getAuthority();
-        //https://payment.zarinpal.com/pg/StartPay/ . $result['data']["authority"]
-        //returns the url of payment page,
-        //so that the customer can enter their payment information(including bank card number, ...) and pay.
-        //they will be redirected to callbackUrl page if payment was successful
+        assert zarinPalResponseToken != null;
+        //if(zarinPalResponseToken != null) {
+            trx.setAuthority(zarinPalResponseToken.getAuthority());
+            trx.setCode(zarinPalResponseToken.getCode());
+            trx.setResultMessage(zarinPalResponseToken.getMessage());
+        //}
+        return trx;
+        //todo: undo_mocking
     }
 
 
     public TransactionEnt verify(TransactionEnt transactionEnt)
     {
-        RequestZarinPalVerify requestVerify = RequestZarinPalVerify
+        ZarinPalRequestVerify requestVerify = ZarinPalRequestVerify
                 .builder()
                 .authority(transactionEnt.getAuthority())
                 .amount(transactionEnt.getAmount())
                 .merchant_id(merchantId)
                 .build();
-
-        ResponseZarinPalVerify responseVerify = clientZarinPalVerify.verify(requestVerify);
+        //
+        ZarinPalResponseVerify responseVerify = zarinPalClientVerify.verify(requestVerify);
         //
         if(responseVerify != null)
         {

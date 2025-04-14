@@ -1,16 +1,16 @@
 package org.msh.service.payment.zarinpalThirdParty.http;
 
-
 import lombok.*;
-
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestZarinPalVerify {
-    String merchant_id;
+public class ZarinPalResponseToken {
+    String code;
+    String message;
     String authority;
-    Long amount;
+    String fee_type;
+    Integer fee;
 }

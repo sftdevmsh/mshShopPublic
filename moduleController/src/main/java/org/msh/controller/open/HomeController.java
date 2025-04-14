@@ -22,20 +22,6 @@ public class HomeController {
         this.servicePayment = servicePayment;
     }
 
-    //our callbackUrl used for ZarinPal gateway:
-    @GetMapping("/verify")
-    public ApiResponseWrapper<String> verify(@RequestParam String Authority, @RequestParam String Status)
-    {
-        return ApiResponseWrapper
-                .<String>builder()
-                .status(MyHttpStatus.Success)
-                .tdata(servicePayment.verify(Authority,Status))
-                .msg(Status)
-                .build();
-    }
-
-
-    //our Mock ipgUrlMock instead of ZarinPal payment page
     @GetMapping("/pg/StartPay/{Authority}")
     public ApiResponseWrapper<String> StartPay(@PathVariable String Authority)
     {
@@ -47,5 +33,17 @@ public class HomeController {
                 .build();
     }
 
+
+    //our callbackUrl used after payment from ZarinPal gateway:
+    @GetMapping("/verify")
+    public ApiResponseWrapper<String> verify(@RequestParam String Authority, @RequestParam String Status)
+    {
+        return ApiResponseWrapper
+                .<String>builder()
+                .status(MyHttpStatus.Success)
+                .tdata(servicePayment.verify(Authority,Status))
+                .msg(Status)
+                .build();
+    }
 
 }

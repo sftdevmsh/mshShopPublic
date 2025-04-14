@@ -21,17 +21,8 @@ public class TransactionEnt {
 
     private Long amount;
 
-    private String authority;
-
-    private String code;
-
-    private String resultMessage;
-
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
     @ManyToOne
-    private InvoiceEnt invoiceEnt;
+    private InvoiceEnt invoiceEnt;//totalAmount, invoiceItems/basketItems
 
     @ManyToOne
     private UserEnt userEnt;//customer
@@ -39,6 +30,15 @@ public class TransactionEnt {
     //@ManyToOne
     //private GatewayEnt gatewayEnt;//gateway
     PaymentGateway paymentGateway;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+
+    //token resonse
+    private String authority;
+    private String code;
+    private String resultMessage;
 
 
     //verify response

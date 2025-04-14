@@ -1,14 +1,14 @@
 package org.msh.service.payment.zarinpalThirdParty.wrapper;
 
 import lombok.*;
-import org.msh.service.payment.zarinpalThirdParty.http.ResponseZarinPalVerify;
+import org.msh.service.payment.zarinpalThirdParty.http.ZarinPalResponseVerify;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WrapperResponseZarinPalVerify {
-    private ResponseZarinPalVerify data;
+public class ZarinPalWrapperResponseVerify {
+    private ZarinPalResponseVerify data;
     private Object[] errors;
 }

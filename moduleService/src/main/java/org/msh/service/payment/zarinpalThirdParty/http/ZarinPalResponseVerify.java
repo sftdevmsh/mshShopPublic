@@ -7,10 +7,12 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseZarinPalToken {
+public class ZarinPalResponseVerify {
     String code;
     String message;
-    String authority;
+    String ref_id;
+    String card_pan;
+    String card_hash;
     String fee_type;
     Integer fee;
 }

@@ -9,17 +9,18 @@ import org.msh.exceptions.MyExc;
 //import org.msh.repositoryJpa.payment.PaymentRepositoryJpa;
 import org.msh.repositoryJpa.payment.TransactionRepositoryJpa;
 import org.msh.service.invoice.InvoiceService;
-import org.msh.service.payment.zarinpalThirdParty.ServiceZarinPal;
+import org.msh.service.payment.zarinpalThirdParty.ZarinPalService;
 import org.msh.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ServicePayment {
-
-//    private final PaymentRepositoryJpa paymentRepositoryJpa;
-    private final ServiceZarinPal serviceZarinPal;
+public class ServicePayment
+{
+    //private final PaymentRepositoryJpa paymentRepositoryJpa;
+    private final ZarinPalService zarinPalService;
     //
     private final TransactionRepositoryJpa transactionRepositoryJpa;
     //
@@ -28,18 +29,27 @@ public class ServicePayment {
     //
     private final ModelMapper modelMapper;
 
+
+    @Value("${payment.zarinpal.merchantId}")
+    private String merchantId;
+    @Value("${payment.zarinpal.callBackUrl}")
+    private String callBackUrl;
+    @Value("${payment.zarinpal.toPayUrl}")
+    private String toPayUrl;
+
+
     @Autowired
     public ServicePayment(UserService userService
             , TransactionRepositoryJpa transactionRepositoryJpa
                           //, PaymentRepositoryJpa paymentRepositoryJpa
-            , ServiceZarinPal serviceZarinPal
+            , ZarinPalService zarinPalService
             , InvoiceService invoiceService
             , ModelMapper modelMapper)
     {
         this.userService = userService;
         this.transactionRepositoryJpa = transactionRepositoryJpa;
 //        this.paymentRepositoryJpa = paymentRepositoryJpa;
-        this.serviceZarinPal = serviceZarinPal;
+        this.zarinPalService = zarinPalService;
         this.invoiceService = invoiceService;
         this.modelMapper = modelMapper;
     }
@@ -70,7 +80,12 @@ public class ServicePayment {
         switch(gotoPaymentDto.getPaymentGateway())
         {
             case ZarinPal -> {
-                res = serviceZarinPal.gotoPay(transactionEnt);
+                transactionEnt = zarinPalService.gotoPay(transactionEnt);
+                if(transactionEnt.getAuthority().isEmpty())
+                    throw new MyExc("transaction failed");
+                transactionRepositoryJpa.save(transactionEnt);
+                res = toPayUrl + "/" + transactionEnt.getAuthority();
+                return res;
             }
             case CardToCard -> {
             }
@@ -79,10 +94,10 @@ public class ServicePayment {
             case TejaratBank -> {
             }
         }
-        transactionRepositoryJpa.save(transactionEnt);
-        return res;
+        return "";
     }
-
+    //
+    //
     private static void validate(GotoPaymentDto gotoPaymentDto) throws MyExc {
         if(gotoPaymentDto.getUsername()==null || gotoPaymentDto.getUsername().isEmpty())
             throw new MyExc("wrong username");
@@ -91,9 +106,19 @@ public class ServicePayment {
     }
 
 
+
     public String verify(String authority, String status)
     {
-        return "";
+        if(status == null || status.isEmpty() || status.equalsIgnoreCase("NOK"))
+            return "NOK";
+        if(status.equalsIgnoreCase("OK")) {
+            //in previous step(gotoPayment), transaction was saved
+            TransactionEnt trx = transactionRepositoryJpa.findFirstByAuthorityEqualsIgnoreCase(authority).orElseThrow();
+            TransactionEnt trxVerified = zarinPalService.verify(trx);
+            transactionRepositoryJpa.save(trxVerified);
+            return "OK";
+        }
+        return "NOK";
     }
 
 
