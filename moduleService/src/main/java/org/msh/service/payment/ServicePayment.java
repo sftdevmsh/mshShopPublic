@@ -85,7 +85,6 @@ public class ServicePayment
                     throw new MyExc("transaction failed");
                 transactionRepositoryJpa.save(transactionEnt);
                 res = toPayUrl + "/" + transactionEnt.getAuthority();
-                return res;
             }
             case CardToCard -> {
             }
@@ -94,7 +93,7 @@ public class ServicePayment
             case TejaratBank -> {
             }
         }
-        return "";
+        return res;
     }
     //
     //
