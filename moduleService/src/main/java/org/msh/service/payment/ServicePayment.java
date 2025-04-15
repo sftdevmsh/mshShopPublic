@@ -5,6 +5,7 @@ import org.msh.dto.payment.GotoPaymentDto;
 import org.msh.entity.invoice.InvoiceEnt;
 import org.msh.entity.payment.TransactionEnt;
 import org.msh.entity.user.UserEnt;
+import org.msh.enums.PaymentGateway;
 import org.msh.exceptions.MyExc;
 //import org.msh.repositoryJpa.payment.PaymentRepositoryJpa;
 import org.msh.repositoryJpa.payment.TransactionRepositoryJpa;
@@ -15,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class ServicePayment
@@ -121,4 +125,7 @@ public class ServicePayment
     }
 
 
+    public List<String> getAllPaymentGateways() {
+        return Arrays.stream(PaymentGateway.values()).map(Enum::toString).toList();
+    }
 }

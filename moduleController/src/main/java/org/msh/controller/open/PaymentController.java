@@ -2,12 +2,16 @@ package org.msh.controller.open;
 
 import org.msh.dto.payment.GotoPaymentDto;
 import org.msh.enums.MyHttpStatus;
+import org.msh.enums.PaymentGateway;
 import org.msh.exceptions.MyExc;
 import org.msh.service.payment.ServicePayment;
 import org.msh.wrapper.ApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/payment")
@@ -63,7 +67,14 @@ public class PaymentController {
     }
     */
 
-
-
+    @GetMapping("/gateways")
+    public ApiResponseWrapper<List<String>> getAllPaymentGateways()
+    {
+        return ApiResponseWrapper.<List<String>>builder()
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .tdata(servicePayment.getAllPaymentGateways())
+                .build();
+    }
 
 }
