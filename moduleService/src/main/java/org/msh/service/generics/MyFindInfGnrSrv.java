@@ -1,0 +1,13 @@
+package org.msh.service.generics;
+
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+
+public interface MyFindInfGnrSrv<T> {
+
+    List<T> findAllSrv();
+    Page<T> findAllSrv(Integer page, Integer size);
+
+    T findByIdSrv(Long id);
+}

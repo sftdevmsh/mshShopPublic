@@ -1,21 +1,21 @@
 package org.msh.controller.panel;
 
-import jakarta.servlet.http.HttpServletRequest;
+import org.msh.controller.panel.myGenerics.MyGenericController;
 import org.msh.enums.MyHttpStatus;
-import org.msh.wrapper.ApiResponseWrapper;
-import org.msh.config.annotation.MyAutenticationAnnotation;
-import org.msh.dto.product.ProductDto;
+import org.msh.exceptions.MyExc;
 import org.msh.service.product.ProductService;
+import org.msh.dto.product.ProductDto;
+import org.msh.wrapper.PanelApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/panel/product/")
-public class ProductPanelController {
+public class ProductPanelController implements MyGenericController<ProductDto> {
 
     private final ProductService productService;
     private final RestClient.Builder builder;
@@ -26,11 +26,21 @@ public class ProductPanelController {
         this.builder = builder;
     }
 
-    @GetMapping("{id}")
-    @MyAutenticationAnnotation("product_info") //authentication
-    public ApiResponseWrapper<ProductDto> getById(@PathVariable("id") Long id, HttpServletRequest httpServletRequest)
-    {
-        return  ApiResponseWrapper
+//    @GetMapping("{id}")
+//    @MyAutenticationAnnotation("product_info") //authentication
+//    public ApiResponseWrapper<ProductDto> getById(@PathVariable("id") Long id, HttpServletRequest httpServletRequest)
+//    {
+//        return  ApiResponseWrapper
+//                .<ProductDto>builder()
+//                .status(MyHttpStatus.Success)
+//                .msg("")
+//                .tdata(productService.findByIdSrv(id))
+//                .build();
+//    }
+
+    @Override
+    public PanelApiResponseWrapper<ProductDto> findByIdCtrl(Long id) {
+        return  PanelApiResponseWrapper
                 .<ProductDto>builder()
                 .status(MyHttpStatus.Success)
                 .msg("")
@@ -38,4 +48,43 @@ public class ProductPanelController {
                 .build();
     }
 
+    @Override
+    public PanelApiResponseWrapper<List<ProductDto>> findAllCtrl(Integer page, Integer size) {
+        return  PanelApiResponseWrapper
+                .<List<ProductDto>>builder()
+                .status(MyHttpStatus.Success)
+                .msg("")
+                .tdata(productService.findAllSrv(page,size).toList())
+                .build();
+    }
+
+    @Override
+    public PanelApiResponseWrapper<Boolean> deleteByIdCtrl(Long id) {
+        return  PanelApiResponseWrapper
+                .<Boolean>builder()
+                .status(MyHttpStatus.Success)
+                .msg("")
+                .tdata(productService.deleteByIdSrv(id))
+                .build();
+    }
+
+    @Override
+    public PanelApiResponseWrapper<ProductDto> addCtrl(ProductDto productDto) throws MyExc {
+        return  PanelApiResponseWrapper
+                .<ProductDto>builder()
+                .status(MyHttpStatus.Success)
+                .msg("")
+                .tdata(productService.addSrv(productDto))
+                .build();
+    }
+
+    @Override
+    public PanelApiResponseWrapper<ProductDto> updateCtrl(ProductDto productDto) throws MyExc {
+        return  PanelApiResponseWrapper
+                .<ProductDto>builder()
+                .status(MyHttpStatus.Success)
+                .msg("")
+                .tdata(productService.updateSrv(productDto))
+                .build();
+    }
 }

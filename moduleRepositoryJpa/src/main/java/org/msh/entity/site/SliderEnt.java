@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.msh.entity.file.FileEnt;
 
-@Entity(name = "slider")
+@Entity(name = "SliderEnt")
 @Table(name = "tbl_slider")
 @Getter
 @Setter

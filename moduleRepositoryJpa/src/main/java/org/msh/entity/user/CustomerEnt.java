@@ -3,11 +3,8 @@ package org.msh.entity.user;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.Set;
 
-
-@Entity
+@Entity(name = "CustomerEnt")
 @Table(name = "tbl_customer")
 @Setter
 @Getter

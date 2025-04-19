@@ -3,14 +3,14 @@ package org.msh.entity.site;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity(name = "content")
+@Entity(name = "ContentEnt")
 @Table(name = "tbl_content")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContentEnt {
+public class ContentEnt  {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

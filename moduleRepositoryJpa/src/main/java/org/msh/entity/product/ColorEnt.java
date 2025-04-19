@@ -4,18 +4,14 @@ package org.msh.entity.product;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-@Entity(name = "color")
+@Entity(name = "ColorEnt")
 @Table(name = "tbl_color")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ColorEnt {
+public class ColorEnt  {
     @Id
     @Column(name="id_color")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

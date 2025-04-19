@@ -3,7 +3,7 @@ package org.msh.entity.site;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity(name = "nav")
+@Entity(name = "NavEnt")
 @Table(name = "tbl_nav")
 @Getter
 @Setter

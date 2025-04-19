@@ -5,14 +5,14 @@ import lombok.*;
 import org.msh.entity.file.FileEnt;
 
 
-@Entity(name = "product_category")
+@Entity(name = "ProductCategoryEnt")
 @Table(name = "tbl_product_category")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductCategoryEnt {
+public class ProductCategoryEnt  {
 
     @Id
     @Column(name="id_product_category")

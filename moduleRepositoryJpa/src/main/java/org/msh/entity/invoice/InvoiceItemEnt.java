@@ -6,7 +6,7 @@ import org.msh.entity.product.ColorEnt;
 import org.msh.entity.product.ProductEnt;
 import org.msh.entity.product.SizeEnt;
 
-@Entity(name = "invoice_item")
+@Entity(name = "InvoiceItemEnt")
 @Table(name = "tbl_invoice_item")
 @Getter
 @Setter

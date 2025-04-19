@@ -17,7 +17,7 @@ public interface ProductRepositoryJpa extends JpaRepository<ProductEnt, Long> {
     public Optional<List<ProductEnt>> findByBrandLike(@Param(value = "brand") String brand);
 
     @Query("""
-        from product p where p.exist = true
+        from ProductEnt p where p.exist = true
         and p.enabled = true
         order by p.addDate desc
         limit 6
@@ -25,7 +25,7 @@ public interface ProductRepositoryJpa extends JpaRepository<ProductEnt, Long> {
     public List<ProductEnt> findTopLatest();
 
     @Query("""
-        from product p where p.exist = true
+        from ProductEnt p where p.exist = true
         and p.enabled = true
         order by p.visitCount desc
         limit 6
@@ -34,7 +34,7 @@ public interface ProductRepositoryJpa extends JpaRepository<ProductEnt, Long> {
 
 
     @Query("""
-        from product p where p.exist = true
+        from ProductEnt p where p.exist = true
         and p.enabled = true
         order by p.price desc
         limit 6
@@ -43,7 +43,7 @@ public interface ProductRepositoryJpa extends JpaRepository<ProductEnt, Long> {
 
 
     @Query("""
-        from product p where p.exist = true
+        from ProductEnt p where p.exist = true
         and p.enabled = true
         order by p.price asc
         limit 6

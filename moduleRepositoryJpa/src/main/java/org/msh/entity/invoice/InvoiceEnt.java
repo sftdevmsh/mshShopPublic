@@ -7,7 +7,7 @@ import org.msh.enums.OrderStatus;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Entity(name = "invoice")
+@Entity(name = "InvoiceEnt")
 @Table(name = "tbl_invoice")
 @Getter
 @Setter
@@ -16,9 +16,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class InvoiceEnt {
 
+    @Column(name = "id_invoice")
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id_invoice")
     private Long id;
 
     @Column(name = "invoice_status")

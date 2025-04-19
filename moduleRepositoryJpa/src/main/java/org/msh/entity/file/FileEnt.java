@@ -3,7 +3,7 @@ package org.msh.entity.file;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity(name = "file")
+@Entity(name = "FileEnt")
 @Table(name = "tbl_file")
 @Getter
 @Setter
@@ -12,9 +12,9 @@ import lombok.*;
 @NoArgsConstructor
 public class FileEnt {
 
+    @Column(name="id_file")
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id_file")
     private Long id;
 
     @Column(length = 1000, nullable = false)

@@ -1,4 +1,4 @@
-package org.msh.controller.open.site;
+package org.msh.controller.panel.site;
 
 import org.msh.enums.MyHttpStatus;
 import org.msh.wrapper.ApiResponseWrapper;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/blog")
+@RequestMapping("/api/panel/blog")
 public class BlogController {
     private final BlogService blogService;
 

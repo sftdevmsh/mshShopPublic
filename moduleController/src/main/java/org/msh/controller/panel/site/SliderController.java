@@ -1,4 +1,4 @@
-package org.msh.controller.open.site;
+package org.msh.controller.panel.site;
 
 import org.msh.enums.MyHttpStatus;
 import org.msh.wrapper.ApiResponseWrapper;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/slider")
+@RequestMapping("/api/panel/slider")
 public class SliderController {
     private final SliderService sliderService;
 

@@ -1,4 +1,4 @@
-package org.msh.controller.open.site;
+package org.msh.controller.panel.site;
 
 import org.msh.enums.MyHttpStatus;
 import org.msh.wrapper.ApiResponseWrapper;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/content")
+@RequestMapping("/api/panel/content")
 public class ContentController {
     private final ContentService contentService;
 

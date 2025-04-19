@@ -15,7 +15,7 @@ public interface BlogRepositoryJpa extends JpaRepository<BlogEnt, Long>
     //List<BlogEnt> findAllByOrderByTitleAsc(Pageable pageable);
 
     @Query("""
-        from blog b where b.blogStatus = org.msh.enums.BlogStatus.Published
+        from BlogEnt b where b.blogStatus = org.msh.enums.BlogStatus.Published
             and b.publishDate <= current_date
             order by b.publishDate desc
     """)

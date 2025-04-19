@@ -4,11 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 
-@Entity
+@Entity(name = "UserEnt")
 @Table(name = "tbl_user")
 @Setter
 @Getter

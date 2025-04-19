@@ -4,7 +4,7 @@ package org.msh.entity.product;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity(name = "size")
+@Entity(name = "SizeEnt")
 @Table(name = "tbl_size")
 @Getter
 @Setter

@@ -6,24 +6,24 @@ import org.msh.wrapper.ApiResponseWrapper;
 import org.msh.dto.user.LimitedUserDto;
 import org.msh.dto.user.LoginDto;
 import org.msh.dto.user.UserDto;
-import org.msh.service.user.UserService;
+import org.msh.service.user.UserInfSrv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/user/")
+@RequestMapping("/api/user")
 public class UserController {
 
-    UserService userService;
+    UserInfSrv userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserInfSrv userService) {
         this.userService = userService;
     }
 
 
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ApiResponseWrapper<LimitedUserDto> login(@RequestBody LoginDto dto)  {
         try {
             return ApiResponseWrapper
@@ -65,7 +65,7 @@ public class UserController {
     }
 
 
-    @GetMapping("test/{id}")
+    @GetMapping("/test/{id}")
 //    @MyAutenticationAnnotation("user_info") //authentication
     public ApiResponseWrapper<UserDto> testing(@PathVariable("id") Long id, HttpServletRequest httpServletRequest)
     {
@@ -73,7 +73,7 @@ public class UserController {
                 .<UserDto>builder()
                 .status(MyHttpStatus.Success)
                 .msg("")
-                .tdata(userService.findById(id))
+                .tdata(userService.findByIdSrv(id))
                 .build();
     }
 

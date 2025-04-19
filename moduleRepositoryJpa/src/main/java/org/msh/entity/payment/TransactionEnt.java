@@ -6,14 +6,14 @@ import org.msh.entity.invoice.InvoiceEnt;
 import org.msh.entity.user.UserEnt;
 import org.msh.enums.PaymentGateway;
 
-@Entity(name = "transaction")
+@Entity(name = "TransactionEnt")
 @Table(name = "tbl_transaction")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransactionEnt {
+public class TransactionEnt  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

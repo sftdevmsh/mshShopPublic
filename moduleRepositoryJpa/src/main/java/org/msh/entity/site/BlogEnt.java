@@ -7,7 +7,7 @@ import org.msh.enums.BlogStatus;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "blog")
+@Entity(name = "BlogEnt")
 @Table(name = "tbl_blog")
 @Getter
 @Setter

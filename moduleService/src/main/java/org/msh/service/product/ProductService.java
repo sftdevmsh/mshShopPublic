@@ -5,14 +5,16 @@ import org.modelmapper.ModelMapper;
 import org.msh.config.mapper.product.ProductMapper;
 import org.msh.dto.product.ProductCategoryDto;
 import org.msh.dto.product.ProductDto;
-import org.msh.entity.product.ProductCategoryEnt;
 import org.msh.entity.product.ProductEnt;
 import org.msh.enums.ProductQueryType;
 import org.msh.repositoryJpa.product.ColorRepositoryJpa;
 import org.msh.repositoryJpa.product.ProductCategoryRepositoryJpa;
 import org.msh.repositoryJpa.product.ProductRepositoryJpa;
 import org.msh.repositoryJpa.product.SizeRepositoryJpa;
+import org.msh.service.generics.MyInfGnrSrv;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,8 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Arrays.stream;
+
 @Service
-public class ProductService {
+public class ProductService implements MyInfGnrSrv<ProductDto> {
 
     private final ProductRepositoryJpa productRepository;
     private final ProductCategoryRepositoryJpa productCategoryRepositoryJpa ;
@@ -50,7 +54,7 @@ public class ProductService {
     }
 
 
-
+    @Override
     public List<ProductDto> findAllSrv()
     {
         return productRepository.findAll()
@@ -60,13 +64,23 @@ public class ProductService {
                 .toList();
     }
 
+    @Override
+    public Page<ProductDto> findAllSrv(Integer page, Integer size) {
+        return productRepository
+                .findAll(Pageable.ofSize(size).withPage(page))
+                //.stream()
+                .map(mapper::map);
+                //.toList();
+    }
+
+    @Override
     public ProductDto findByIdSrv(Long id)
     {
         validationModelId(id);
 //        return productRepository.getByIdProduct(id);
-        ProductEnt p = productRepository.findById(id).orElseThrow();
-        ProductDto pd = p!=null ? mapper.map(p) : null;
-        return pd;
+        ProductEnt ent = productRepository.findById(id).orElseThrow();
+        ProductDto dto = (ent == null) ? null : mapper.map(ent) ;
+        return dto;
     }
 
 
@@ -75,29 +89,32 @@ public class ProductService {
     {
         List<ProductEnt> lst = productRepository.findByBrandLike(brand).orElseThrow();
 
-        return lst.stream().map(p->mapper.map(p)).toList();
+        return lst.stream().map(mapper::map).toList();
     }
 
-
-    public void deleteSrv(Long id)
+    @Override
+    public Boolean deleteByIdSrv(Long id)
     {
         validationModelId(id);
 //        productRepository.deleteProduct(id);
         productRepository.deleteById(id);
+        return true;
     }
 
+    @Override
     public ProductDto addSrv(ProductDto dto)
     {
-        validationModelDto(dto);
-        dto.setId(null);
+        validateDto(dto,false);
+
         ProductEnt product = productRepository.save(mapper.map(dto));
 
         return mapper.map(product);
     }
 
+    @Override
     public ProductDto updateSrv(ProductDto dto) {
         validationModelId(dto.getId());
-        validationModelDto(dto);
+        validateDto(dto,true);
 
         ProductDto dtoDb = findByIdSrv(dto.getId());
         dtoDb.setImg(dto.getImg());
@@ -160,13 +177,15 @@ public class ProductService {
         if(id == null || id<=0)
             throw new Exception("Error! validationModelId _ wrong id");
     }
+
+    @Override
     @SneakyThrows
-    private void validationModelDto(ProductDto dto)
+    public void validateDto(ProductDto dto, Boolean checkId)
     {
         if(dto == null)
             throw new Exception("Error! validationModelProduct _ null product");
-        //if(dto.getBrand() == null || dto.getImg().isEmpty())
-            //throw new Exception("Error! validationModelProduct _ wrong product Brand");
+        if(checkId && (dto.getId() == null || dto.getId()<1))
+            throw new Exception("Error! validationModelProduct _ wrong id");
     }
     //endregion
 
@@ -174,5 +193,4 @@ public class ProductService {
     {
         return productRepository.getProductPrices(productIds);
     }
-
 }

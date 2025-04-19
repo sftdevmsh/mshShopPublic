@@ -5,11 +5,10 @@ import lombok.*;
 import org.msh.entity.file.FileEnt;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 
-@Entity(name = "product")
+@Entity(name = "ProductEnt")
 @Table(name = "tbl_product")
 @Getter
 @Setter

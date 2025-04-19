@@ -3,10 +3,9 @@ package org.msh.entity.user;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
-@Entity
+@Entity(name = "RoleEnt")
 @Table(name = "tbl_role")
 @Setter
 @Getter
