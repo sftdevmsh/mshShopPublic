@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,6 +92,7 @@ public class ProductService implements MyGenericService<ProductDto> {
         ProductEnt ent = productRepository.save(mapper.map(dto));
         ent.setExist(true);
         ent.setEnabled(true);
+        ent.setAddDate(LocalDateTime.now());
         //
         return mapper.map(ent);
     }
