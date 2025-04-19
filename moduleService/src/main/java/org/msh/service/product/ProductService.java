@@ -89,6 +89,8 @@ public class ProductService implements MyGenericService<ProductDto> {
         validateDto(dto,false);
         //
         ProductEnt ent = productRepository.save(mapper.map(dto));
+        ent.setExist(true);
+        ent.setEnabled(true);
         //
         return mapper.map(ent);
     }
