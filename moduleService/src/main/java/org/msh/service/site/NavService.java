@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class NavInfSrv implements MyInfGnrSrv<NavDto> {
+public class NavService implements MyInfGnrSrv<NavDto> {
 
     private final NavRepositoryJpa navRepositoryJpa;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public NavInfSrv(NavRepositoryJpa navRepositoryJpa, ModelMapper modelMapper)
+    public NavService(NavRepositoryJpa navRepositoryJpa, ModelMapper modelMapper)
     {
         this.navRepositoryJpa = navRepositoryJpa;
         this.modelMapper = modelMapper;
@@ -95,7 +95,14 @@ public class NavInfSrv implements MyInfGnrSrv<NavDto> {
     public NavDto updateSrv(NavDto dto) throws MyExc {
         validateDto(dto,true);
         //
-        NavEnt entOld = navRepositoryJpa.findFirstById(dto.getId()).orElseThrow();
+        NavEnt entOld = null;
+        try {
+            entOld = navRepositoryJpa.findFirstById(dto.getId()).orElseThrow();
+        }catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        //
         entOld.setLink(Optional.ofNullable(dto.getLink()).orElse(entOld.getLink()));
         entOld.setTitle(Optional.ofNullable(dto.getTitle()).orElse(entOld.getTitle()));
         entOld.setOrderNumber(Optional.ofNullable(dto.getOrderNumber()).orElse(entOld.getOrderNumber()));

@@ -105,27 +105,37 @@ public class ProductService implements MyInfGnrSrv<ProductDto> {
     public ProductDto addSrv(ProductDto dto)
     {
         validateDto(dto,false);
-
-        ProductEnt product = productRepository.save(mapper.map(dto));
-
-        return mapper.map(product);
+        //
+        ProductEnt ent = productRepository.save(mapper.map(dto));
+        //
+        return mapper.map(ent);
     }
 
     @Override
     public ProductDto updateSrv(ProductDto dto) {
-        validationModelId(dto.getId());
         validateDto(dto,true);
-
-        ProductDto dtoDb = findByIdSrv(dto.getId());
-        dtoDb.setImg(dto.getImg());
-        dtoDb.setPrice(dto.getPrice());
-        //dtoDb.setExist(dto.getExist());
-        //dtoDb.setEnabled(dto.getEnabled());
-        dtoDb.setColorDtos(dto.getColorDtos());
-        dtoDb.setSizeDtos(dto.getSizeDtos());
-
-        ProductEnt product = productRepository.save(mapper.map(dtoDb));
-        return mapper.map(product); //return dtoDb;
+        //
+        ProductEnt ent = productMapper.map(dto);
+        //
+        ProductEnt entDb = null;
+        try {
+            entDb = productRepository.findById(dto.getId()).orElseThrow();
+        }catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        //
+        //assert entDb != null;
+        //
+        entDb.setImg(Optional.ofNullable(ent.getImg()).orElse(entDb.getImg()));
+        entDb.setPrice(Optional.ofNullable(ent.getPrice()).orElse(entDb.getPrice()));
+        entDb.setExist(Optional.ofNullable(ent.getExist()).orElse(entDb.getExist()));
+        entDb.setEnabled(Optional.ofNullable(ent.getExist()).orElse(entDb.getEnabled()));
+        entDb.setColorEnts(Optional.ofNullable(ent.getColorEnts()).orElse(entDb.getColorEnts()));
+        entDb.setSizeEnts(Optional.ofNullable(ent.getSizeEnts()).orElse(entDb.getSizeEnts()));
+        //
+        entDb = productRepository.save(entDb);
+        return mapper.map(entDb); //return dtoDb;
     }
 
     public List<ProductDto> findTop(ProductQueryType queryType)

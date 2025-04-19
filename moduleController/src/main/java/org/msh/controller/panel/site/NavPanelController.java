@@ -4,7 +4,7 @@ import org.msh.controller.panel.myGenerics.MyGenericController;
 import org.msh.enums.MyHttpStatus;
 import org.msh.exceptions.MyExc;
 import org.msh.dto.site.NavDto;
-import org.msh.service.site.NavInfSrv;
+import org.msh.service.site.NavService;
 import org.msh.wrapper.PanelApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,10 +16,10 @@ import java.util.List;
 @RequestMapping("/api/panel/nav")
 public class NavPanelController implements MyGenericController<NavDto> {
     //
-    private final NavInfSrv navService;
+    private final NavService navService;
 
     @Autowired
-    public NavPanelController(NavInfSrv navService) {
+    public NavPanelController(NavService navService) {
         this.navService = navService;
     }
 
