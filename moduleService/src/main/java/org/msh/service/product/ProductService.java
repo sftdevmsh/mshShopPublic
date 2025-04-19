@@ -122,6 +122,29 @@ public class ProductService implements MyGenericService<ProductDto> {
         return resDto;
     }
 
+
+    //region private methods for validation
+    @SneakyThrows
+    public void validationModelId(Long id)
+    {
+        if(id == null || id<=0)
+            throw new Exception("Error! validationModelId _ wrong id");
+    }
+
+    @Override
+    @SneakyThrows
+    public void validateDto(ProductDto dto, Boolean checkId)
+    {
+        if(dto == null)
+            throw new Exception("Error! validationModelProduct _ null product");
+        if(checkId && (dto.getId() == null || dto.getId()<1))
+            throw new Exception("Error! validationModelProduct _ wrong id");
+    }
+    //endregion
+
+
+
+
     public List<ProductDto> findTop(ProductQueryType queryType)
     {
         List<ProductEnt> res = new ArrayList<>();
@@ -143,27 +166,6 @@ public class ProductService implements MyGenericService<ProductDto> {
         //
         return res.stream().map(productMapper::map).toList();
     }
-
-
-    //region private methods for validation
-    @SneakyThrows
-    public void validationModelId(Long id)
-    {
-        if(id == null || id<=0)
-            throw new Exception("Error! validationModelId _ wrong id");
-    }
-
-    @Override
-    @SneakyThrows
-    public void validateDto(ProductDto dto, Boolean checkId)
-    {
-        if(dto == null)
-            throw new Exception("Error! validationModelProduct _ null product");
-        if(checkId && (dto.getId() == null || dto.getId()<1))
-            throw new Exception("Error! validationModelProduct _ wrong id");
-    }
-    //endregion
-
 
 
     public Optional<HashMap<Long,Long>> getProductPrices(List<Long> productIds)
