@@ -14,4 +14,5 @@ public interface ContentRepositoryJpa extends JpaRepository<ContentEnt, Long>
     List<ContentEnt> findAllByOrderByTitleAsc();
     Optional<ContentEnt> findFirstByTitleEqualsIgnoreCase(String key);
 
+    Optional<ContentEnt> findFirstById(Long id);
 }

@@ -1,17 +1,22 @@
 package org.msh.service.site;
 
 import org.modelmapper.ModelMapper;
-import org.msh.dto.site.NavDto;
 import org.msh.dto.site.SliderDto;
-import org.msh.repositoryJpa.site.NavRepositoryJpa;
+import org.msh.entity.file.FileEnt;
+import org.msh.entity.site.SliderEnt;
+import org.msh.exceptions.MyExc;
 import org.msh.repositoryJpa.site.SliderRepositoryJpa;
+import org.msh.service.generics.MyGenericService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class SliderService {
+public class SliderService implements MyGenericService<SliderDto> {
 
     private final SliderRepositoryJpa sliderRepositoryJpa;
     private final ModelMapper modelMapper;
@@ -23,13 +28,116 @@ public class SliderService {
         this.modelMapper = modelMapper;
     }
 
+    
+    
+    
+    @Override
+    public SliderDto findByIdSrv(Long id) {
+        //
+        SliderDto dto = null;
+        //
+        try {
+            SliderEnt ent = sliderRepositoryJpa.findById(id).orElseThrow();
+            dto =modelMapper.map(ent, SliderDto.class);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        //
+        return dto;
+    }
+
+    @Override
     public List<SliderDto> findAllSrv()
     {
-//        return navRepositoryJpa.findAll()
-        return sliderRepositoryJpa.findAllByEnabledIsTrueOrderByOrderNumberAsc()
+        return sliderRepositoryJpa
+                //.findAllByEnabledIsTrueOrderByOrderNumberAsc()
+                .findAll()
                 .stream()
                 .map(x-> modelMapper.map(x, SliderDto.class))
                 .toList();
     }
 
+    @Override
+    public Page<SliderDto> findAllSrv(Integer page, Integer size)
+    {
+        return sliderRepositoryJpa
+                //.findAllByEnabledIsTrueOrderByOrderNumberAsc(
+                .findAll(
+                        Pageable
+                                .ofSize(size)
+                                .withPage(page)
+                )
+                //.stream()
+                .map(x-> modelMapper.map(x, SliderDto.class));
+        //.toList();
+    }
+
+
+    @Override
+    public SliderDto addSrv(SliderDto dto) throws MyExc {
+        validateDto(dto,false);
+        //
+        SliderEnt sliderEnt = modelMapper.map(dto, SliderEnt.class);
+        //
+        Integer i = sliderRepositoryJpa.myFindLastOrderNumber();
+        if(i==null)
+            i=0;
+        sliderEnt.setOrderNumber(++i);
+        //
+        return modelMapper.map(sliderRepositoryJpa.save(sliderEnt) , SliderDto.class);
+    }
+
+    @Override
+    public Boolean deleteByIdSrv(Long id) {
+        sliderRepositoryJpa.deleteById(id);
+        return true;
+    }
+
+
+    @Override
+    public SliderDto updateSrv(SliderDto dto) throws MyExc {
+        validateDto(dto,true);
+        //
+        SliderDto dtoRes = null;
+        SliderEnt dbEnt = null;
+        try {
+            dbEnt = sliderRepositoryJpa.findFirstById(dto.getId()).orElseThrow();
+            //
+            dbEnt.setTitle(Optional.ofNullable(dto.getTitle()).orElse(dbEnt.getTitle()));
+            dbEnt.setLink(Optional.ofNullable(dto.getLink()).orElse(dbEnt.getLink()));
+            dbEnt.setOrderNumber(Optional.ofNullable(dto.getOrderNumber()).orElse(dbEnt.getOrderNumber()));
+            //
+            FileEnt img = modelMapper.map(dto.getImg(),FileEnt.class);
+            dbEnt.setImg(Optional.ofNullable(img).orElse(dbEnt.getImg()));
+            //
+            dtoRes = modelMapper.map(sliderRepositoryJpa.save(dbEnt),SliderDto.class);
+            //
+        }catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        //
+        return dtoRes;
+    }
+
+
+    @Override
+    public void validateDto(SliderDto dto, Boolean checkId) throws MyExc {
+        if(dto==null)
+            throw new MyExc("validateDto ...");
+        if(checkId && (dto.getId() == null || dto.getId()<1))
+            throw new MyExc("validateDto ...");
+        if(dto.getTitle()==null || dto.getTitle().isEmpty())
+            throw new MyExc("validateDto ...");
+        if(dto.getLink()==null || dto.getLink().isEmpty())
+            throw new MyExc("validateDto ...");
+        if(dto.getImg()==null
+                || dto.getImg().getId() == null
+                || dto.getImg().getId() < 1
+                || dto.getImg().getPath().isEmpty()
+                || dto.getImg().getTitle().isEmpty())
+            throw new MyExc("validateDto ...");
+    }
 }

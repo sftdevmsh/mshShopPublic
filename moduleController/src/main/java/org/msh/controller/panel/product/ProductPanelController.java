@@ -1,5 +1,6 @@
-package org.msh.controller.panel;
+package org.msh.controller.panel.product;
 
+import org.msh.config.annotation.MyAutenticationAnnotation;
 import org.msh.controller.panel.myGenerics.MyGenericController;
 import org.msh.enums.MyHttpStatus;
 import org.msh.exceptions.MyExc;
@@ -38,6 +39,9 @@ public class ProductPanelController implements MyGenericController<ProductDto> {
 //                .build();
 //    }
 
+
+
+    @MyAutenticationAnnotation("product_list , product_info")
     @Override
     public PanelApiResponseWrapper<ProductDto> findByIdCtrl(Long id) {
         return  PanelApiResponseWrapper
@@ -48,6 +52,7 @@ public class ProductPanelController implements MyGenericController<ProductDto> {
                 .build();
     }
 
+    @MyAutenticationAnnotation("product_list")
     @Override
     public PanelApiResponseWrapper<List<ProductDto>> findAllCtrl(Integer page, Integer size) {
         return  PanelApiResponseWrapper
@@ -58,6 +63,7 @@ public class ProductPanelController implements MyGenericController<ProductDto> {
                 .build();
     }
 
+    @MyAutenticationAnnotation("product_del")
     @Override
     public PanelApiResponseWrapper<Boolean> deleteByIdCtrl(Long id) {
         return  PanelApiResponseWrapper
@@ -68,6 +74,7 @@ public class ProductPanelController implements MyGenericController<ProductDto> {
                 .build();
     }
 
+    @MyAutenticationAnnotation("product_add")
     @Override
     public PanelApiResponseWrapper<ProductDto> addCtrl(ProductDto productDto) throws MyExc {
         return  PanelApiResponseWrapper
@@ -78,6 +85,7 @@ public class ProductPanelController implements MyGenericController<ProductDto> {
                 .build();
     }
 
+    @MyAutenticationAnnotation("product_edit")
     @Override
     public PanelApiResponseWrapper<ProductDto> updateCtrl(ProductDto productDto) throws MyExc {
         return  PanelApiResponseWrapper

@@ -1,18 +1,23 @@
 package org.msh.controller.panel.site;
 
-import org.msh.enums.MyHttpStatus;
-import org.msh.wrapper.ApiResponseWrapper;
+import org.msh.config.annotation.MyAutenticationAnnotation;
+import org.msh.controller.panel.myGenerics.MyGenericController;
 import org.msh.dto.site.BlogDto;
-import org.msh.dto.site.SingleBlogDto;
+import org.msh.enums.MyHttpStatus;
+import org.msh.exceptions.MyExc;
 import org.msh.service.site.BlogService;
+import org.msh.wrapper.PanelApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/panel/blog")
-public class BlogController {
+public class BlogController implements MyGenericController<BlogDto> {
+
+
     private final BlogService blogService;
 
     @Autowired
@@ -21,66 +26,92 @@ public class BlogController {
     }
 
 
-    @GetMapping("")
-    public ApiResponseWrapper<List<BlogDto>> getAll(
-            @RequestParam(value = "page", required = false) Integer page
-            , @RequestParam(value = "size", required = false) Integer size)
-    {
-        ApiResponseWrapper<List<BlogDto>> res;
-        try {
-            res = ApiResponseWrapper
-                    .<List<BlogDto>>builder()
-                    .tdata(blogService.findAllSrv(page,size))
-                    .msg("")
-                    .status(MyHttpStatus.Success)
-                    .build();
-        }
-        catch (Exception e)
+
+
+
+
+    @MyAutenticationAnnotation("blog_list , blog_info")
+    @Override
+    public PanelApiResponseWrapper<BlogDto> findByIdCtrl(Long id) {
+        return PanelApiResponseWrapper
+                .<BlogDto>builder()
+                .tdata(blogService.findByIdSrv(id))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
+
+    @MyAutenticationAnnotation("blog_list")
+    @Override
+    public PanelApiResponseWrapper<List<BlogDto>> findAllCtrl(Integer page, Integer size) {
         {
-            System.out.println(e.getMessage());
-            res = ApiResponseWrapper
-                    .<List<BlogDto>>builder()
-                    .tdata(null)
-                    .msg(e.getMessage())
-                    .status(MyHttpStatus.Failed)
-                    .build();
+            PanelApiResponseWrapper<List<BlogDto>> res;
+            try {
+                Page<BlogDto> data = blogService.findAllSrv(page,size);
+                res = PanelApiResponseWrapper
+                        .<List<BlogDto>>builder()
+                        .tdata(data.toList())
+                        .msg("")
+                        .status(MyHttpStatus.Success)
+                        .totalCount((int) data.getTotalElements())
+                        .totalCount(data.getTotalPages())
+                        .build();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                res = PanelApiResponseWrapper
+                        .<List<BlogDto>>builder()
+                        .tdata(null)
+                        .msg(e.getMessage())
+                        .status(MyHttpStatus.Failed)
+                        .build();
+            }
+            return res;
         }
-        return res;
     }
 
 
-    @GetMapping("/{id}")
-    public ApiResponseWrapper<SingleBlogDto> getById(@PathVariable("id") Long id)
-    {
-        ApiResponseWrapper<SingleBlogDto> res;
-        try {
-            res = ApiResponseWrapper
-                    .<SingleBlogDto>builder()
-                    .tdata(blogService.findById(id))
-                    .msg("")
-                    .status(MyHttpStatus.Success)
-                    .build();
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-            res = ApiResponseWrapper
-                    .<SingleBlogDto>builder()
-                    .tdata(null)
-                    .msg(e.getMessage())
-                    .status(MyHttpStatus.Failed)
-                    .build();
-        }
-        return res;
+    @MyAutenticationAnnotation("blog_del")
+    @Override
+    public PanelApiResponseWrapper<Boolean> deleteByIdCtrl(Long id) {
+        return PanelApiResponseWrapper
+                .<Boolean>builder()
+                .tdata(blogService.deleteByIdSrv(id))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
     }
 
+    @MyAutenticationAnnotation("blog_add")
+    @Override
+    public PanelApiResponseWrapper<BlogDto> addCtrl(BlogDto blogDto) throws MyExc {
+        return PanelApiResponseWrapper
+                .<BlogDto>builder()
+                .tdata(blogService.addSrv(blogDto))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
+
+    @MyAutenticationAnnotation("blog_edit")
+    @Override
+    public PanelApiResponseWrapper<BlogDto> updateCtrl(BlogDto blogDto) throws MyExc {
+        return PanelApiResponseWrapper
+                .<BlogDto>builder()
+                .tdata(blogService.updateSrv(blogDto))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
+
+    
+    
     @GetMapping("/title/{title}")
-    public ApiResponseWrapper<SingleBlogDto> getByTitle(@PathVariable("title") String title)
+    public PanelApiResponseWrapper<BlogDto> getByTitle(@PathVariable("title") String title)
     {
-        ApiResponseWrapper<SingleBlogDto> res;
+        PanelApiResponseWrapper<BlogDto> res;
         try {
-            res = ApiResponseWrapper
-                    .<SingleBlogDto>builder()
+            res = PanelApiResponseWrapper
+                    .<BlogDto>builder()
                     .tdata(blogService.findByTitle(title))
                     .msg("")
                     .status(MyHttpStatus.Success)
@@ -89,8 +120,8 @@ public class BlogController {
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            res = ApiResponseWrapper
-                    .<SingleBlogDto>builder()
+            res = PanelApiResponseWrapper
+                    .<BlogDto>builder()
                     .tdata(null)
                     .msg(e.getMessage())
                     .status(MyHttpStatus.Failed)

@@ -1,17 +1,23 @@
 package org.msh.controller.panel.site;
 
-import org.msh.enums.MyHttpStatus;
-import org.msh.wrapper.ApiResponseWrapper;
+import org.msh.config.annotation.MyAutenticationAnnotation;
+import org.msh.controller.panel.myGenerics.MyGenericController;
 import org.msh.dto.site.ContentDto;
+import org.msh.enums.MyHttpStatus;
+import org.msh.exceptions.MyExc;
 import org.msh.service.site.ContentService;
+import org.msh.wrapper.PanelApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/panel/content")
-public class ContentController {
+public class ContentController implements MyGenericController<ContentDto> {
+
+
     private final ContentService contentService;
 
     @Autowired
@@ -20,57 +26,78 @@ public class ContentController {
     }
 
 
-    @GetMapping("")
-    public ApiResponseWrapper<List<ContentDto>> getAll(
-            @RequestParam(value = "page", required = false) Integer page
-            , @RequestParam(value = "size", required = false) Integer size)
-    {
-        ApiResponseWrapper<List<ContentDto>> res;
-        try {
-            res = ApiResponseWrapper
-                    .<List<ContentDto>>builder()
-                    .tdata(contentService.findAllSrv())
-                    .msg("")
-                    .status(MyHttpStatus.Success)
-                    .build();
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-            res = ApiResponseWrapper
-                    .<List<ContentDto>>builder()
-                    .tdata(null)
-                    .msg(e.getMessage())
-                    .status(MyHttpStatus.Failed)
-                    .build();
-        }
-        return res;
+
+    @MyAutenticationAnnotation("content_list , content_info")
+    @Override
+    public PanelApiResponseWrapper<ContentDto> findByIdCtrl(Long id) {
+        return PanelApiResponseWrapper
+                .<ContentDto>builder()
+                .tdata(contentService.findByIdSrv(id))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
     }
 
 
-    @GetMapping("/title/{title}")
-    public ApiResponseWrapper<ContentDto> getByKey(@PathVariable("title") String title)
-    {
-        ApiResponseWrapper<ContentDto> res;
-        try {
-            res = ApiResponseWrapper
-                    .<ContentDto>builder()
-                    .tdata(contentService.findByTitleSrv(title))
-                    .msg("")
-                    .status(MyHttpStatus.Success)
-                    .build();
-        }
-        catch (Exception e)
+    @MyAutenticationAnnotation("content_list")
+    @Override
+    public PanelApiResponseWrapper<List<ContentDto>> findAllCtrl(Integer page, Integer size) {
         {
-            System.out.println(e.getMessage());
-            res = ApiResponseWrapper
-                    .<ContentDto>builder()
-                    .tdata(null)
-                    .msg(e.getMessage())
-                    .status(MyHttpStatus.Failed)
-                    .build();
+            PanelApiResponseWrapper<List<ContentDto>> res;
+            try {
+                Page<ContentDto> data = contentService.findAllSrv(page,size);
+                res = PanelApiResponseWrapper
+                        .<List<ContentDto>>builder()
+                        .tdata(data.toList())
+                        .msg("")
+                        .status(MyHttpStatus.Success)
+                        .totalCount((int) data.getTotalElements())
+                        .totalCount(data.getTotalPages())
+                        .build();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                res = PanelApiResponseWrapper
+                        .<List<ContentDto>>builder()
+                        .tdata(null)
+                        .msg(e.getMessage())
+                        .status(MyHttpStatus.Failed)
+                        .build();
+            }
+            return res;
         }
-        return res;
     }
 
+
+    @MyAutenticationAnnotation("content_del")
+    @Override
+    public PanelApiResponseWrapper<Boolean> deleteByIdCtrl(Long id) {
+        return PanelApiResponseWrapper
+                .<Boolean>builder()
+                .tdata(contentService.deleteByIdSrv(id))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
+
+    @MyAutenticationAnnotation("content_add")
+    @Override
+    public PanelApiResponseWrapper<ContentDto> addCtrl(ContentDto contentDto) throws MyExc {
+        return PanelApiResponseWrapper
+                .<ContentDto>builder()
+                .tdata(contentService.addSrv(contentDto))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
+
+    @MyAutenticationAnnotation("content_edit")
+    @Override
+    public PanelApiResponseWrapper<ContentDto> updateCtrl(ContentDto contentDto) throws MyExc {
+        return PanelApiResponseWrapper
+                .<ContentDto>builder()
+                .tdata(contentService.updateSrv(contentDto))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
 }

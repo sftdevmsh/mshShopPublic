@@ -17,8 +17,8 @@ public class SliderDto {
 
     private String link;
 
-    private Integer orderNumber;
-
     private FileEnt img;
+
+    private Integer orderNumber;
 
 }

@@ -11,7 +11,7 @@ import org.msh.repositoryJpa.product.ColorRepositoryJpa;
 import org.msh.repositoryJpa.product.ProductCategoryRepositoryJpa;
 import org.msh.repositoryJpa.product.ProductRepositoryJpa;
 import org.msh.repositoryJpa.product.SizeRepositoryJpa;
-import org.msh.service.generics.MyInfGnrSrv;
+import org.msh.service.generics.MyGenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,32 +25,31 @@ import java.util.Optional;
 import static java.util.Arrays.stream;
 
 @Service
-public class ProductService implements MyInfGnrSrv<ProductDto> {
+public class ProductService implements MyGenericService<ProductDto> {
 
     private final ProductRepositoryJpa productRepository;
-    private final ProductCategoryRepositoryJpa productCategoryRepositoryJpa ;
-    private final ColorRepositoryJpa colorRepositoryJpa;
-    private final SizeRepositoryJpa sizeRepositoryJpa;
     private final ProductMapper mapper;
-    private final ModelMapper modelMapper;
     private final ProductMapper productMapper;
 
 
     @Autowired
     public ProductService(ProductRepositoryJpa productRepository
-            , ProductCategoryRepositoryJpa productCategoryRepositoryJpa
-            , ColorRepositoryJpa colorRepositoryJpa
-            , SizeRepositoryJpa sizeRepositoryJpa
-            , ProductMapper productMapper
-            , ModelMapper modelMapper)
+            , ProductMapper productMapper)
     {
         this.productRepository = productRepository;
-        this.productCategoryRepositoryJpa = productCategoryRepositoryJpa;
-        this.colorRepositoryJpa = colorRepositoryJpa;
-        this.sizeRepositoryJpa = sizeRepositoryJpa;
         this.mapper = productMapper;
-        this.modelMapper = modelMapper;
         this.productMapper = productMapper;
+    }
+
+
+
+    @Override
+    public ProductDto findByIdSrv(Long id)
+    {
+        validationModelId(id);
+        ProductEnt ent = productRepository.findById(id).orElseThrow();
+        ProductDto dto = (ent == null) ? null : mapper.map(ent) ;
+        return dto;
     }
 
 
@@ -73,24 +72,7 @@ public class ProductService implements MyInfGnrSrv<ProductDto> {
                 //.toList();
     }
 
-    @Override
-    public ProductDto findByIdSrv(Long id)
-    {
-        validationModelId(id);
-//        return productRepository.getByIdProduct(id);
-        ProductEnt ent = productRepository.findById(id).orElseThrow();
-        ProductDto dto = (ent == null) ? null : mapper.map(ent) ;
-        return dto;
-    }
 
-
-
-    public List<ProductDto> findByBrandLikeSrv(String brand)
-    {
-        List<ProductEnt> lst = productRepository.findByBrandLike(brand).orElseThrow();
-
-        return lst.stream().map(mapper::map).toList();
-    }
 
     @Override
     public Boolean deleteByIdSrv(Long id)
@@ -117,25 +99,27 @@ public class ProductService implements MyInfGnrSrv<ProductDto> {
         //
         ProductEnt ent = productMapper.map(dto);
         //
-        ProductEnt entDb = null;
+        ProductDto resDto = null;
+        ProductEnt dbEnt = null;
+        //
         try {
-            entDb = productRepository.findById(dto.getId()).orElseThrow();
+            dbEnt = productRepository.findById(dto.getId()).orElseThrow();
+            //
+            dbEnt.setImg(Optional.ofNullable(ent.getImg()).orElse(dbEnt.getImg()));
+            dbEnt.setPrice(Optional.ofNullable(ent.getPrice()).orElse(dbEnt.getPrice()));
+            dbEnt.setExist(Optional.ofNullable(ent.getExist()).orElse(dbEnt.getExist()));
+            dbEnt.setEnabled(Optional.ofNullable(ent.getEnabled()).orElse(dbEnt.getEnabled()));
+            dbEnt.setColorEnts(Optional.ofNullable(ent.getColorEnts()).orElse(dbEnt.getColorEnts()));
+            dbEnt.setSizeEnts(Optional.ofNullable(ent.getSizeEnts()).orElse(dbEnt.getSizeEnts()));
+            //
+            resDto = mapper.map(productRepository.save(dbEnt));
+            //
         }catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
         //
-        //assert entDb != null;
-        //
-        entDb.setImg(Optional.ofNullable(ent.getImg()).orElse(entDb.getImg()));
-        entDb.setPrice(Optional.ofNullable(ent.getPrice()).orElse(entDb.getPrice()));
-        entDb.setExist(Optional.ofNullable(ent.getExist()).orElse(entDb.getExist()));
-        entDb.setEnabled(Optional.ofNullable(ent.getExist()).orElse(entDb.getEnabled()));
-        entDb.setColorEnts(Optional.ofNullable(ent.getColorEnts()).orElse(entDb.getColorEnts()));
-        entDb.setSizeEnts(Optional.ofNullable(ent.getSizeEnts()).orElse(entDb.getSizeEnts()));
-        //
-        entDb = productRepository.save(entDb);
-        return mapper.map(entDb); //return dtoDb;
+        return resDto;
     }
 
     public List<ProductDto> findTop(ProductQueryType queryType)
@@ -161,28 +145,9 @@ public class ProductService implements MyInfGnrSrv<ProductDto> {
     }
 
 
-
-
-
-    //region category of product
-    public List<ProductCategoryDto> findAllCategoriesSrv()
-    {
-        return productCategoryRepositoryJpa.findAllByEnabledIsTrueOrderByTitleAsc()
-                .stream()
-                //.map(mapper::map)
-                .map(x->modelMapper.map(x,ProductCategoryDto.class))
-                .toList();
-    }
-    //endregion
-
-
-
-
-
-
     //region private methods for validation
     @SneakyThrows
-    private void validationModelId(Long id)
+    public void validationModelId(Long id)
     {
         if(id == null || id<=0)
             throw new Exception("Error! validationModelId _ wrong id");
@@ -199,8 +164,31 @@ public class ProductService implements MyInfGnrSrv<ProductDto> {
     }
     //endregion
 
+
+
     public Optional<HashMap<Long,Long>> getProductPrices(List<Long> productIds)
     {
         return productRepository.getProductPrices(productIds);
     }
+
+    public List<ProductDto> findByBrandLikeSrv(String brand)
+    {
+        List<ProductEnt> lst = productRepository.findByBrandLike(brand).orElseThrow();
+
+        return lst.stream().map(mapper::map).toList();
+    }
+
+
 }
+
+
+//    //region category of product
+//    public List<ProductCategoryDto> findAllCategoriesSrv()
+//    {
+//        return productCategoryRepositoryJpa.findAllByEnabledIsTrueOrderByTitleAsc()
+//                .stream()
+//                //.map(mapper::map)
+//                .map(x->modelMapper.map(x,ProductCategoryDto.class))
+//                .toList();
+//    }
+//    //endregion

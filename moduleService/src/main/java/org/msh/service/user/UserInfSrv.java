@@ -17,7 +17,7 @@ import org.msh.repositoryJpa.user.CustomerRepositoryJpa;
 import org.msh.repositoryJpa.user.PermissionRepositoryJpa;
 import org.msh.repositoryJpa.user.RoleRepositoryJpa;
 import org.msh.repositoryJpa.user.UserRepositoryJpa;
-import org.msh.service.generics.MyInfGnrSrv;
+import org.msh.service.generics.MyGenericService;
 import org.msh.util.MyHashUtil;
 import org.msh.util.MyJwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserInfSrv implements MyInfGnrSrv<UserDto> {
+public class UserInfSrv implements MyGenericService<UserDto> {
 
     private final UserRepositoryJpa userRepositoryJpa;
     private final CustomerRepositoryJpa customerRepositoryJpa;

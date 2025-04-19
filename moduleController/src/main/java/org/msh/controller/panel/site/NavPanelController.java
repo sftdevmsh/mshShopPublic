@@ -1,5 +1,6 @@
 package org.msh.controller.panel.site;
 
+import org.msh.config.annotation.MyAutenticationAnnotation;
 import org.msh.controller.panel.myGenerics.MyGenericController;
 import org.msh.enums.MyHttpStatus;
 import org.msh.exceptions.MyExc;
@@ -24,6 +25,8 @@ public class NavPanelController implements MyGenericController<NavDto> {
     }
 
 
+
+    @MyAutenticationAnnotation("nav_list , nav_info")
     @Override
     public PanelApiResponseWrapper<NavDto> findByIdCtrl(Long id) {
         return PanelApiResponseWrapper
@@ -34,6 +37,7 @@ public class NavPanelController implements MyGenericController<NavDto> {
                 .build();
     }
 
+    @MyAutenticationAnnotation("nav_list")
     @Override
     public PanelApiResponseWrapper<List<NavDto>> findAllCtrl(Integer page, Integer size) {
         {
@@ -62,6 +66,7 @@ public class NavPanelController implements MyGenericController<NavDto> {
     }
 
 
+    @MyAutenticationAnnotation("nav_del")
     @Override
     public PanelApiResponseWrapper<Boolean> deleteByIdCtrl(Long id) {
         return PanelApiResponseWrapper
@@ -72,6 +77,7 @@ public class NavPanelController implements MyGenericController<NavDto> {
                 .build();
     }
 
+    @MyAutenticationAnnotation("nav_add")
     @Override
     public PanelApiResponseWrapper<NavDto> addCtrl(NavDto navDto) throws MyExc {
         return PanelApiResponseWrapper
@@ -82,6 +88,7 @@ public class NavPanelController implements MyGenericController<NavDto> {
                 .build();
     }
 
+    @MyAutenticationAnnotation("nav_edit")
     @Override
     public PanelApiResponseWrapper<NavDto> updateCtrl(NavDto navDto) throws MyExc {
         return PanelApiResponseWrapper

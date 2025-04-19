@@ -1,11 +1,13 @@
 package org.msh.wrapper;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.msh.enums.MyHttpStatus;
 
 @Setter
 @Getter
-@Builder
+//@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PanelApiResponseWrapper<T> {

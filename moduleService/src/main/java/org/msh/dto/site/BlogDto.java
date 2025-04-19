@@ -20,14 +20,14 @@ public class BlogDto {
 
     private String subTitle;
 
-    //private String description;
-
-    //private BlogStatus blogStatus;
-
     private LocalDateTime publishDate;
 
     private Integer visitCount;
 
     private FileEnt img;
+
+    private String description;
+
+    private BlogStatus blogStatus;
 
 }

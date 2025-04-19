@@ -2,7 +2,7 @@ package org.msh.service.generics;
 
 import org.msh.exceptions.MyExc;
 
-public interface MyAddInfGnrSrv<T> {
+public interface MyAddGenericService<T> {
 
     T addSrv(T dto) throws MyExc;
 }

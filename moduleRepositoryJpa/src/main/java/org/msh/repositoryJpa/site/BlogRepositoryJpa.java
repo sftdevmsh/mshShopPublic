@@ -1,6 +1,7 @@
 package org.msh.repositoryJpa.site;
 
 import org.msh.entity.site.BlogEnt;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +20,9 @@ public interface BlogRepositoryJpa extends JpaRepository<BlogEnt, Long>
             and b.publishDate <= current_date
             order by b.publishDate desc
     """)
-    List<BlogEnt> myFindAllPublished(Pageable pageable);
+    Page<BlogEnt> myFindAllPublished(Pageable pageable);
 
     Optional<BlogEnt> findFirstByTitleEqualsIgnoreCase(String title);
+
+    Optional<BlogEnt> findFirstById(Long id);
 }
