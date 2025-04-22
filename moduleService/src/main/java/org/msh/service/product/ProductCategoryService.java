@@ -10,6 +10,7 @@ import org.msh.repositoryJpa.product.ColorRepositoryJpa;
 import org.msh.repositoryJpa.product.ProductCategoryRepositoryJpa;
 import org.msh.repositoryJpa.product.SizeRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
+import org.msh.service.generics.MyGenericServiceCls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductCategoryService implements MyGenericService<ProductCategoryDto> {
+public class ProductCategoryService extends MyGenericServiceCls implements MyGenericService<ProductCategoryDto> {
 
     private final ProductCategoryRepositoryJpa productCategoryRepository;
     private final ModelMapper modelMapper;
@@ -65,6 +66,9 @@ public class ProductCategoryService implements MyGenericService<ProductCategoryD
 
     @Override
     public Page<ProductCategoryDto> findAllSrv(Integer page, Integer size) {
+        page = validatePage(page);
+        size = validateSize(size);
+        //
         return productCategoryRepository
                 .findAll(Pageable.ofSize(size).withPage(page))
                 //.findAllByEnabledIsTrueOrderByTitleAsc(Pageable.ofSize(size).withPage(page))

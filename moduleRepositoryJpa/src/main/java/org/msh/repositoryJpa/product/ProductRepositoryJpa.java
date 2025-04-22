@@ -1,6 +1,8 @@
 package org.msh.repositoryJpa.product;
 
 import org.msh.entity.product.ProductEnt;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -57,5 +59,8 @@ public interface ProductRepositoryJpa extends JpaRepository<ProductEnt, Long> {
             " order by p.id_product asc"
             , nativeQuery = true)
     public Optional<HashMap<Long,Long>> getProductPrices(@Param("ids") List<Long> productIds);
+
+
+    Page<ProductEnt> findAllByProductCategoryEnt_Id(Long productCategoryEntId, Pageable pageable);
 
 }

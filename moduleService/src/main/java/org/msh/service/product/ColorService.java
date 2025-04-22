@@ -8,6 +8,7 @@ import org.msh.entity.product.ColorEnt;
 import org.msh.exceptions.MyExc;
 import org.msh.repositoryJpa.product.ColorRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
+import org.msh.service.generics.MyGenericServiceCls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ColorService implements MyGenericService<ColorDto> {
+public class ColorService extends MyGenericServiceCls implements MyGenericService<ColorDto> {
 
     private final ColorRepositoryJpa colorRepository;
     private final ModelMapper modelMapper;
@@ -57,6 +58,9 @@ public class ColorService implements MyGenericService<ColorDto> {
 
     @Override
     public Page<ColorDto> findAllSrv(Integer page, Integer size) {
+        page = validatePage(page);
+        size = validateSize(size);
+        //
         return colorRepository
                 .findAll(Pageable.ofSize(size).withPage(page))
                 .map(x-> modelMapper.map(x, ColorDto.class));

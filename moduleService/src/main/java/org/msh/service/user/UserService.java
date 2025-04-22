@@ -18,6 +18,7 @@ import org.msh.repositoryJpa.user.PermissionRepositoryJpa;
 import org.msh.repositoryJpa.user.RoleRepositoryJpa;
 import org.msh.repositoryJpa.user.UserRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
+import org.msh.service.generics.MyGenericServiceCls;
 import org.msh.util.MyHashUtil;
 import org.msh.util.MyJwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements MyGenericService<UserDto> {
+public class UserService extends MyGenericServiceCls implements MyGenericService<UserDto> {
 
     private final UserRepositoryJpa userRepositoryJpa;
     private final CustomerRepositoryJpa customerRepositoryJpa;
@@ -78,6 +79,9 @@ public class UserService implements MyGenericService<UserDto> {
 
     @Override
     public Page<UserDto> findAllSrv(Integer page, Integer size) {
+        page = validatePage(page);
+        size = validateSize(size);
+        //
         return userRepositoryJpa.findAll(Pageable.ofSize(size).withPage(page))
                 .map(x->modelMapper.map(x, UserDto.class));
     }

@@ -16,6 +16,7 @@ import org.msh.exceptions.MyExc;
 import org.msh.repositoryJpa.invoice.InvoiceItemRepositoryJpa;
 import org.msh.repositoryJpa.invoice.InvoiceRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
+import org.msh.service.generics.MyGenericServiceCls;
 import org.msh.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
-public class InvoiceService implements MyGenericService<InvoiceDto> {
+public class InvoiceService extends MyGenericServiceCls implements MyGenericService<InvoiceDto> {
 
     private final InvoiceRepositoryJpa invoiceRepositoryJpa;
     private final ProductService productService;
@@ -80,6 +81,9 @@ public class InvoiceService implements MyGenericService<InvoiceDto> {
     @Override
     public Page<InvoiceDto> findAllSrv(Integer page, Integer size)
     {
+        page = validatePage(page);
+        size = validateSize(size);
+        //
         return invoiceRepositoryJpa
                 .findAll(
                         Pageable

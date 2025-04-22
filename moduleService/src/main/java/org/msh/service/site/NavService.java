@@ -8,6 +8,7 @@ import org.msh.entity.site.NavEnt;
 import org.msh.exceptions.MyExc;
 import org.msh.repositoryJpa.site.NavRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
+import org.msh.service.generics.MyGenericServiceCls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class NavService implements MyGenericService<NavDto> {
+public class NavService extends MyGenericServiceCls implements MyGenericService<NavDto> {
 
     private final NavRepositoryJpa navRepositoryJpa;
     private final ModelMapper modelMapper;
@@ -62,6 +63,9 @@ public class NavService implements MyGenericService<NavDto> {
     @Override
     public Page<NavDto> findAllSrv(Integer page, Integer size)
     {
+        page = validatePage(page);
+        size = validateSize(size);
+        //
         return navRepositoryJpa
                 //.findAllByEnabledIsTrueOrderByOrderNumberAsc(
                 .findAll(

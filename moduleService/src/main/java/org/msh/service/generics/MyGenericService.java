@@ -16,4 +16,8 @@ public interface MyGenericService<T>
 
     @SneakyThrows
     void validationModelId(Long id);
+
+
+
+
 }

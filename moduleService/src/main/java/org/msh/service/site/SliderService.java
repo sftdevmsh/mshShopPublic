@@ -8,6 +8,7 @@ import org.msh.entity.site.SliderEnt;
 import org.msh.exceptions.MyExc;
 import org.msh.repositoryJpa.site.SliderRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
+import org.msh.service.generics.MyGenericServiceCls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SliderService implements MyGenericService<SliderDto> {
+public class SliderService extends MyGenericServiceCls implements MyGenericService<SliderDto> {
 
     private final SliderRepositoryJpa sliderRepositoryJpa;
     private final ModelMapper modelMapper;
@@ -64,6 +65,9 @@ public class SliderService implements MyGenericService<SliderDto> {
     @Override
     public Page<SliderDto> findAllSrv(Integer page, Integer size)
     {
+        page = validatePage(page);
+        size = validateSize(size);
+        //
         return sliderRepositoryJpa
                 //.findAllByEnabledIsTrueOrderByOrderNumberAsc(
                 .findAll(

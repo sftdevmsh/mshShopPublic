@@ -10,6 +10,7 @@ import org.msh.enums.BlogStatus;
 import org.msh.exceptions.MyExc;
 import org.msh.repositoryJpa.site.BlogRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
+import org.msh.service.generics.MyGenericServiceCls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BlogService implements MyGenericService<BlogDto> {
+public class BlogService extends MyGenericServiceCls implements MyGenericService<BlogDto> {
 
     private final BlogRepositoryJpa blogRepositoryJpa;
     private final ModelMapper modelMapper;
@@ -68,6 +69,9 @@ public class BlogService implements MyGenericService<BlogDto> {
     @Override
     public Page<BlogDto> findAllSrv(Integer page, Integer size)
     {
+        page = validatePage(page);
+        size = validateSize(size);
+        //
         return blogRepositoryJpa
                 .myFindAllPublished(
                         Pageable

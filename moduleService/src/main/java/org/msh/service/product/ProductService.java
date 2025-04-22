@@ -12,6 +12,7 @@ import org.msh.repositoryJpa.product.ProductCategoryRepositoryJpa;
 import org.msh.repositoryJpa.product.ProductRepositoryJpa;
 import org.msh.repositoryJpa.product.SizeRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
+import org.msh.service.generics.MyGenericServiceCls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ import java.util.Optional;
 import static java.util.Arrays.stream;
 
 @Service
-public class ProductService implements MyGenericService<ProductDto> {
+public class ProductService extends MyGenericServiceCls implements MyGenericService<ProductDto> {
 
     private final ProductRepositoryJpa productRepository;
     private final ProductMapper mapper;
@@ -66,6 +67,9 @@ public class ProductService implements MyGenericService<ProductDto> {
 
     @Override
     public Page<ProductDto> findAllSrv(Integer page, Integer size) {
+        page = validatePage(page);
+        size = validateSize(size);
+        //
         return productRepository
                 .findAll(Pageable.ofSize(size).withPage(page))
                 //.stream()
@@ -185,16 +189,20 @@ public class ProductService implements MyGenericService<ProductDto> {
     }
 
 
+
+
+    //region category of product
+    public Page<ProductDto> findAllByProductCategoryEnt_IdSrv(
+            Long cid
+            , Integer page
+            , Integer size)
+    {
+        return productRepository.findAllByProductCategoryEnt_Id(
+                cid
+                , Pageable.ofSize(size).withPage(page)
+                )
+                .map(productMapper::map);
+    }
+    //endregion
+
 }
-
-
-//    //region category of product
-//    public List<ProductCategoryDto> findAllCategoriesSrv()
-//    {
-//        return productCategoryRepositoryJpa.findAllByEnabledIsTrueOrderByTitleAsc()
-//                .stream()
-//                //.map(mapper::map)
-//                .map(x->modelMapper.map(x,ProductCategoryDto.class))
-//                .toList();
-//    }
-//    //endregion

@@ -10,6 +10,7 @@ import org.msh.repositoryJpa.product.ColorRepositoryJpa;
 import org.msh.repositoryJpa.product.SizeRepositoryJpa;
 import org.msh.repositoryJpa.product.SizeRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
+import org.msh.service.generics.MyGenericServiceCls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SizeService implements MyGenericService<SizeDto> {
+public class SizeService extends MyGenericServiceCls implements MyGenericService<SizeDto> {
 
     private final SizeRepositoryJpa sizeRepository;
     private final ModelMapper modelMapper;
@@ -61,6 +62,9 @@ public class SizeService implements MyGenericService<SizeDto> {
 
     @Override
     public Page<SizeDto> findAllSrv(Integer page, Integer size) {
+        page = validatePage(page);
+        size = validateSize(size);
+        //
         return sizeRepository
                 .findAll(Pageable.ofSize(size).withPage(page))
                 .map(x-> modelMapper.map(x, SizeDto.class));

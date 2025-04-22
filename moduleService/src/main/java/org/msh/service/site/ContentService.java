@@ -8,6 +8,7 @@ import org.msh.entity.site.ContentEnt;
 import org.msh.exceptions.MyExc;
 import org.msh.repositoryJpa.site.ContentRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
+import org.msh.service.generics.MyGenericServiceCls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ContentService implements MyGenericService<ContentDto> {
+public class ContentService extends MyGenericServiceCls implements MyGenericService<ContentDto> {
 
     private final ContentRepositoryJpa contentRepositoryJpa;
     private final ModelMapper modelMapper;
@@ -64,6 +65,9 @@ public class ContentService implements MyGenericService<ContentDto> {
     @Override
     public Page<ContentDto> findAllSrv(Integer page, Integer size)
     {
+        page = validatePage(page);
+        size = validateSize(size);
+        //
         return contentRepositoryJpa
                 //.findAllByEnabledIsTrueOrderByOrderNumberAsc(
                 .findAll(
