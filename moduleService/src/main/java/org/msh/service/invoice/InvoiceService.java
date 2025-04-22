@@ -13,8 +13,8 @@ import org.msh.entity.product.SizeEnt;
 import org.msh.entity.user.UserEnt;
 import org.msh.enums.OrderStatus;
 import org.msh.exceptions.MyExc;
-import org.msh.repositoryJpa.order.InvoiceItemRepositoryJpa;
-import org.msh.repositoryJpa.order.InvoiceRepositoryJpa;
+import org.msh.repositoryJpa.invoice.InvoiceItemRepositoryJpa;
+import org.msh.repositoryJpa.invoice.InvoiceRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
 import org.msh.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,6 +171,16 @@ public class InvoiceService implements MyGenericService<InvoiceDto> {
 
 
 
+
+    public List<InvoiceDto> findAllByUserEnt_IdSrv(Long id)
+    {
+        return invoiceRepositoryJpa
+                .findFirstByUserEnt_Id(id)
+                .stream()
+                .map(invoiceMapper::map).toList();
+    }
+
+
     //Note: @Transactional in paymentController
     public InvoiceEnt saveAndCreate(GotoPaymentDto gotoPaymentDto, UserEnt userEnt)
     {
@@ -238,6 +248,7 @@ public class InvoiceService implements MyGenericService<InvoiceDto> {
         //return resDto;
         return entRes;
     }
+
 
 
 }

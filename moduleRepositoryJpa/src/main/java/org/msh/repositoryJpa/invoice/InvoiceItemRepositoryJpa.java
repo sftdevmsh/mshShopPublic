@@ -1,4 +1,4 @@
-package org.msh.repositoryJpa.order;
+package org.msh.repositoryJpa.invoice;
 
 import org.msh.entity.invoice.InvoiceItemEnt;
 import org.springframework.data.jpa.repository.JpaRepository;
