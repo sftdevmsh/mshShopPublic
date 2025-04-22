@@ -1,5 +1,6 @@
 package org.msh.service.site;
 
+import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.msh.dto.site.SliderDto;
 import org.msh.entity.file.FileEnt;
@@ -33,6 +34,7 @@ public class SliderService implements MyGenericService<SliderDto> {
     
     @Override
     public SliderDto findByIdSrv(Long id) {
+        validationModelId(id);
         //
         SliderDto dto = null;
         //
@@ -91,6 +93,7 @@ public class SliderService implements MyGenericService<SliderDto> {
 
     @Override
     public Boolean deleteByIdSrv(Long id) {
+        validationModelId(id);
         sliderRepositoryJpa.deleteById(id);
         return true;
     }
@@ -123,6 +126,15 @@ public class SliderService implements MyGenericService<SliderDto> {
     }
 
 
+    //region private methods for validation
+    @SneakyThrows
+    @Override
+    public void validationModelId(Long id)
+    {
+        if(id == null || id<=0)
+            throw new Exception("Error! validationModelId _ wrong id");
+    }
+
     @Override
     public void validateDto(SliderDto dto, Boolean checkId) throws MyExc {
         if(dto==null)
@@ -140,4 +152,5 @@ public class SliderService implements MyGenericService<SliderDto> {
                 || dto.getImg().getTitle().isEmpty())
             throw new MyExc("validateDto ...");
     }
+    //endregion
 }

@@ -2,6 +2,7 @@ package org.msh.entity.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.msh.entity.invoice.InvoiceEnt;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -50,4 +51,9 @@ public class UserEnt {
             , inverseJoinColumns = @JoinColumn(name = "id_role")
             )
     private Set<RoleEnt> roleEnts;
+
+
+//    @OneToMany
+//    private Set<InvoiceEnt> invoiceEnts;
+
 }

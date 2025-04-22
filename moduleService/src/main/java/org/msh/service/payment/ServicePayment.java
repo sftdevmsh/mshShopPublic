@@ -11,7 +11,7 @@ import org.msh.exceptions.MyExc;
 import org.msh.repositoryJpa.payment.TransactionRepositoryJpa;
 import org.msh.service.invoice.InvoiceService;
 import org.msh.service.payment.zarinpalThirdParty.ZarinPalService;
-import org.msh.service.user.UserInfSrv;
+import org.msh.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class ServicePayment
     //
     private final TransactionRepositoryJpa transactionRepositoryJpa;
     //
-    private final UserInfSrv userService;
+    private final UserService userService;
     private final InvoiceService invoiceService;
     //
     private final ModelMapper modelMapper;
@@ -43,7 +43,7 @@ public class ServicePayment
 
 
     @Autowired
-    public ServicePayment(UserInfSrv userService
+    public ServicePayment(UserService userService
             , TransactionRepositoryJpa transactionRepositoryJpa
                           //, PaymentRepositoryJpa paymentRepositoryJpa
             , ZarinPalService zarinPalService
@@ -67,7 +67,7 @@ public class ServicePayment
         //
         //CustomerEnt customerEnt = customerService.saveAndCreate(gotoPaymentDto); //done in UserInfSrv
         UserEnt userEnt = userService.saveAndCreate(gotoPaymentDto);
-        InvoiceEnt invoiceEnt = invoiceService.saveAndCreate(gotoPaymentDto);
+        InvoiceEnt invoiceEnt = invoiceService.saveAndCreate(gotoPaymentDto,userEnt);
         //
         TransactionEnt transactionEnt = TransactionEnt.builder().build();
         transactionEnt.setUserEnt(userEnt);//with customer inside user

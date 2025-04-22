@@ -2,52 +2,49 @@ package org.msh.controller.panel.site;
 
 import org.msh.config.annotation.MyAutenticationAnnotation;
 import org.msh.controller.panel.myGenerics.MyGenericController;
-import org.msh.dto.site.ContentDto;
+import org.msh.dto.site.SliderDto;
 import org.msh.enums.MyHttpStatus;
 import org.msh.exceptions.MyExc;
-import org.msh.service.site.ContentService;
+import org.msh.service.site.SliderService;
 import org.msh.wrapper.PanelApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/panel/content")
-public class ContentController implements MyGenericController<ContentDto> {
-
-
-    private final ContentService contentService;
+@RequestMapping("/api/panel/slider")
+public class SliderPanelController implements MyGenericController<SliderDto> {
+    private final SliderService sliderService;
 
     @Autowired
-    public ContentController(ContentService contentService) {
-        this.contentService = contentService;
+    public SliderPanelController(SliderService sliderService) {
+        this.sliderService = sliderService;
     }
 
 
-
-    @MyAutenticationAnnotation("content_list , content_info")
+    @MyAutenticationAnnotation("slider_list , slider_info")
     @Override
-    public PanelApiResponseWrapper<ContentDto> findByIdCtrl(Long id) {
+    public PanelApiResponseWrapper<SliderDto> findByIdCtrl(Long id) {
         return PanelApiResponseWrapper
-                .<ContentDto>builder()
-                .tdata(contentService.findByIdSrv(id))
+                .<SliderDto>builder()
+                .tdata(sliderService.findByIdSrv(id))
                 .msg("")
                 .status(MyHttpStatus.Success)
                 .build();
     }
 
-
-    @MyAutenticationAnnotation("content_list")
+    @MyAutenticationAnnotation("slider_list")
     @Override
-    public PanelApiResponseWrapper<List<ContentDto>> findAllCtrl(Integer page, Integer size) {
+    public PanelApiResponseWrapper<List<SliderDto>> findAllCtrl(Integer page, Integer size) {
         {
-            PanelApiResponseWrapper<List<ContentDto>> res;
+            PanelApiResponseWrapper<List<SliderDto>> res;
             try {
-                Page<ContentDto> data = contentService.findAllSrv(page,size);
+                Page<SliderDto> data = sliderService.findAllSrv(page,size);
                 res = PanelApiResponseWrapper
-                        .<List<ContentDto>>builder()
+                        .<List<SliderDto>>builder()
                         .tdata(data.toList())
                         .msg("")
                         .status(MyHttpStatus.Success)
@@ -57,7 +54,7 @@ public class ContentController implements MyGenericController<ContentDto> {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 res = PanelApiResponseWrapper
-                        .<List<ContentDto>>builder()
+                        .<List<SliderDto>>builder()
                         .tdata(null)
                         .msg(e.getMessage())
                         .status(MyHttpStatus.Failed)
@@ -68,34 +65,34 @@ public class ContentController implements MyGenericController<ContentDto> {
     }
 
 
-    @MyAutenticationAnnotation("content_del")
+    @MyAutenticationAnnotation("slider_del")
     @Override
     public PanelApiResponseWrapper<Boolean> deleteByIdCtrl(Long id) {
         return PanelApiResponseWrapper
                 .<Boolean>builder()
-                .tdata(contentService.deleteByIdSrv(id))
+                .tdata(sliderService.deleteByIdSrv(id))
                 .msg("")
                 .status(MyHttpStatus.Success)
                 .build();
     }
 
-    @MyAutenticationAnnotation("content_add")
+    @MyAutenticationAnnotation("slider_add")
     @Override
-    public PanelApiResponseWrapper<ContentDto> addCtrl(ContentDto contentDto) throws MyExc {
+    public PanelApiResponseWrapper<SliderDto> addCtrl(SliderDto sliderDto) throws MyExc {
         return PanelApiResponseWrapper
-                .<ContentDto>builder()
-                .tdata(contentService.addSrv(contentDto))
+                .<SliderDto>builder()
+                .tdata(sliderService.addSrv(sliderDto))
                 .msg("")
                 .status(MyHttpStatus.Success)
                 .build();
     }
 
-    @MyAutenticationAnnotation("content_edit")
+    @MyAutenticationAnnotation("slider_edit")
     @Override
-    public PanelApiResponseWrapper<ContentDto> updateCtrl(ContentDto contentDto) throws MyExc {
+    public PanelApiResponseWrapper<SliderDto> updateCtrl(SliderDto sliderDto) throws MyExc {
         return PanelApiResponseWrapper
-                .<ContentDto>builder()
-                .tdata(contentService.updateSrv(contentDto))
+                .<SliderDto>builder()
+                .tdata(sliderService.updateSrv(sliderDto))
                 .msg("")
                 .status(MyHttpStatus.Success)
                 .build();

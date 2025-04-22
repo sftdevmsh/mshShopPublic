@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserInfSrv implements MyGenericService<UserDto> {
+public class UserService implements MyGenericService<UserDto> {
 
     private final UserRepositoryJpa userRepositoryJpa;
     private final CustomerRepositoryJpa customerRepositoryJpa;
@@ -42,13 +42,13 @@ public class UserInfSrv implements MyGenericService<UserDto> {
 
 
     @Autowired
-    public UserInfSrv(UserRepositoryJpa userRepositoryJpa
+    public UserService(UserRepositoryJpa userRepositoryJpa
             , CustomerRepositoryJpa customerRepositoryJpa
             , PermissionRepositoryJpa permissionRepositoryJpa
             , RoleRepositoryJpa roleRepositoryJpa
             , UserMapper userMapper
             , MyJwtUtil myJwtUtil,
-                      ModelMapper modelMapper) {
+                       ModelMapper modelMapper) {
         this.userRepositoryJpa = userRepositoryJpa;
         this.customerRepositoryJpa = customerRepositoryJpa;
         this.roleRepositoryJpa = roleRepositoryJpa;
@@ -63,6 +63,7 @@ public class UserInfSrv implements MyGenericService<UserDto> {
     @SneakyThrows
     public UserDto findByIdSrv(Long id)
     {
+        validationModelId(id);
         UserEnt ent = userRepositoryJpa.findById(id).orElseThrow(NotFoundExc::new);
         return userMapper.map(ent);
     }
@@ -91,6 +92,7 @@ public class UserInfSrv implements MyGenericService<UserDto> {
 
     @Override
     public Boolean deleteByIdSrv(Long id) {
+        validationModelId(id);
         userRepositoryJpa.deleteById(id);
         return true;
     }
@@ -101,7 +103,8 @@ public class UserInfSrv implements MyGenericService<UserDto> {
         UserEnt userEnt = userMapper.map(dto);
         UserEnt userEntDb = userRepositoryJpa.findById(dto.getId()).orElseThrow();
         //
-        //todo: complete filling with factory
+        //todo: update pass with another process, with repeat password field
+        //todo: update email, or mobile  with another process, after verification
         userEntDb.setCustomerEnt(userEnt.getCustomerEnt());
         userEntDb.setRoleEnts(userEnt.getRoleEnts());
         userEntDb.setRegisterTime(userEnt.getRegisterTime());
@@ -110,6 +113,15 @@ public class UserInfSrv implements MyGenericService<UserDto> {
         userEntDb.setEnabled(dto.getEnabled());
         //
         return userMapper.map(userRepositoryJpa.save(userEnt));
+    }
+
+    //region private methods for validation
+    @SneakyThrows
+    @Override
+    public void validationModelId(Long id)
+    {
+        if(id == null || id<=0)
+            throw new Exception("Error! validationModelId _ wrong id");
     }
 
     @Override
@@ -124,7 +136,7 @@ public class UserInfSrv implements MyGenericService<UserDto> {
             throw new MyExc("id validation error");
     }
     //endregion
-
+    //endregion
 
 
     public LimitedUserDto login(LoginDto dto) throws NotFoundExc {
@@ -239,5 +251,10 @@ public class UserInfSrv implements MyGenericService<UserDto> {
         return ue;
     }
     //
+
+
+
+
+
 
 }

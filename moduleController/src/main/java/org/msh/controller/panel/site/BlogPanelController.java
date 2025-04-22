@@ -15,13 +15,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/panel/blog")
-public class BlogController implements MyGenericController<BlogDto> {
+public class BlogPanelController implements MyGenericController<BlogDto> {
 
 
     private final BlogService blogService;
 
     @Autowired
-    public BlogController(BlogService blogService) {
+    public BlogPanelController(BlogService blogService) {
         this.blogService = blogService;
     }
 

@@ -2,6 +2,7 @@ package org.msh.entity.invoice;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.msh.entity.user.UserEnt;
 import org.msh.enums.OrderStatus;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,9 @@ public class InvoiceEnt {
 
     @OneToMany(mappedBy = "invoiceEnt")
     private Set<InvoiceItemEnt> invoiceItemEnts;
+
+    @ManyToOne
+    private UserEnt userEnt;
 
 
 }

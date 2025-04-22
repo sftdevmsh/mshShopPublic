@@ -2,6 +2,7 @@ package org.msh.dto.invoice;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.msh.entity.user.UserEnt;
 import org.msh.enums.OrderStatus;
 
 import java.time.LocalDateTime;
@@ -26,5 +27,7 @@ public class InvoiceDto {
     private Long totalAmount;//totalAmount
 
     private Set<InvoiceItemDto> invoiceItemDtos;
+
+    private UserEnt userEnt;
 
 }

@@ -129,18 +129,5 @@ public class ProductController {
     }
 
 
-    //region category of product
-    @GetMapping("/category")
-    public ApiResponseWrapper<List<ProductCategoryDto>> getAllCategoriesCtrl()
-    {
-        List<ProductCategoryDto> lst = productService.findAllCategoriesSrv();
-        return ApiResponseWrapper
-                .<List<ProductCategoryDto>>builder()
-                .tdata(lst)
-                .status(MyHttpStatus.Success)
-                .msg("")
-                .build();
-    }
-    //endregion
 
 }

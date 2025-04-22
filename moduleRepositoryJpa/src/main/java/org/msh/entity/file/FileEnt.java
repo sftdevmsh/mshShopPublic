@@ -3,6 +3,9 @@ package org.msh.entity.file;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity(name = "FileEnt")
 @Table(name = "tbl_file")
 @Getter
@@ -22,5 +25,10 @@ public class FileEnt {
 
     @Column(length = 1000, nullable = false)
     private String path;
+
+    private String uuid;
+    private String extension;
+    private Long size;
+    private LocalDateTime createDate;
 
 }

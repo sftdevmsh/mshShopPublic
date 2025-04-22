@@ -3,6 +3,8 @@ package org.msh.dto.file;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -15,5 +17,11 @@ public class FileDto {
     private String title;
 
     private String path;
+
+    private String uuid;
+    private String extension;
+    private Long size;
+    //private LocalDateTime createDate;
+
 
 }

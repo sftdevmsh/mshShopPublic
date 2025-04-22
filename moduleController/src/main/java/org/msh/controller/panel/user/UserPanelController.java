@@ -1,9 +1,9 @@
-package org.msh.controller.panel;
+package org.msh.controller.panel.user;
 
 import org.msh.controller.panel.myGenerics.MyGenericController;
 import org.msh.enums.MyHttpStatus;
 import org.msh.exceptions.MyExc;
-import org.msh.service.user.UserInfSrv;
+import org.msh.service.user.UserService;
 import org.msh.dto.user.UserDto;
 import org.msh.wrapper.PanelApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +17,11 @@ import java.util.List;
 @RequestMapping("/api/panel/user/")
 public class UserPanelController implements MyGenericController<UserDto> {
 
-    private final UserInfSrv userService;
+    private final UserService userService;
     private final RestClient.Builder builder;
 
     @Autowired
-    public UserPanelController(UserInfSrv userService, RestClient.Builder builder) {
+    public UserPanelController(UserService userService, RestClient.Builder builder) {
         this.userService = userService;
         this.builder = builder;
     }

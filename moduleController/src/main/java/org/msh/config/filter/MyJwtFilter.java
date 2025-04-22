@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.msh.dto.user.UserDto;
-import org.msh.service.user.UserInfSrv;
+import org.msh.service.user.UserService;
 import org.msh.util.MyJwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,12 +15,12 @@ import java.io.IOException;
 public class MyJwtFilter implements Filter {
 
     private final MyJwtUtil myJwtUtil;
-    private final UserInfSrv userService;
+    private final UserService userService;
     public static final String Attr_CURRENT_USER = "Attr_CURRENT_USER" ;
 
 
     @Autowired
-    public MyJwtFilter(MyJwtUtil myJwtUtil, UserInfSrv userService) {
+    public MyJwtFilter(MyJwtUtil myJwtUtil, UserService userService) {
         this.myJwtUtil = myJwtUtil;
         this.userService = userService;
     }

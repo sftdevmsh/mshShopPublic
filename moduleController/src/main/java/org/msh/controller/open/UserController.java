@@ -6,7 +6,7 @@ import org.msh.wrapper.ApiResponseWrapper;
 import org.msh.dto.user.LimitedUserDto;
 import org.msh.dto.user.LoginDto;
 import org.msh.dto.user.UserDto;
-import org.msh.service.user.UserInfSrv;
+import org.msh.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController {
 
-    UserInfSrv userService;
+    UserService userService;
 
     @Autowired
-    public UserController(UserInfSrv userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
