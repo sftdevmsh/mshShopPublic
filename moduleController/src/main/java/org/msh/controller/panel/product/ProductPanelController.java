@@ -43,7 +43,7 @@ public class ProductPanelController implements MyGenericController<ProductDto> {
 
 
 
-    @MyAutenticationAnnotation("product_list , product_info")
+    @MyAutenticationAnnotation("product_lst , product_inf")
     @Override
     public PanelApiResponseWrapper<ProductDto> findByIdCtrl(Long id) {
         return  PanelApiResponseWrapper
@@ -54,7 +54,7 @@ public class ProductPanelController implements MyGenericController<ProductDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("product_list")
+    @MyAutenticationAnnotation("product_lst")
     @Override
     public PanelApiResponseWrapper<List<ProductDto>> findAllCtrl(Integer page, Integer size) {
         return  PanelApiResponseWrapper
@@ -87,7 +87,7 @@ public class ProductPanelController implements MyGenericController<ProductDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("product_edit")
+    @MyAutenticationAnnotation("product_upd")
     @Override
     public PanelApiResponseWrapper<ProductDto> updateCtrl(ProductDto productDto) throws MyExc {
         return  PanelApiResponseWrapper
@@ -103,7 +103,7 @@ public class ProductPanelController implements MyGenericController<ProductDto> {
 
 
 
-    @MyAutenticationAnnotation("product_list")
+    @MyAutenticationAnnotation("product_lst")
     @GetMapping("get/category/{cid}")
     public PanelApiResponseWrapper<List<ProductDto>> findAllByProductCategoryEnt_IdCtrl(
             @PathVariable("cid") Long cid

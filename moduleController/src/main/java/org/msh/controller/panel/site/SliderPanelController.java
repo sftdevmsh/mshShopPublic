@@ -25,7 +25,7 @@ public class SliderPanelController implements MyGenericController<SliderDto> {
     }
 
 
-    @MyAutenticationAnnotation("slider_list , slider_info")
+    @MyAutenticationAnnotation("slider_lst , slider_info")
     @Override
     public PanelApiResponseWrapper<SliderDto> findByIdCtrl(Long id) {
         return PanelApiResponseWrapper
@@ -36,7 +36,7 @@ public class SliderPanelController implements MyGenericController<SliderDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("slider_list")
+    @MyAutenticationAnnotation("slider_lst")
     @Override
     public PanelApiResponseWrapper<List<SliderDto>> findAllCtrl(Integer page, Integer size) {
         {
@@ -87,7 +87,7 @@ public class SliderPanelController implements MyGenericController<SliderDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("slider_edit")
+    @MyAutenticationAnnotation("slider_upd")
     @Override
     public PanelApiResponseWrapper<SliderDto> updateCtrl(SliderDto sliderDto) throws MyExc {
         return PanelApiResponseWrapper

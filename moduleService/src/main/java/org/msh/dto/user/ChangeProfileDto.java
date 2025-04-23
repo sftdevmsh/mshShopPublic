@@ -10,21 +10,16 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LimitedUserDto {
+public class ChangeProfileDto {
 
-    private Long Id;
+    private String mobile;
+    private String email;
 
-    private String username;
 
     private String firstName;
     private String lastName;
-
-    private String jwtToken;
-
-
-    private String oldPass;
-
-    private String newPass;
-
+    private String tel;
+    private String address;
+    private String postalCode;
 
 }

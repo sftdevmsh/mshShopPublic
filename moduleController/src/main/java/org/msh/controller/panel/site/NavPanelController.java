@@ -26,7 +26,7 @@ public class NavPanelController implements MyGenericController<NavDto> {
 
 
 
-    @MyAutenticationAnnotation("nav_list , nav_info")
+    @MyAutenticationAnnotation("nav_lst , nav_inf")
     @Override
     public PanelApiResponseWrapper<NavDto> findByIdCtrl(Long id) {
         return PanelApiResponseWrapper
@@ -37,7 +37,7 @@ public class NavPanelController implements MyGenericController<NavDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("nav_list")
+    @MyAutenticationAnnotation("nav_lst")
     @Override
     public PanelApiResponseWrapper<List<NavDto>> findAllCtrl(Integer page, Integer size) {
         {
@@ -88,7 +88,7 @@ public class NavPanelController implements MyGenericController<NavDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("nav_edit")
+    @MyAutenticationAnnotation("nav_upd")
     @Override
     public PanelApiResponseWrapper<NavDto> updateCtrl(NavDto navDto) throws MyExc {
         return PanelApiResponseWrapper

@@ -27,7 +27,7 @@ public class InvoicePanelController implements MyGenericController<InvoiceDto> {
     }
 
 
-    @MyAutenticationAnnotation("invoice_list , invoice_info")
+    @MyAutenticationAnnotation("invoice_lst , invoice_inf")
     @Override
     public PanelApiResponseWrapper<InvoiceDto> findByIdCtrl(Long id) {
         return PanelApiResponseWrapper
@@ -38,7 +38,7 @@ public class InvoicePanelController implements MyGenericController<InvoiceDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("invoice_list")
+    @MyAutenticationAnnotation("invoice_lst")
     @Override
     public PanelApiResponseWrapper<List<InvoiceDto>> findAllCtrl(Integer page, Integer size) {
         {
@@ -90,7 +90,7 @@ public class InvoicePanelController implements MyGenericController<InvoiceDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("invoice_edit")
+    @MyAutenticationAnnotation("invoice_upd")
     @Override
     public PanelApiResponseWrapper<InvoiceDto> updateCtrl(InvoiceDto invoiceDto) throws MyExc {
         return PanelApiResponseWrapper
@@ -107,7 +107,7 @@ public class InvoicePanelController implements MyGenericController<InvoiceDto> {
 
 
 
-    @MyAutenticationAnnotation("invoice_list , invoice_info")
+    @MyAutenticationAnnotation("invoice_lst , invoice_inf")
     @GetMapping("/get/user/{uid}")
     public PanelApiResponseWrapper<List<InvoiceDto>> findByUserEnt_IdCtrl(@PathVariable("uid") Long uid) {
         return PanelApiResponseWrapper

@@ -30,7 +30,7 @@ public class BlogPanelController implements MyGenericController<BlogDto> {
 
 
 
-    @MyAutenticationAnnotation("blog_list , blog_info")
+    @MyAutenticationAnnotation("blog_lst , blog_inf")
     @Override
     public PanelApiResponseWrapper<BlogDto> findByIdCtrl(Long id) {
         return PanelApiResponseWrapper
@@ -41,7 +41,7 @@ public class BlogPanelController implements MyGenericController<BlogDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("blog_list")
+    @MyAutenticationAnnotation("blog_lst")
     @Override
     public PanelApiResponseWrapper<List<BlogDto>> findAllCtrl(Integer page, Integer size) {
         {
@@ -92,7 +92,7 @@ public class BlogPanelController implements MyGenericController<BlogDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("blog_edit")
+    @MyAutenticationAnnotation("blog_upd")
     @Override
     public PanelApiResponseWrapper<BlogDto> updateCtrl(BlogDto blogDto) throws MyExc {
         return PanelApiResponseWrapper

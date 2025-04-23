@@ -27,7 +27,7 @@ public class ContentPanelController implements MyGenericController<ContentDto> {
 
 
 
-    @MyAutenticationAnnotation("content_list , content_info")
+    @MyAutenticationAnnotation("content_lst , content_inf")
     @Override
     public PanelApiResponseWrapper<ContentDto> findByIdCtrl(Long id) {
         return PanelApiResponseWrapper
@@ -39,7 +39,7 @@ public class ContentPanelController implements MyGenericController<ContentDto> {
     }
 
 
-    @MyAutenticationAnnotation("content_list")
+    @MyAutenticationAnnotation("content_lst")
     @Override
     public PanelApiResponseWrapper<List<ContentDto>> findAllCtrl(Integer page, Integer size) {
         {
@@ -90,7 +90,7 @@ public class ContentPanelController implements MyGenericController<ContentDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("content_edit")
+    @MyAutenticationAnnotation("content_upd")
     @Override
     public PanelApiResponseWrapper<ContentDto> updateCtrl(ContentDto contentDto) throws MyExc {
         return PanelApiResponseWrapper

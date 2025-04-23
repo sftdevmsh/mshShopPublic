@@ -3,15 +3,12 @@ package org.msh.service.user;
 import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.msh.dto.payment.GotoPaymentDto;
-import org.msh.dto.user.CustomerDto;
+import org.msh.dto.user.*;
 import org.msh.entity.user.CustomerEnt;
 import org.msh.entity.user.RoleEnt;
 import org.msh.exceptions.MyExc;
 import org.msh.exceptions.NotFoundExc;
 import org.msh.config.mapper.user.UserMapper;
-import org.msh.dto.user.LimitedUserDto;
-import org.msh.dto.user.LoginDto;
-import org.msh.dto.user.UserDto;
 import org.msh.entity.user.UserEnt;
 import org.msh.repositoryJpa.user.CustomerRepositoryJpa;
 import org.msh.repositoryJpa.user.PermissionRepositoryJpa;
@@ -107,14 +104,12 @@ public class UserService extends MyGenericServiceCls implements MyGenericService
         UserEnt userEnt = userMapper.map(dto);
         UserEnt userEntDb = userRepositoryJpa.findById(dto.getId()).orElseThrow();
         //
-        //todo: update pass with another process, with repeat password field
-        //todo: update email, or mobile  with another process, after verification
         userEntDb.setCustomerEnt(userEnt.getCustomerEnt());
         userEntDb.setRoleEnts(userEnt.getRoleEnts());
         userEntDb.setRegisterTime(userEnt.getRegisterTime());
-        userEntDb.setPassword(userEnt.getPassword());
-        userEntDb.setEmail(userEnt.getEmail());
-        userEntDb.setEnabled(dto.getEnabled());
+        //todo: update email, or mobile  with another process, after verification
+        //userEntDb.setEmail(userEnt.getEmail());
+        //userEntDb.setEnabled(dto.getEnabled());
         //
         return userMapper.map(userRepositoryJpa.save(userEnt));
     }
@@ -138,10 +133,36 @@ public class UserService extends MyGenericServiceCls implements MyGenericService
             throw new MyExc("empty customer firstname");
         if(checkId && (userDto.getId() == null || userDto.getId()<1))
             throw new MyExc("id validation error");
+        validationUserPassword(userDto.getPassword());
     }
     //endregion
     //endregion
 
+
+
+
+
+
+    public void validationUserPassword(String pass) throws MyExc {
+        if(pass == null || pass.isEmpty())
+            throw new MyExc("password is empty");
+        if(pass.length()<8)
+            throw new MyExc("password length is small");
+        //
+        /*
+            ^                 # start-of-string
+            (?=.*[0-9])       # a digit must occur at least once
+            (?=.*[a-z])       # a lower case letter must occur at least once
+            (?=.*[A-Z])       # an upper case letter must occur at least once
+            (?=.*[@#$%^&+=])  # a special character must occur at least once
+            (?=\S+$)          # no whitespace allowed in the entire string
+            .{8,}             # anything, at least eight places though
+            $                 # end-of-string
+        */
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
+        if(!pass.matches(pattern))
+            throw new MyExc("password length is small");
+    }
 
     public LimitedUserDto login(LoginDto dto) throws NotFoundExc {
         String username = dto.getUsername();
@@ -251,14 +272,67 @@ public class UserService extends MyGenericServiceCls implements MyGenericService
         //
         ue = userRepositoryJpa.save(ue);// id after saving
         //
-//        return userMapper.map(ue);
         return ue;
     }
-    //
 
 
+    public UserDto changePassByAdminSrv(UserDto dto) throws MyExc {
+        //
+        validateDto(dto,true);//includes id and pass validation
+        //
+        UserEnt dbEnt = userRepositoryJpa.findById(dto.getId()).orElseThrow();
+        //
+        String newPass = MyHashUtil.encrypt(dto.getPassword());
+        dbEnt.setPassword(newPass);
+        //
+        return userMapper.map(userRepositoryJpa.save(dbEnt));
+    }
 
 
+    public UserDto changePassByUserSrv(UserDto dto , ChangePassDto cpDto) throws MyExc {
+        if(!cpDto.getNewPass().equals(cpDto.getNewPass2()))
+            throw new MyExc("incorrect new password match");
+        //
+        validationUserPassword(cpDto.getNewPass());
+        //
+        validationModelId(dto.getId());
+        UserEnt dbEnt = userRepositoryJpa.findById(dto.getId()).orElseThrow();
+        //
+        String oldPass = MyHashUtil.encrypt(cpDto.getOldPass());
+        if(!oldPass.equals(dbEnt.getPassword()))
+            throw new MyExc("incorrect old password");
+        //
+        String newPass = MyHashUtil.encrypt(cpDto.getNewPass());
+        dbEnt.setPassword(newPass);
+        //
+        return userMapper.map(userRepositoryJpa.save(dbEnt));
+    }
 
+    public UserDto changeProfileSrv(UserDto dto , ChangeProfileDto cpDto) throws MyExc {
+        validationModelId(dto.getId());
+        UserEnt dbEnt = userRepositoryJpa.findById(dto.getId()).orElseThrow();
+        //
+        dbEnt.setEmail(Optional.ofNullable(cpDto.getEmail()).orElse(dbEnt.getEmail()));
+        dbEnt.setMobile(Optional.ofNullable(cpDto.getMobile()).orElse(dbEnt.getMobile()));
+        dbEnt.getCustomerEnt()
+                .setFirstName(Optional.ofNullable(cpDto.getFirstName())
+                .orElse(dbEnt.getCustomerEnt().getFirstName()));
+        dbEnt.getCustomerEnt()
+                .setLastName(Optional.ofNullable(cpDto.getLastName())
+                .orElse(dbEnt.getCustomerEnt().getLastName()));
+        dbEnt.getCustomerEnt()
+                .setPostalCode(Optional.ofNullable(cpDto.getPostalCode())
+                .orElse(dbEnt.getCustomerEnt().getPostalCode()));
+        dbEnt.getCustomerEnt()
+                .setAddress(Optional.ofNullable(cpDto.getAddress())
+                .orElse(dbEnt.getCustomerEnt().getAddress()));
+        dbEnt.getCustomerEnt()
+                .setTel(Optional.ofNullable(cpDto.getTel())
+                .orElse(dbEnt.getCustomerEnt().getTel()));
+        //
+        return userMapper.map(userRepositoryJpa.save(dbEnt));
+    }
+
+    //todo: validate email,mobile , ... before doing update/save
 
 }

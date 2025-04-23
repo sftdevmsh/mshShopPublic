@@ -43,7 +43,7 @@ public class ProductCategoryPanelController
 
 
 
-    @MyAutenticationAnnotation("category_list , category_info")
+    @MyAutenticationAnnotation("category_lst , category_inf")
     @Override
     public PanelApiResponseWrapper<ProductCategoryDto> findByIdCtrl(Long id) {
         return  PanelApiResponseWrapper
@@ -54,7 +54,7 @@ public class ProductCategoryPanelController
                 .build();
     }
 
-    @MyAutenticationAnnotation("category_list")
+    @MyAutenticationAnnotation("category_lst")
     @Override
     public PanelApiResponseWrapper<List<ProductCategoryDto>> findAllCtrl(Integer page, Integer size) {
         return  PanelApiResponseWrapper
@@ -65,7 +65,7 @@ public class ProductCategoryPanelController
                 .build();
     }
     //
-    @MyAutenticationAnnotation("category_list")
+    @MyAutenticationAnnotation("category_lst")
     @GetMapping("/get/enabled")
     public PanelApiResponseWrapper<List<ProductCategoryDto>> findAllEnablesCtrl(Integer page, Integer size) {
         return  PanelApiResponseWrapper
@@ -98,7 +98,7 @@ public class ProductCategoryPanelController
                 .build();
     }
 
-    @MyAutenticationAnnotation("category_edit")
+    @MyAutenticationAnnotation("category_upd")
     @Override
     public PanelApiResponseWrapper<ProductCategoryDto> updateCtrl(ProductCategoryDto productCategoryDto) throws MyExc {
         return  PanelApiResponseWrapper

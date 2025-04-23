@@ -25,7 +25,7 @@ public class FilePanelController implements MyGenericController<FileDto> {
     }
 
 
-    @MyAutenticationAnnotation("file_list , file_info")
+    @MyAutenticationAnnotation("file_lst , file_inf")
     @Override
     public PanelApiResponseWrapper<FileDto> findByIdCtrl(Long id) {
         return PanelApiResponseWrapper
@@ -36,7 +36,7 @@ public class FilePanelController implements MyGenericController<FileDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("file_list")
+    @MyAutenticationAnnotation("file_lst")
     @Override
     public PanelApiResponseWrapper<List<FileDto>> findAllCtrl(Integer page, Integer size) {
         {
@@ -88,7 +88,7 @@ public class FilePanelController implements MyGenericController<FileDto> {
                 .build();
     }
 
-    @MyAutenticationAnnotation("file_edit")
+    @MyAutenticationAnnotation("file_upd")
     @Override
     public PanelApiResponseWrapper<FileDto> updateCtrl(FileDto fileDto) throws MyExc {
         return PanelApiResponseWrapper
@@ -102,7 +102,7 @@ public class FilePanelController implements MyGenericController<FileDto> {
 
 
     //todo: implement upload
-    @MyAutenticationAnnotation("file_add")
+    @MyAutenticationAnnotation("file_upl")
     @PostMapping("/upload")
     public PanelApiResponseWrapper<FileDto> uploadCtrl(@RequestParam("file") MultipartFile file) throws MyExc {
         return PanelApiResponseWrapper

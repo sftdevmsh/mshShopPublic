@@ -42,7 +42,7 @@ public class SizePanelController
 
 
 
-    @MyAutenticationAnnotation("size_list , size_info")
+    @MyAutenticationAnnotation("size_lst , size_inf")
     @Override
     public PanelApiResponseWrapper<SizeDto> findByIdCtrl(Long id) {
         return  PanelApiResponseWrapper
@@ -53,7 +53,7 @@ public class SizePanelController
                 .build();
     }
 
-    @MyAutenticationAnnotation("size_list")
+    @MyAutenticationAnnotation("size_lst")
     @Override
     public PanelApiResponseWrapper<List<SizeDto>> findAllCtrl(Integer page, Integer size) {
         return  PanelApiResponseWrapper
@@ -86,7 +86,7 @@ public class SizePanelController
                 .build();
     }
 
-    @MyAutenticationAnnotation("size_edit")
+    @MyAutenticationAnnotation("size_upd")
     @Override
     public PanelApiResponseWrapper<SizeDto> updateCtrl(SizeDto sizeDto) throws MyExc {
         return  PanelApiResponseWrapper

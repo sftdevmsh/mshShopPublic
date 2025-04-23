@@ -42,7 +42,7 @@ public class ColorPanelController
 
 
 
-    @MyAutenticationAnnotation("color_list , color_info")
+    @MyAutenticationAnnotation("color_lst , color_inf")
     @Override
     public PanelApiResponseWrapper<ColorDto> findByIdCtrl(Long id) {
         return  PanelApiResponseWrapper
@@ -53,7 +53,7 @@ public class ColorPanelController
                 .build();
     }
 
-    @MyAutenticationAnnotation("color_list")
+    @MyAutenticationAnnotation("color_lst")
     @Override
     public PanelApiResponseWrapper<List<ColorDto>> findAllCtrl(Integer page, Integer size) {
         return  PanelApiResponseWrapper
@@ -86,7 +86,7 @@ public class ColorPanelController
                 .build();
     }
 
-    @MyAutenticationAnnotation("color_edit")
+    @MyAutenticationAnnotation("color_upd")
     @Override
     public PanelApiResponseWrapper<ColorDto> updateCtrl(ColorDto colorDto) throws MyExc {
         return  PanelApiResponseWrapper
