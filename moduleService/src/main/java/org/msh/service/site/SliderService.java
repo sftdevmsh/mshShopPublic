@@ -156,7 +156,7 @@ public class SliderService extends MyGenericServiceCls implements MyGenericServi
                 || dto.getImg().getId() == null
                 || dto.getImg().getId() < 1
                 || dto.getImg().getPath().isEmpty()
-                || dto.getImg().getTitle().isEmpty())
+                || dto.getImg().getName().isEmpty())
             throw new MyExc("validateDto ...");
     }
     //endregion

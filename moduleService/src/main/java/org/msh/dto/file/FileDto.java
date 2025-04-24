@@ -14,7 +14,7 @@ public class FileDto {
 
     private Long id;
 
-    private String title;
+    private String name;
 
     private String path;
 

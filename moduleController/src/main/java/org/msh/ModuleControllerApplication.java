@@ -1,5 +1,7 @@
 package org.msh;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import jakarta.persistence.Entity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 //@EnableJpaRepositories(basePackages = "org.msh.repositoryJpa")
 @ComponentScan(basePackages = "org.msh.*")
 @SpringBootApplication
+@OpenAPIDefinition(info = @Info(title = "online shop", version = "1.0" , description = "java/spring and mysql"))
 public class ModuleControllerApplication {
 
     public static void main(String[] args) {

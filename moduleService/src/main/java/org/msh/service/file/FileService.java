@@ -3,7 +3,6 @@ package org.msh.service.file;
 import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.msh.dto.file.FileDto;
-import org.msh.dto.file.FileDto;
 import org.msh.entity.file.FileEnt;
 import org.msh.exceptions.MyExc;
 import org.msh.exceptions.NotFoundExc;
@@ -88,7 +87,7 @@ public class FileService implements MyGenericService<FileDto> {
         FileEnt fileEntDb = fileRepositoryJpa.findById(dto.getId()).orElseThrow();
         //
         fileEntDb.setPath(fileEnt.getPath());
-        fileEntDb.setTitle(fileEnt.getTitle());
+        fileEntDb.setName(fileEnt.getName());
         //
         return modelMapper.map(fileRepositoryJpa.save(fileEnt) ,  FileDto.class);
     }
@@ -106,7 +105,7 @@ public class FileService implements MyGenericService<FileDto> {
     public void validateDto(FileDto fileDto, Boolean checkId) throws MyExc {
         if(fileDto.getPath()==null || fileDto.getPath().isEmpty())
             throw new MyExc("empty filename");
-        if(fileDto.getTitle()==null || fileDto.getTitle().isEmpty())
+        if(fileDto.getName()==null || fileDto.getName().isEmpty())
             throw new MyExc("empty customer firstname");
     }
 
@@ -142,7 +141,7 @@ public class FileService implements MyGenericService<FileDto> {
                 FileEnt ent = FileEnt
                         .builder()
                         .createDate(LocalDateTime.now())
-                        .title(fileName)
+                        .name(fileName)
                         .extension(extensionName)
                         .path(fullName)
                         .uuid(UUID.randomUUID().toString())
@@ -162,5 +161,9 @@ public class FileService implements MyGenericService<FileDto> {
     private String changeFileNameStrToSave(String fullName) {
         //todo: change fullNameStrToSave appropriately
         return "AA"+fullName;
+    }
+
+    public FileDto findByNameSrv(String name) {
+        return modelMapper.map(fileRepositoryJpa.findFirstByNameEqualsIgnoreCase(name), FileDto.class);
     }
 }

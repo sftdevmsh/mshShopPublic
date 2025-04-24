@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FileRepositoryJpa extends JpaRepository<FileEnt, Long>
 {
+    FileEnt findFirstByNameEqualsIgnoreCase(String name);
 }

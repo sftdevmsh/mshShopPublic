@@ -21,7 +21,7 @@ public class FileEnt {
     private Long id;
 
     @Column(length = 1000, nullable = false)
-    private String title;
+    private String name;
 
     @Column(length = 1000, nullable = false)
     private String path;

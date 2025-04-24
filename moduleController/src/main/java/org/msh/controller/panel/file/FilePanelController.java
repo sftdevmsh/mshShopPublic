@@ -25,7 +25,7 @@ public class FilePanelController implements MyGenericController<FileDto> {
     }
 
 
-    @MyAutenticationAnnotation("file_lst , file_inf")
+    @MyAutenticationAnnotation("file_inf")
     @Override
     public PanelApiResponseWrapper<FileDto> findByIdCtrl(Long id) {
         return PanelApiResponseWrapper
@@ -67,7 +67,7 @@ public class FilePanelController implements MyGenericController<FileDto> {
 
     @MyAutenticationAnnotation("file_del")
     @Override
-    public PanelApiResponseWrapper<Boolean> deleteByIdCtrl(Long id) {
+    public PanelApiResponseWrapper<Boolean> deleteByIdCtrl(@PathVariable("id") Long id) {
         return PanelApiResponseWrapper
                 .<Boolean>builder()
                 .tdata(fileService.deleteByIdSrv(id))
@@ -112,5 +112,22 @@ public class FilePanelController implements MyGenericController<FileDto> {
                 .status(MyHttpStatus.Success)
                 .build();
     }
+
+
+
+
+
+
+    @MyAutenticationAnnotation("file_inf")
+    @GetMapping("/get/name/{name}")
+    public PanelApiResponseWrapper<FileDto> findByNameCtrl(@PathVariable("name") String name) {
+        return PanelApiResponseWrapper
+                .<FileDto>builder()
+                .tdata(fileService.findByNameSrv(name))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
+
 
 }
