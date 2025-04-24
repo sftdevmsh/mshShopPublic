@@ -164,6 +164,14 @@ public class FileService implements MyGenericService<FileDto> {
     }
 
     public FileDto findByNameSrv(String name) {
-        return modelMapper.map(fileRepositoryJpa.findFirstByNameEqualsIgnoreCase(name), FileDto.class);
+        FileEnt ent = null;
+        try {
+            ent = fileRepositoryJpa.findFirstByNameEqualsIgnoreCase(name).orElseThrow();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return modelMapper.map(ent, FileDto.class);
     }
 }
