@@ -11,7 +11,7 @@ import java.util.Enumeration;
 
 @RestController
 @RequestMapping("/")
-public class ServletController {
+public class ExampleServletController {
 
     //http://localhost:8080/cookie
     @GetMapping("cookie")

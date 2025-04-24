@@ -13,6 +13,7 @@ import org.msh.dto.user.UserDto;
 import org.msh.wrapper.PanelApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +47,8 @@ public class UserPanelController implements MyGenericController<UserDto> {
 //    }
 
     @MyAutenticationAnnotation("user_inf")
+    //@RequestMapping(value = "all",method = RequestMethod.GET)
+    //@GetMapping("/all")
     @Override
     public PanelApiResponseWrapper<UserDto> findByIdCtrl(Long id) {
         return  PanelApiResponseWrapper

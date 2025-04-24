@@ -70,29 +70,15 @@ public class ProductController {
 //    }
     //endregion
 
-    //http://localhost:8080/api/product/1?page=1
-    //Note: to use the same path "" we use @PathVariable
-    @GetMapping("{id}")
-    public ApiResponseWrapper<ProductDto> getByIdCtrl(@PathVariable(value = "id") Long id
-                                , @RequestParam(value = "page", required = false) Integer pageNum)
-    {
-        System.out.println("pageNum : "+pageNum);
-
-        return ApiResponseWrapper
-                .<ProductDto>builder()
-                .tdata(productService.findByIdSrv(id))
-                .status(MyHttpStatus.Success)
-                .msg("")
-                .build();
-    }
-
     //http://localhost:8080/api/product/sku/1?page=1
     //Note: to use the same path "" we use @PathVariable
     @GetMapping("brand/{brand}")
-    public ApiResponseWrapper<List<ProductDto>> findByBrandLikeCtrl(@PathVariable(value = "brand") String brand
-            , @RequestParam(value = "page", required = false) Integer pageNum)
+    public ApiResponseWrapper<List<ProductDto>> findByBrandLikeCtrl(
+            @PathVariable(value = "brand") String brand
+            , @RequestParam(value = "page", required = false) Integer page
+            , @RequestParam(value = "size", required = false) Integer size)
     {
-        System.out.println("pageNum : "+pageNum);
+        System.out.println("pageNum : "+page);
 
         return ApiResponseWrapper
                 .<List<ProductDto>>builder()
@@ -101,33 +87,6 @@ public class ProductController {
                 .msg("")
                 .build();
     }
-
-
-    @PostMapping("")
-    public ApiResponseWrapper<ProductDto> addCtrl(@RequestBody ProductDto dto)
-    {
-        ApiResponseWrapper<ProductDto> apiRes;
-        try {
-            productService.addSrv(dto);
-            apiRes = ApiResponseWrapper
-                    .<ProductDto>builder()
-                    .tdata(null)
-                    .status(MyHttpStatus.Success)
-                    .msg("")
-                    .build();
-        }
-        catch (Exception e)
-        {
-            apiRes = ApiResponseWrapper
-                    .<ProductDto>builder()
-                    .tdata(null)
-                    .status(MyHttpStatus.Failed)
-                    .msg(e.getMessage())
-                    .build();
-        }
-        return apiRes;
-    }
-
 
 
 }
