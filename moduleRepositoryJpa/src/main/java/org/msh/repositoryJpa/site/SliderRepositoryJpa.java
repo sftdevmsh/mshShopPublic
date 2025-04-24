@@ -24,4 +24,8 @@ public interface SliderRepositoryJpa extends JpaRepository<SliderEnt, Long>
                 limit 1
         """)
     Integer myFindLastOrderNumber();
+
+    Optional<SliderEnt> findFirstByOrderNumberLessThanOrderByOrderNumberDesc(Integer orderNumber);
+    Optional<SliderEnt> findFirstByOrderNumberGreaterThanOrderByOrderNumberAsc(Integer orderNumber);
+
 }

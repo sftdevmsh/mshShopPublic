@@ -25,4 +25,9 @@ public interface NavRepositoryJpa extends JpaRepository<NavEnt, Long>
     Integer myFindLastOrderNumber();
 
     Optional<NavEnt> findFirstById(Long id);
+
+    Optional<NavEnt> findFirstByOrderNumberLessThanOrderByOrderNumberDesc(Integer orderNumber);
+    Optional<NavEnt> findFirstByOrderNumberGreaterThanOrderByOrderNumberAsc(Integer orderNumber);
+
+
 }

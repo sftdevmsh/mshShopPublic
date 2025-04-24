@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.msh.config.mapper.invoice.InvoiceMapper;
 import org.msh.dto.invoice.InvoiceDto;
 import org.msh.dto.payment.GotoPaymentDto;
+import org.msh.dto.user.UserDto;
 import org.msh.entity.invoice.InvoiceEnt;
 import org.msh.entity.invoice.InvoiceItemEnt;
 import org.msh.entity.product.ColorEnt;
@@ -18,9 +19,11 @@ import org.msh.repositoryJpa.invoice.InvoiceRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
 import org.msh.service.generics.MyGenericServiceCls;
 import org.msh.service.product.ProductService;
+import org.msh.util.MyJwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -176,10 +179,19 @@ public class InvoiceService extends MyGenericServiceCls implements MyGenericServ
 
 
 
+
     public List<InvoiceDto> findAllByUserEnt_IdSrv(Long id)
     {
         return invoiceRepositoryJpa
                 .findFirstByUserEnt_Id(id)
+                .stream()
+                .map(invoiceMapper::map).toList();
+    }
+
+    public List<InvoiceDto> findListMineSrv(UserDto dto) {
+        validationModelId(dto.getId());
+        return invoiceRepositoryJpa
+                .findFirstByUserEnt_Id(dto.getId())
                 .stream()
                 .map(invoiceMapper::map).toList();
     }
@@ -252,7 +264,6 @@ public class InvoiceService extends MyGenericServiceCls implements MyGenericServ
         //return resDto;
         return entRes;
     }
-
 
 
 }

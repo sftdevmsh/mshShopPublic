@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.msh.dto.site.SliderDto;
 import org.msh.entity.file.FileEnt;
 import org.msh.entity.site.SliderEnt;
+import org.msh.entity.site.SliderEnt;
 import org.msh.exceptions.MyExc;
 import org.msh.repositoryJpa.site.SliderRepositoryJpa;
 import org.msh.service.generics.MyGenericService;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -157,4 +160,49 @@ public class SliderService extends MyGenericServiceCls implements MyGenericServi
             throw new MyExc("validateDto ...");
     }
     //endregion
+
+
+    @Transactional
+    public boolean swapUpSrv(Long id) {
+        validationModelId(id);
+        SliderEnt ent = sliderRepositoryJpa.findById(id).orElseThrow();
+        boolean res = false;
+        Optional<SliderEnt> previous = sliderRepositoryJpa
+                .findFirstByOrderNumberLessThanOrderByOrderNumberDesc(ent.getOrderNumber());
+        if(previous.isPresent())
+        {
+            SliderEnt pre = previous.get();
+            Integer orderNumber = ent.getOrderNumber();
+            ent.setOrderNumber(pre.getOrderNumber());
+            pre.setOrderNumber(orderNumber);
+            ArrayList<SliderEnt> arr = new ArrayList<SliderEnt>();
+            arr.add(ent);
+            arr.add(pre);
+            sliderRepositoryJpa.saveAll(arr);
+            res = true;
+        }
+        return res;
+    }
+    @Transactional
+    public boolean swapDownSrv(Long id) {
+        validationModelId(id);
+        SliderEnt ent = sliderRepositoryJpa.findById(id).orElseThrow();
+        boolean res = false;
+        Optional<SliderEnt> after = sliderRepositoryJpa
+                .findFirstByOrderNumberGreaterThanOrderByOrderNumberAsc(ent.getOrderNumber());
+        if(after.isPresent())
+        {
+            SliderEnt aft = after.get();
+            Integer orderNumber = ent.getOrderNumber();
+            ent.setOrderNumber(aft.getOrderNumber());
+            aft.setOrderNumber(orderNumber);
+            ArrayList<SliderEnt> arr = new ArrayList<SliderEnt>();
+            arr.add(ent);
+            arr.add(aft);
+            sliderRepositoryJpa.saveAll(arr);
+            res = true;
+        }
+        return res;
+    }
+
 }

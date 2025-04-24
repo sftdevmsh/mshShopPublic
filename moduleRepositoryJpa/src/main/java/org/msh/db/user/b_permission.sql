@@ -68,6 +68,8 @@ values
      ,(243, 24, 'delete invoice/order', 'invoice_order_del')
      ,(244, 24, 'list of invoice/order', 'invoice_order_lst')
      ,(245, 24, 'view invoice/order info', 'invoice_order_inf')
+     ,(246, 24, 'list of invoice/order', 'invoice_order_lst_mine')
+     ,(247, 24, 'view invoice/order info', 'invoice_order_inf_mine')
 
      ,(25, 1, 'manage my invoices/factor', 'invoice_factor_mng')
      ,(251, 25, 'add my invoice/factor', 'invoice_factor_add')

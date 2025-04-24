@@ -9,6 +9,8 @@ import org.msh.service.site.SliderService;
 import org.msh.wrapper.PanelApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -97,4 +99,29 @@ public class SliderPanelController implements MyGenericController<SliderDto> {
                 .status(MyHttpStatus.Success)
                 .build();
     }
+
+
+
+
+    @MyAutenticationAnnotation("slider_upd")
+    @GetMapping("/swap_up/{id}")
+    public PanelApiResponseWrapper<Boolean> swapUpCtrl(@PathVariable("id") Long id) throws MyExc {
+        return PanelApiResponseWrapper
+                .<Boolean>builder()
+                .tdata(sliderService.swapUpSrv(id))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
+    @MyAutenticationAnnotation("slider_upd")
+    @GetMapping("/swap_down/{id}")
+    public PanelApiResponseWrapper<Boolean> swapDownCtrl(@PathVariable("id") Long id) throws MyExc {
+        return PanelApiResponseWrapper
+                .<Boolean>builder()
+                .tdata(sliderService.swapDownSrv(id))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
+
 }

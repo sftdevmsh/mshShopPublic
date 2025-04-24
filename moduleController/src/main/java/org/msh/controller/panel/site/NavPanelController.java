@@ -98,4 +98,31 @@ public class NavPanelController implements MyGenericController<NavDto> {
                 .status(MyHttpStatus.Success)
                 .build();
     }
+
+
+
+
+
+    @MyAutenticationAnnotation("nav_upd")
+    @GetMapping("/swap_up/{id}")
+    public PanelApiResponseWrapper<Boolean> swapUpCtrl(@PathVariable("id") Long id) throws MyExc {
+        return PanelApiResponseWrapper
+                .<Boolean>builder()
+                .tdata(navService.swapUpSrv(id))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
+    @MyAutenticationAnnotation("nav_upd")
+    @GetMapping("/swap_down/{id}")
+    public PanelApiResponseWrapper<Boolean> swapDownCtrl(@PathVariable("id") Long id) throws MyExc {
+        return PanelApiResponseWrapper
+                .<Boolean>builder()
+                .tdata(navService.swapDownSrv(id))
+                .msg("")
+                .status(MyHttpStatus.Success)
+                .build();
+    }
+
+
 }

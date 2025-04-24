@@ -13,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class NavService extends MyGenericServiceCls implements MyGenericService<NavDto> {
@@ -148,4 +151,50 @@ public class NavService extends MyGenericServiceCls implements MyGenericService<
             throw new MyExc("validateDto ...");
     }
     //endregion
+
+
+
+
+    @Transactional
+    public boolean swapUpSrv(Long id) {
+        validationModelId(id);
+        NavEnt ent = navRepositoryJpa.findById(id).orElseThrow();
+        boolean res = false;
+        Optional<NavEnt> previous = navRepositoryJpa
+                .findFirstByOrderNumberLessThanOrderByOrderNumberDesc(ent.getOrderNumber());
+        if(previous.isPresent())
+        {
+            NavEnt pre = previous.get();
+            Integer orderNumber = ent.getOrderNumber();
+            ent.setOrderNumber(pre.getOrderNumber());
+            pre.setOrderNumber(orderNumber);
+            ArrayList<NavEnt> arr = new ArrayList<NavEnt>();
+            arr.add(ent);
+            arr.add(pre);
+            navRepositoryJpa.saveAll(arr);
+            res = true;
+        }
+        return res;
+    }
+    @Transactional
+    public boolean swapDownSrv(Long id) {
+        validationModelId(id);
+        NavEnt ent = navRepositoryJpa.findById(id).orElseThrow();
+        boolean res = false;
+        Optional<NavEnt> after = navRepositoryJpa
+                .findFirstByOrderNumberGreaterThanOrderByOrderNumberAsc(ent.getOrderNumber());
+        if(after.isPresent())
+        {
+            NavEnt aft = after.get();
+            Integer orderNumber = ent.getOrderNumber();
+            ent.setOrderNumber(aft.getOrderNumber());
+            aft.setOrderNumber(orderNumber);
+            ArrayList<NavEnt> arr = new ArrayList<NavEnt>();
+            arr.add(ent);
+            arr.add(aft);
+            navRepositoryJpa.saveAll(arr);
+            res = true;
+        }
+        return res;
+    }
 }
