@@ -164,9 +164,10 @@ public class UserService extends MyGenericServiceCls implements MyGenericService
             throw new MyExc("password length is small");
     }
 
-    public LimitedUserDto login(LoginDto dto) throws NotFoundExc {
-        String username = dto.getUsername();
-        String password = MyHashUtil.encrypt(dto.getPassword());
+    public LimitedUserDto login(LoginDto ld) throws NotFoundExc {
+        String username = ld.getUsername();
+        String password = MyHashUtil.encrypt(ld.getPassword());
+        System.out.println("login pass id : "+password);
         UserEnt userEnt = userRepositoryJpa.findByUsernameIgnoreCaseAndPassword(username,password).orElseThrow(NotFoundExc::new);
         //
         LimitedUserDto limitedUserDto = userMapper.limitedMap(userEnt);

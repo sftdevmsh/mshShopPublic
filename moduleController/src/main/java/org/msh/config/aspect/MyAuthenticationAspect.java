@@ -12,6 +12,7 @@ import org.msh.config.annotation.MyAutenticationAnnotation;
 import org.msh.config.filter.MyJwtFilter;
 import org.msh.dto.user.PermissionDto;
 import org.msh.dto.user.UserDto;
+import org.msh.wrapper.PanelApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +35,7 @@ public class MyAuthenticationAspect {
         UserDto dto = (UserDto) httpServletRequest.getAttribute(MyJwtFilter.Attr_CURRENT_USER);
         if(dto == null)
         {
-            return ApiResponseWrapper
+            return PanelApiResponseWrapper
                     .<UserDto>builder()
                     .status(MyHttpStatus.AccessDenied)
                     .msg("Access Denied !!! Please Login.")
@@ -55,7 +56,7 @@ public class MyAuthenticationAspect {
         //
         String strPermission = myAutenticationAnnotation.value();
         if(!lstPermissions.contains(strPermission)) {
-            return ApiResponseWrapper
+            return PanelApiResponseWrapper
                     .<UserDto>builder()
                     .status(MyHttpStatus.AccessDenied)
                     .msg("Access Denied !!! No Permission.")

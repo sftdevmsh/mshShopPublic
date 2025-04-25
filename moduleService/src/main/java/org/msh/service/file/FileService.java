@@ -22,13 +22,12 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class FileService implements MyGenericService<FileDto> {
 
-    @Value("${my.file.upload.path}")
-    private String uploadpath;
 
     private final FileRepositoryJpa fileRepositoryJpa;
     private final ModelMapper modelMapper;
@@ -108,70 +107,46 @@ public class FileService implements MyGenericService<FileDto> {
         if(fileDto.getName()==null || fileDto.getName().isEmpty())
             throw new MyExc("empty customer firstname");
     }
-
     //endregion
     //endregion
 
 
 
-    public FileDto upload(MultipartFile file) throws MyExc {
+
+
+
+    public FileDto uploadSrv(FileDto dto) throws MyExc {
         FileDto resDto = null;
-        //
-        if(file == null
-                || file.isEmpty()
-                || file.getOriginalFilename() == null
-                || file.getOriginalFilename().isEmpty())
-            throw new MyExc("can not upload a null file...");
-        else {
-            System.out.println("file.getName() : " +file.getName());
-            System.out.println("file.getOriginalFilename() : "+ file.getOriginalFilename());
-            //
-            String fileName = Objects.requireNonNull(file.getOriginalFilename())
-                    .substring(0, file.getOriginalFilename().lastIndexOf("."));
-            String extensionName = file.getOriginalFilename()
-                    .substring(file.getOriginalFilename().lastIndexOf(".") + 1);
-            //
-            String fullName = fileName + "." + extensionName;
-            String fullNameStrToSave = changeFileNameStrToSave(fullName);
-            String savePathStr = uploadpath + File.separator + fullNameStrToSave;
-            Path savePath = Paths.get(savePathStr);
-            //
-            try {
-                java.nio.file.Files.write(savePath, file.getBytes());
-                FileEnt ent = FileEnt
-                        .builder()
-                        .createDate(LocalDateTime.now())
-                        .name(fileName)
-                        .extension(extensionName)
-                        .path(fullName)
-                        .uuid(UUID.randomUUID().toString())
-                        .size(file.getSize())
-                        .build();
-                ent = fileRepositoryJpa.save(ent);
-                resDto = modelMapper.map(ent, FileDto.class);
-            } catch (IOException e) {
-                System.out.println("couldn't save file...");
-                ;
-            }
+        try{
+            FileEnt ent = FileEnt
+                    .builder()
+                    .createDate(LocalDateTime.now())//not in dto
+                    .name(dto.getName())
+                    .extension(dto.getExtension())
+                    .path(dto.getPath())
+                    .uuid(UUID.randomUUID().toString())
+                    .size(dto.getSize())
+                    .build();
+            ent = fileRepositoryJpa.save(ent);
+            resDto = modelMapper.map(ent, FileDto.class);
+        } catch (Exception e) {
+            System.out.println("couldn't save file...");
         }
         //
         return resDto;
     }
 
-    private String changeFileNameStrToSave(String fullName) {
-        //todo: change fullNameStrToSave appropriately
-        return "AA"+fullName;
-    }
 
     public FileDto findByNameSrv(String name) {
-        FileEnt ent = null;
+        FileDto fileDto = null;
         try {
-            ent = fileRepositoryJpa.findFirstByNameEqualsIgnoreCase(name).orElseThrow();
+            FileEnt ent = fileRepositoryJpa.findFirstByNameEqualsIgnoreCase(name).orElseThrow();
+            fileDto = modelMapper.map(ent, FileDto.class);
         }
         catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
-        return modelMapper.map(ent, FileDto.class);
+        return fileDto;
     }
 }
