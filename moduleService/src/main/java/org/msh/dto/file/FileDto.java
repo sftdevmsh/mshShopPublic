@@ -20,8 +20,8 @@ public class FileDto {
 
     private String uuid;
     private String extension;
+    private String contentType;
     private Long size;
     //private LocalDateTime createDate;
-
 
 }

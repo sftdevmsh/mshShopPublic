@@ -126,6 +126,7 @@ public class FileService implements MyGenericService<FileDto> {
                     .path(dto.getPath())
                     .uuid(UUID.randomUUID().toString())
                     .size(dto.getSize())
+                    .contentType(dto.getContentType())
                     .build();
             ent = fileRepositoryJpa.save(ent);
             resDto = modelMapper.map(ent, FileDto.class);
@@ -137,10 +138,11 @@ public class FileService implements MyGenericService<FileDto> {
     }
 
 
-    public FileDto findByNameSrv(String name) {
+    public FileDto findByPathSrv(String path) {
+        System.out.println("findByPathSrv : "+path);
         FileDto fileDto = null;
         try {
-            FileEnt ent = fileRepositoryJpa.findFirstByNameEqualsIgnoreCase(name).orElseThrow();
+            FileEnt ent = fileRepositoryJpa.findFirstByPathEqualsIgnoreCase(path).orElseThrow();
             fileDto = modelMapper.map(ent, FileDto.class);
         }
         catch (Exception e)

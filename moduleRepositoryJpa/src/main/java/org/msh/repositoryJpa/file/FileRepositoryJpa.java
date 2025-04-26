@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface FileRepositoryJpa extends JpaRepository<FileEnt, Long>
 {
-    Optional<FileEnt> findFirstByNameEqualsIgnoreCase(String name);
+    Optional<FileEnt> findFirstByPathEqualsIgnoreCase(String name);
 }

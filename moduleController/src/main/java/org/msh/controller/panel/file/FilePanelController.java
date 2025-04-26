@@ -27,7 +27,7 @@ import java.util.UUID;
 public class FilePanelController implements MyGenericController<FileDto> {
 
     @Value("${my.file.upload.path}")
-    private String uploadpath;
+    public String uploadPath;
 
     private final FileService fileService;
 
@@ -155,6 +155,7 @@ public class FilePanelController implements MyGenericController<FileDto> {
                         .name(fileName)
                         .extension(extensionName)
                         .path(path)
+                        .contentType(file.getContentType())
                         .uuid(UUID.randomUUID().toString())
                         .size(file.getSize())
                         .build();
@@ -173,42 +174,16 @@ public class FilePanelController implements MyGenericController<FileDto> {
                 .build();
     }
 
-    //todo: implement upload
-    @MyAutenticationAnnotation("file_inf")
-    @GetMapping("/get/name/{fullname}")
-    public ResponseEntity<InputStreamResource> getByNameCtrl(@PathVariable("fullname") String fullname) throws MyExc, FileNotFoundException {
-        try
-        {
-            FileDto dto = fileService.findByNameSrv(fullname);
-            String path = getChangedFileName(dto.getPath());
-            File file = new File(getUploadPath(path));
-            //
-            InputStream inputStream = new FileInputStream(file);
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            //
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(MediaType.parseMediaType(dto.getExtension()));
-            httpHeaders.setContentLength(dto.getSize());
-            //httpHeaders.setCacheControl(CacheControl.noCache());
-            //
-            return new ResponseEntity<>(inputStreamResource,httpHeaders, HttpStatus.OK);
 
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-            //throw new MyExc(e.getMessage());
-            return null;
-        }
-    }
-
-
-    private String getChangedFileName(String fullName) {
+    public String getChangedFileName(String fullName) {
         //todo: change fullName appropriately
         return "AA"+fullName;
     }
-    private String getUploadPath(String fullName) {
-        return uploadpath + File.separator + fullName;
+
+
+    public String getUploadPath(String path) {
+        System.out.println("getUploadPath : "+uploadPath + File.separator + path);
+        return uploadPath + File.separator + path;
     }
 
 
