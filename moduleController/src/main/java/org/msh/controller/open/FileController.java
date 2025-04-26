@@ -21,7 +21,7 @@ import java.util.Collections;
 
 
 @RestController
-@RequestMapping("/api/panel/file")
+@RequestMapping("/api/file")
 public class FileController {
 
     @Value("${my.file.upload.path}")
