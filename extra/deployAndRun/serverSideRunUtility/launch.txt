@@ -1,0 +1,3 @@
+"launch.vbs" has codes to lanuche run.bat.
+if we run "run.bat" directly the cmd window will remain open 
+and we close it the application will be sopped.
