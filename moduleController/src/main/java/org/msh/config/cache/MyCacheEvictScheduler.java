@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Component
 public class MyCacheEvictScheduler {
 
-    //Notes : use this annotation above methods :     @CacheEvict(cacheNames = "myApiCache5min", key = "'blog_' + #id")
+    //Notes : use this annotation above methods :         @CacheEvict(cacheNames = "myApiCache5min", key = "'blog_all_'+#page+'_'+#size")
     @CacheEvict("myApiCache5min")
     @Scheduled(fixedDelay = 300000) //every 15 minutes
     public void evictMyApiCache5min()

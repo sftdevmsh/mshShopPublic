@@ -42,7 +42,7 @@ public class BlogPanelController implements MyGenericController<BlogDto> {
     }
 
 
-    @CacheEvict(cacheNames = "myApiCache5min", key = "'blog_all'")
+    @CacheEvict(cacheNames = "myApiCache5min", key = "'blog_all_'+#page+'_'+#size")
     @MyAutenticationAnnotation("blog_lst")
     @Override
     public PanelApiResponseWrapper<List<BlogDto>> findAllCtrl(Integer page, Integer size) {
