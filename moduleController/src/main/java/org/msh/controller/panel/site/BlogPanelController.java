@@ -8,6 +8,7 @@ import org.msh.exceptions.MyExc;
 import org.msh.service.site.BlogService;
 import org.msh.wrapper.PanelApiResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +29,8 @@ public class BlogPanelController implements MyGenericController<BlogDto> {
 
 
 
-
-
-    @MyAutenticationAnnotation("blog_lst , blog_inf")
+    @CacheEvict(cacheNames = "myApiCache5min", key = "'blog_' + #id")
+    @MyAutenticationAnnotation("blog_inf")
     @Override
     public PanelApiResponseWrapper<BlogDto> findByIdCtrl(Long id) {
         return PanelApiResponseWrapper
@@ -41,6 +41,8 @@ public class BlogPanelController implements MyGenericController<BlogDto> {
                 .build();
     }
 
+
+    @CacheEvict(cacheNames = "myApiCache5min", key = "'blog_all'")
     @MyAutenticationAnnotation("blog_lst")
     @Override
     public PanelApiResponseWrapper<List<BlogDto>> findAllCtrl(Integer page, Integer size) {

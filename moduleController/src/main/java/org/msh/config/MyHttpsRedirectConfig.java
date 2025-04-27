@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 public class MyHttpsRedirectConfig {
 
     @Value("${server.port}")
-    Integer httpsPortNumber;
+    Integer httpsPortNumberToServer;
 
     @Value("${my.server.acceptable.request.from}")
-    Integer requestFromPortNumber;
+    Integer httpsPortNumberFrom;
 
     @Bean
     public WebServerFactoryCustomizer<TomcatServletWebServerFactory> redirectHttpToHttps()
@@ -21,8 +21,8 @@ public class MyHttpsRedirectConfig {
         return factory -> factory.addConnectorCustomizers(connector ->
             {
                 connector.setScheme("http");
-                connector.setPort(requestFromPortNumber);
-                connector.setRedirectPort(httpsPortNumber);
+                connector.setPort(httpsPortNumberFrom);
+                connector.setRedirectPort(httpsPortNumberToServer);
                 connector.setSecure(true);
             });
     }
